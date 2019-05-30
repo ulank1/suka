@@ -1,0 +1,177 @@
+package kg.docplus.ui.main.search
+
+import android.arch.lifecycle.MutableLiveData
+import android.content.Intent
+import android.util.Log
+import android.view.View
+import android.widget.EditText
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import kg.docplus.DocPlusApp
+import kg.docplus.R
+import kg.docplus.base.BaseViewModel
+import kg.docplus.model.Product
+import kg.docplus.model.get.DoctorGet
+import kg.docplus.network.PostApi
+import kg.docplus.post.PostListActivity
+import kg.docplus.ui.main.filter.Filter
+import kg.docplus.ui.register.RegisterActivity
+import kg.docplus.utils.UserToken
+import kg.docplus.utils.extension.getParentActivity
+import kg.docplus.utils.extension.toast
+import kg.docplus.utils.extension.validate
+import javax.inject.Inject
+
+class FilterViewModel : BaseViewModel() {
+
+
+
+    @Inject
+    lateinit var postApi: PostApi
+
+    var postList: ArrayList<Product> = ArrayList()
+    val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
+    val status: MutableLiveData<Int> = MutableLiveData()
+    val specialities: MutableLiveData<ArrayList<String>> = MutableLiveData()
+    val doctors: MutableLiveData<ArrayList<DoctorGet>> = MutableLiveData()
+    var pageOfAllDropDown = "1"
+    var pageOfFilterDropDown = "1"
+
+    private var subscription: CompositeDisposable = CompositeDisposable()
+
+
+    override fun onCleared() {
+        super.onCleared()
+        subscription = CompositeDisposable()
+    }
+
+    fun filterSpeciality(filter:String){
+
+        subscription.add(
+            postApi.getDropDownFilter(
+                pageOfFilterDropDown.toString(),
+                filter
+            )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { loadingVisibility.value = View.VISIBLE }
+                .subscribe(
+                    { result ->
+                        loadingVisibility.value = View.GONE
+                        if (result.isSuccessful) {
+                            Log.e("TOK",result.body()!!.toString())
+                            specialities.value = result.body()!!.results
+                            pageOfFilterDropDown = result.body()!!.next
+                        } else {
+                            var error = result.errorBody()!!.string()
+                            Log.e("Error",error)
+
+                        }
+
+                    },
+                    {
+                        Log.e("DDD",it.toString())}
+
+                )
+        )
+    }
+
+    fun filterDocs(){
+        Log.e("DATE",Filter.schedule_time_after+" "+Filter.schedule_time_before)
+        /*subscription.add(
+            postApi.getDocs(
+                Filter.min_price,
+                Filter.max_price,
+                Filter.services,
+                Filter.schedule_time_before,
+                Filter.schedule_time_after,
+                Filter.name,
+//                Filter.specialty_title,
+                "Педиатр",
+                Filter.ordering)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { showProgress() }
+                .doOnTerminate { }
+                .subscribe(
+                    { result ->
+                        hideProgress()
+                        if (result.isSuccessful) {
+
+                            //UserToken.saveToken(result.body()!!.token, DocPlusApp.context!!)
+                            Log.e("TOK",result.body()!!.toString())
+
+                        } else {
+                            var error = result.errorBody()!!.string()
+                            Log.e("Error",error)
+
+                        }
+
+                    },
+                    {
+                        Log.e("DDD",it.toString())}
+
+                )
+        )*/
+        subscription.add(
+            postApi.getDocsTest()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { showProgress() }
+                .doOnTerminate { }
+                .subscribe(
+                    { result ->
+                        hideProgress()
+                        if (result.isSuccessful) {
+                            doctors.value = (result.body() as ArrayList<DoctorGet>?)!!
+                            Log.e("TOK",result.body()!!.toString())
+
+                        } else {
+                            var error = result.errorBody()!!.string()
+                            Log.e("Error",error)
+
+                        }
+
+                    },
+                    {
+                        Log.e("DDD",it.toString())}
+
+                )
+        )
+    }
+
+    fun getAllDropdown() {
+        subscription.add(
+            postApi.getDropdown(
+                pageOfAllDropDown
+               )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { showProgress() }
+                .doOnTerminate {  }
+                .subscribe(
+                    { result ->
+                        hideProgress()
+                        if (result.isSuccessful) {
+                            specialities.value = result.body()!!.results
+                            pageOfAllDropDown = result.body()!!.next
+                            Log.e("TOK",result.body()!!.toString())
+                        } else {
+                            var error = result.errorBody()!!.string()
+                            Log.e("Error",error)
+
+                        }
+
+                    },
+                    {
+                        Log.e("DDD",it.toString())}
+
+                )
+        )
+    }
+
+
+
+
+}

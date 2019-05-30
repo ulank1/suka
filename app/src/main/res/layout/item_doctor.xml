@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingBottom="16dp"
+    android:paddingStart="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:background="@drawable/left_corner_10_white"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingEnd="20dp"
+        android:paddingStart="77dp"
+        android:layout_marginStart="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="152dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:text="Елена \nВасильевна"
+            android:textSize="14sp"
+            android:textColor="#8A8A8A"
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/rating"
+            android:layout_alignParentEnd="true"
+            android:text="4.5"
+            android:drawableStart="@drawable/star_yellow"
+            android:textColor="#FDB600"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="14sp"
+            android:textColor="@color/colorPrimary"
+            android:text="Педиатр, Иммунолог "
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/name"
+            android:id="@+id/specialities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="12sp"
+            android:layout_above="@+id/min_price"
+            android:id="@+id/patients"
+            android:text="Пациенты:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/patients_count"
+            android:layout_marginStart="5dp"
+            android:layout_above="@+id/min_price"
+            android:layout_toEndOf="@+id/patients"
+            android:text="25"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textColor="@color/orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="12sp"
+            android:layout_alignParentBottom="true"
+            android:text="Консультация от:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="12sp"
+            android:id="@+id/min_price"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_rect_2dp_blue"
+            android:text="500 сом"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <ImageView
+        android:layout_marginTop="16dp"
+        android:src="@drawable/rounded_rect_10dp_blue"
+        android:id="@+id/avatar"
+        android:layout_width="120dp"
+        android:layout_height="120dp" />
+
+
+
+</RelativeLayout>
