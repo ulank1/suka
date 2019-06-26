@@ -1,6 +1,7 @@
 package kg.docplus.ui.main.search
 
 
+import android.annotation.SuppressLint
 import android.app.TimePickerDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -31,13 +32,13 @@ import java.util.*
 import kg.docplus.utils.extension.hideKeyboard
 import kotlin.collections.ArrayList
 import android.widget.ArrayAdapter
-
-
+import kg.docplus.DocPlusApp
 
 
 // TODO: Rename parameter arguments, choose names that match
 
 class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterListener,AdapterView.OnItemSelectedListener {
+
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
@@ -82,6 +83,8 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     var lateStatus = 0
 
     var specialties:ArrayList<String> = ArrayList()
+
+    var dateList:ArrayList<String> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -137,7 +140,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         adapter.swapData(specialties)
 
         rv_result.layoutManager = LinearLayoutManager(activity) as RecyclerView.LayoutManager?
-        adapterResult = DoctorRvAdapter(activity!!,this)
+        adapterResult = DoctorRvAdapter(activity!!)
         rv_result.adapter = adapterResult
 
     }
@@ -167,6 +170,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
                     line_result.gone()
                 }
                 2->{
+                    initDateSpinner()
                     refresh.gone()
                     line_filter.visible()
                     line_result.gone()
@@ -222,6 +226,8 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
                     Filter.schedule_time_before = "schedule_time_before ${from_time.text.toString()}"
                     Filter.schedule_time_after = "schedule_time_after ${to_time.text.toString()}"
 
+                    Filter.date = dateList[date.selectedItemPosition]
+
                     viewModel.filterDocs()
 
                 }
@@ -262,5 +268,24 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
             }
         }
     }
+
+    private fun  initDateSpinner() {
+
+        for (i in 0..6){
+            var calendar = Calendar.getInstance()
+            calendar.add(Calendar.DAY_OF_YEAR,i)
+            var date = Date(calendar.timeInMillis)
+            val postFormat = SimpleDateFormat("yyyy-MM-dd")
+            dateList.add(postFormat.format(date))
+        }
+
+        Log.e("DATES",dateList.toString())
+
+        var adapter = ArrayAdapter(DocPlusApp.activity!!, R.layout.spinner_country_item, dateList)
+        adapter.setDropDownViewResource(R.layout.spinner_country_dropdown_item)
+        date.adapter = adapter
+
+    }
+
 
 }

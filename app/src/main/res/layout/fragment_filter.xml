@@ -81,6 +81,7 @@
         android:background="@drawable/shadow_toolbar" />
 
     <com.cjj.MaterialRefreshLayout
+        android:visibility="gone"
         android:id="@+id/refresh"
         android:isScrollContainer="false"
         android:layout_width="match_parent"
@@ -89,19 +90,22 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
+            android:layout_height="match_parent">
 
         </android.support.v7.widget.RecyclerView>
     </com.cjj.MaterialRefreshLayout>
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:id="@+id/line_filter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="20dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
@@ -155,6 +159,25 @@
                 android:inputType="number"
                 android:textColor="@color/orange" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:text="Дата"
+            android:textColor="#1ACDED"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/date"
+            android:background="@drawable/round_rect_15_white_stroke_grey"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content">
+
+        </Spinner>
 
 
         <TextView
@@ -306,6 +329,7 @@
         </LinearLayout>
 
         <Button
+            android:layout_marginBottom="50dp"
             android:id="@+id/btn_ok"
             android:layout_width="120dp"
             android:layout_height="30dp"
@@ -316,7 +340,7 @@
             android:textColor="@color/white" />
 
     </LinearLayout>
-
+    </ScrollView>
     <LinearLayout
         android:id="@+id/line_result"
         android:layout_width="match_parent"

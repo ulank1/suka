@@ -6,13 +6,12 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import android.support.v7.widget.GridLayoutManager
 import android.util.Log
 import kg.docplus.DocPlusApp
 import kg.docplus.R
-import kg.docplus.databinding.ActivityLoginBinding
 import kg.docplus.injection.ViewModelFactory
-import kg.docplus.ui.login.LoginViewModel
+import kg.docplus.utils.UserToken
 
 class DoctorDetailActivity : AppCompatActivity() {
 
@@ -30,10 +29,17 @@ class DoctorDetailActivity : AppCompatActivity() {
         binding.viewModel = viewModel
 
         viewModel.active.value = false
-
+        setupRv()
         viewModel.getDoctorFull(intent.getIntExtra("id",7))
-        viewModel.doctor.observe(this, Observer { binding.doctor = it })
+        viewModel.doctor.observe(this, Observer {binding.doctor = it })
+        Log.e("TOKEN",UserToken.getToken(this))
 
+    }
+
+    fun setupRv(){
+        var manager = GridLayoutManager(this,2)
+        binding.rv.layoutManager = manager
+        binding.rv.setHasFixedSize(false)
 
     }
 

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/name"
+            style="@style/EditText.Login"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="top"
+            android:hint="Ваше имя"
+            android:inputType="text"
+            android:textSize="14sp"
+            android:theme="@style/EditText.Login" />
+
+        <EditText
+            android:id="@+id/surname"
+            style="@style/EditText.Login"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="top"
+            android:hint="Ваша фамилия"
+            android:inputType="text"
+            android:textSize="14sp"
+            android:theme="@style/EditText.Login"
+            android:visibility="visible" />
+
+
+        <EditText
+            android:id="@+id/forename"
+            style="@style/EditText.Login"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="top"
+            android:hint="Ваше отчество"
+            android:inputType="text"
+            android:textSize="14sp"
+            android:theme="@style/EditText.Login"
+            android:visibility="visible" />
+
+
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_rect_10dp_blue"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:text="Подтвердить"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:padding="5dp"
+        android:id="@+id/cancel"
+        android:layout_margin="5dp"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/remove"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+
+</RelativeLayout>

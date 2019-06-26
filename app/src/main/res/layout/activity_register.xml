@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="kg.docplus.ui.register.RegisterViewModel" />
+            type="kg.docplus.ui.auth.register.RegisterViewModel" />
     </data>
 
     <ScrollView

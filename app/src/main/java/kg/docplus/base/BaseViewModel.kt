@@ -2,7 +2,6 @@ package kg.docplus.base
 
 import android.app.ProgressDialog
 import android.arch.lifecycle.ViewModel
-import android.content.Context
 import android.util.Log
 import kg.docplus.DocPlusApp
 import kg.docplus.injection.component.DaggerViewModelInjector
@@ -12,13 +11,18 @@ import kg.docplus.post.PostListViewModel
 import kg.docplus.post.PostViewModel
 import kg.docplus.product.ProductListViewModel
 import kg.docplus.product.ProductViewModel
+import kg.docplus.ui.auth.change_password.PhoneViewModel
+import kg.docplus.ui.auth.change_password.new_password.NewPasswordViewModel
 import kg.docplus.ui.doctor_deatail.DoctorDetailViewModel
-import kg.docplus.ui.login.LoginViewModel
+import kg.docplus.ui.auth.login.LoginViewModel
 import kg.docplus.ui.main.home.HomeViewModel
 import kg.docplus.ui.main.search.FilterViewModel
 import kg.docplus.ui.profile.ProfileViewModel
-import kg.docplus.ui.register.RegisterViewModel
-import kg.docplus.ui.register.confirm_code.ConfirmCodeViewModel
+import kg.docplus.ui.auth.register.RegisterViewModel
+import kg.docplus.ui.auth.register.confirm_code.ConfirmCodeViewModel
+import kg.docplus.ui.chat.ChatViewModel
+import kg.docplus.ui.favorite_doctor.FavouriteViewModel
+import kg.docplus.ui.my_doctor.DoctorViewModel
 
 abstract class BaseViewModel():ViewModel(){
 
@@ -70,6 +74,11 @@ abstract class BaseViewModel():ViewModel(){
             is FilterViewModel -> injector.inject(this)
             is ProfileViewModel -> injector.inject(this)
             is DoctorDetailViewModel -> injector.inject(this)
+            is PhoneViewModel -> injector.inject(this)
+            is NewPasswordViewModel -> injector.inject(this)
+            is FavouriteViewModel -> injector.inject(this)
+            is ChatViewModel -> injector.inject(this)
+            is DoctorViewModel -> injector.inject(this)
 
         }
     }

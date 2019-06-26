@@ -1,4 +1,4 @@
-package kg.docplus.ui.login
+package kg.docplus.ui.auth.login
 
 import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
@@ -9,13 +9,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kg.docplus.DocPlusApp
-import kg.docplus.R
 import kg.docplus.base.BaseViewModel
 import kg.docplus.model.Product
 import kg.docplus.network.PostApi
 import kg.docplus.post.PostListActivity
-import kg.docplus.ui.register.RegisterActivity
-import kg.docplus.utils.UserToken
+import kg.docplus.ui.auth.register.RegisterActivity
 import kg.docplus.utils.extension.getParentActivity
 import kg.docplus.utils.extension.toast
 import kg.docplus.utils.extension.validate

@@ -26,7 +26,7 @@ object UserToken{
 
     fun getToken(context: Context): String? {
         mSettings = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        return mSettings!!.getString(TOKEN, "ebc78b613f7947506cc1e5d4f5a53f8c7a34a9e0")
+        return mSettings!!.getString(TOKEN, "052e7e1af46dd1cf0c9c4b5243a57f57e0b4b6c4")
     }
 
     fun clearToken(context: Context) {

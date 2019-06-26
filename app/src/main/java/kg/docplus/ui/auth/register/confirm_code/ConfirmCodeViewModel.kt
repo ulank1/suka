@@ -1,11 +1,9 @@
-package kg.docplus.ui.register.confirm_code
+package kg.docplus.ui.auth.register.confirm_code
 
 import android.app.Activity
 import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.util.Log
-import android.view.View
-import android.widget.EditText
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
@@ -18,15 +16,12 @@ import io.reactivex.schedulers.Schedulers
 import kg.docplus.DocPlusApp
 import kg.docplus.DocPlusApp.Companion.activity
 import kg.docplus.DocPlusApp.Companion.context
-import kg.docplus.R
 import kg.docplus.base.BaseViewModel
 import kg.docplus.model.Product
 import kg.docplus.network.PostApi
-import kg.docplus.post.PostListActivity
+import kg.docplus.ui.auth.change_password.new_password.NewPasswordActivity
 import kg.docplus.utils.UserToken
-import kg.docplus.utils.extension.getParentActivity
 import kg.docplus.utils.extension.toast
-import kg.docplus.utils.extension.validate
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -38,7 +33,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
 
     lateinit var phone: String
     lateinit var password: String
-    var isRegister: Boolean = false
+    var isRegister: Int = 0
     private val TAG = this::class.java.simpleName
     private var storedVerificationId: String? = ""
     private var auth = FirebaseAuth.getInstance()
@@ -107,7 +102,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
 
     }
 
-    fun getSmsCode(activity: Activity, phone: String, password: String, isRegister: Boolean) {
+    fun getSmsCode(activity: Activity, phone: String, password: String, isRegister: Int) {
         context = activity
         this.isRegister = isRegister
         this.password = password
@@ -152,10 +147,12 @@ class ConfirmCodeViewModel : BaseViewModel() {
     }
 
     private fun onVerificationComplete() {
-          if (isRegister) {
+          if (isRegister==0) {
               register()
-          } else {
-              // context.startActivity(Intent(context, NewPasswordActivity::class.java).putExtra("phone", phone))
+          } else if (isRegister==1){
+                DocPlusApp.activity?.startActivity(Intent(DocPlusApp.activity!!,NewPasswordActivity::class.java).putExtra("phone",phone))
+          }else{
+
           }
     }
 

@@ -5,12 +5,12 @@
     <data>
 
         <variable
-            name="doctor"
-            type="kg.docplus.model.get.DoctorFull" />
-
-        <variable
             name="viewModel"
             type="kg.docplus.ui.doctor_deatail.DoctorDetailViewModel" />
+
+        <variable
+            name="doctor"
+            type="kg.docplus.model.get.DoctorFull" />
     </data>
 
     <ScrollView
@@ -94,7 +94,13 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_margin="4dp" />
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:onClick="@{(view) -> viewModel.onClickHeart()}" />
             </RelativeLayout>
 
             <TextView
@@ -102,15 +108,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:text="Елена Васильевна"
+                android:text='@{doctor.doctor_detail.first_name+" "+doctor.doctor_detail.mid_name}'
                 android:textSize="16sp" />
 
             <TextView
+                mutableArray="@{doctor.doctor_detail.specialties}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="Педиатр, Иммунолог"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
 
@@ -123,9 +129,12 @@
                 android:visibility="visible">
 
                 <LinearLayout
+                    android:id="@+id/chat"
+                    mutableLinearVisibility="@{doctor.services}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:onClick="@{(view) -> viewModel.onClickService(0)}"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -143,6 +152,7 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/price_chat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -152,14 +162,16 @@
                         android:paddingTop="6dp"
                         android:paddingEnd="12dp"
                         android:paddingBottom="6dp"
-                        android:text="500 сом"
                         android:textColor="@color/white"
                         android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:mutableTextM="@{doctor.services}" />
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/appointment"
+                    mutableLinearVisibility="@{doctor.services}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8dp"
@@ -181,6 +193,7 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/price_appointment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -190,14 +203,16 @@
                         android:paddingTop="6dp"
                         android:paddingEnd="12dp"
                         android:paddingBottom="6dp"
-                        android:text="500 сом"
                         android:textColor="@color/white"
                         android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:mutableTextM="@{doctor.services}" />
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/video_chat"
+                    mutableLinearVisibility="@{doctor.services}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8dp"
@@ -219,6 +234,7 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/price_video_chat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -228,14 +244,16 @@
                         android:paddingTop="6dp"
                         android:paddingEnd="12dp"
                         android:paddingBottom="6dp"
-                        android:text="500 сом"
                         android:textColor="@color/white"
                         android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:mutableTextM="@{doctor.services}" />
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/call_home"
+                    mutableLinearVisibility="@{doctor.services}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8dp"
@@ -258,6 +276,7 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/price_call_home"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -267,10 +286,10 @@
                         android:paddingTop="6dp"
                         android:paddingEnd="12dp"
                         android:paddingBottom="6dp"
-                        android:text="500 сом"
                         android:textColor="@color/white"
                         android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:mutableTextM="@{doctor.services}" />
 
                 </LinearLayout>
 
@@ -303,7 +322,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
-                    android:text="25"
+                    android:text='@{doctor.doctor_detail.patients+""}'
                     android:textColor="@color/orange"
                     android:textSize="16dp"
                     android:textStyle="bold" />
@@ -337,7 +356,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
-                    android:text="5 лет"
+                    android:text='@{doctor.doctor_detail.experience+""}'
                     android:textColor="@color/orange"
                     android:textSize="16dp"
                     android:textStyle="bold" />
@@ -363,7 +382,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="16dp"
-                    android:text="Врач высшей квалификационной категории"
+                    android:text="@{doctor.doctor_detail.qualification}"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -387,7 +406,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="16dp"
-                    android:text="Медицинская клиника Хадасса Медикал ЛТД,  Бишкек"
+                    android:text="@{doctor.doctor_detail.workplace}"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -398,117 +417,149 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="53dp"
                 android:background="@drawable/rounded_rect_10dp_blue"
+                android:onClick="@{(view) -> viewModel.onClickMore(lineMore)}"
                 android:padding="5dp"
                 android:text="Подробная информация"
                 android:textAllCaps="true"
                 android:textColor="@color/white" />
 
             <LinearLayout
+                android:id="@+id/line_more"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="26dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                     <ImageView
-                        android:layout_gravity="center"
+                    <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:layout_gravity="center"
                         android:src="@drawable/birth_day" />
 
                     <LinearLayout
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:textSize="15sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:text="Дата рождения: "
                             android:textColor="@color/orange"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:textSize="15sp" />
 
 
                         <TextView
-                            android:text="Август / 11 / 1975"
                             android:id="@+id/birth_date"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:text="@{doctor.doctor_detail.birth_date}" />
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_gravity="center"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:layout_gravity="center"
                         android:src="@drawable/location_icon_profile" />
 
                     <LinearLayout
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:textSize="15sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:text="Город: "
                             android:textColor="@color/orange"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:textSize="15sp" />
 
 
                         <TextView
-                            android:text="Бишкек"
                             android:id="@+id/city"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:text="Бишкек" />
                     </LinearLayout>
 
                 </LinearLayout>
 
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_marginTop="35dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_gravity="center"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:layout_gravity="center"
                         android:src="@drawable/guarantee_certificate_icon_profile" />
 
                     <TextView
-                        android:textSize="15sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="Дипломы и сертификаты"
                         android:textColor="@color/orange"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
-                    android:layout_marginTop="28dp"
+                    android:id="@+id/rv"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="28dp"
+                    app:adapter="@{viewModel.getAdapter()}">
 
                 </android.support.v7.widget.RecyclerView>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/info_icon_profile" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Дополнительная информация"
+                        android:textColor="@color/orange"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{doctor.doctor_detail.extra_info}"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 

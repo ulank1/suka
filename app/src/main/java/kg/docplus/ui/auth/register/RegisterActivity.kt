@@ -1,4 +1,4 @@
-package kg.docplus.ui.register
+package kg.docplus.ui.auth.register
 
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil

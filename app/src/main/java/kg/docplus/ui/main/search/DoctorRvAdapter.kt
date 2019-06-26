@@ -15,7 +15,7 @@ import kg.docplus.model.get.DoctorGet
 import kg.docplus.ui.doctor_deatail.DoctorDetailActivity
 import kotlin.collections.ArrayList
 
-class DoctorRvAdapter(val context: Context, val listener: FilterListener) : RecyclerView.Adapter<DoctorRvAdapter.AdvertViewHolder>() {
+class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapter.AdvertViewHolder>() {
 
     private var data: ArrayList<DoctorGet> = ArrayList()
 

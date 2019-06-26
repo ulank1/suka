@@ -1,4 +1,4 @@
-package kg.docplus.ui.register.confirm_code
+package kg.docplus.ui.auth.register.confirm_code
 
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
@@ -8,7 +8,6 @@ import kg.docplus.DocPlusApp
 import kg.docplus.R
 import kg.docplus.databinding.ActivityConfirmCodeBinding
 import kg.docplus.injection.ViewModelFactory
-import kg.docplus.ui.login.LoginViewModel
 
 class ConfirmCodeActivity : AppCompatActivity() {
 
@@ -24,6 +23,6 @@ class ConfirmCodeActivity : AppCompatActivity() {
 
         binding.viewModel = viewModel
 
-        viewModel.getSmsCode(this,intent.getStringExtra("phone"),intent.getStringExtra("password"),intent.getBooleanExtra("isRegister",true))
+        viewModel.getSmsCode(this,intent.getStringExtra("phone"),intent.getStringExtra("password"),intent.getIntExtra("isRegister",0))
     }
 }

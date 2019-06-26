@@ -8,13 +8,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import kg.docplus.R
-import kg.docplus.databinding.ActivityLoginBinding
 import kg.docplus.databinding.FragmentHomeBinding
-import kg.docplus.databinding.ItemProductBinding
 import kg.docplus.injection.ViewModelFactory
-import kg.docplus.ui.login.LoginViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,7 +36,7 @@ class HomeFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        viewModel.filterDocs()
+        //viewModel.filterDocs()
 
         return  binding.root
     }

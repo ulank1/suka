@@ -1,10 +1,8 @@
 package kg.docplus.ui.profile
 
+import android.app.AlertDialog
 import android.arch.lifecycle.MutableLiveData
-import android.content.Intent
 import android.util.Log
-import android.view.View
-import android.widget.EditText
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -12,94 +10,273 @@ import kg.docplus.DocPlusApp
 import kg.docplus.R
 import kg.docplus.base.BaseViewModel
 import kg.docplus.model.Product
+import kg.docplus.model.get.ProfileGet
 import kg.docplus.network.PostApi
-import kg.docplus.post.PostListActivity
 import kg.docplus.ui.main.MainActivity
 import kg.docplus.ui.main.filter.Filter
-import kg.docplus.ui.register.RegisterActivity
-import kg.docplus.utils.UserToken
-import kg.docplus.utils.extension.getParentActivity
 import kg.docplus.utils.extension.toast
-import kg.docplus.utils.extension.validate
 import javax.inject.Inject
+import android.content.DialogInterface
+import android.app.DatePickerDialog
+import kg.docplus.utils.extension.dateToPostFormat
+import java.util.*
+import android.app.Dialog
+import android.content.Intent
+import android.view.Window
+import android.widget.*
+import kg.docplus.DocPlusApp.Companion.activity
+import kg.docplus.model.get.PatientDetail
+import kg.docplus.model.post.ProfilePost
+import kg.docplus.ui.favorite_doctor.FavouriteActivity
+import kg.docplus.utils.extension.validate
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
-class ProfileViewModel : BaseViewModel() {
+
+class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
+
 
     @Inject
     lateinit var postApi: PostApi
-    var postList: ArrayList<Product> = ArrayList()
-    val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
-
-
-
     private var subscription: CompositeDisposable = CompositeDisposable()
-
+    val profile: MutableLiveData<ProfileGet> = MutableLiveData()
+    val avatar: MutableLiveData<String> = MutableLiveData()
+    lateinit var profileGet: ProfileGet
+    lateinit var birthDate: TextView
+    lateinit var path: String
 
     override fun onCleared() {
         super.onCleared()
         subscription = CompositeDisposable()
     }
 
-    private fun onRetrievePostListError() {
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        var calendar = GregorianCalendar()
+        calendar.set(year, month, dayOfMonth)
+        var date: Date = calendar.time
 
+        birthDate.text = dateToPostFormat(date)
     }
 
-    fun onClickCategory(id:Int){
+    fun getProfile() {
 
-        var service = -1
-
-       when(id){
-           R.id.appointment -> service = 1
-           R.id.chat -> service = 2
-           R.id.video_chat -> service = 3
-           R.id.call_home -> service = 4
-       }
-
-        (DocPlusApp.activity as MainActivity).selectSearch()
-
-    }
-    fun filterDocs(){
         subscription.add(
-            postApi.getDocs(
-                Filter.min_price,
-                Filter.max_price,
-                Filter.services,
-                Filter.schedule_time_before,
-                Filter.schedule_time_after,
-                Filter.name,
-                Filter.specialty_title,
-                Filter.ordering)
+            postApi.getProfile()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { showProgress() }
-                .doOnTerminate { hideProgress() }
                 .subscribe(
                     { result ->
-
+                        hideProgress()
                         if (result.isSuccessful) {
-
-                            //UserToken.saveToken(result.body()!!.token, DocPlusApp.context!!)
-                            Log.e("TOK",result.body()!!.toString())
-
+                            profileGet = result.body()!!
+                            profileGet.patient_detail.gender = getGenderForId(profileGet.patient_detail.gender!!)
+                            profile.value = profileGet
+                            path = profileGet.patient_detail.avatar.toString()
+                            if (!path.isNullOrEmpty()) {
+                                avatar.value = path
+                            }
                         } else {
                             var error = result.errorBody()!!.string()
-                            Log.e("Error",error)
+                            Log.e("Error", error)
 
-                            if (error.contains("Невозможно войти с",true)){
-                                Log.e("TAF","DDD")
-                                DocPlusApp.activity!!.toast("Невозможно войти с предоставленными учетными данными")
-                            }
                         }
 
                     },
                     {
-                        Log.e("DDD",it.toString())}
+                        hideProgress()
+
+                        Log.e("DDddsfD", it.toString())
+                    }
 
                 )
         )
 
     }
 
+    fun onClickSex(sex: TextView) {
+        Log.e("DDD", "sdfdssex")
+        val mCatsName = arrayOf("Мужской", "Женский")
 
+        var builder = AlertDialog.Builder(DocPlusApp.activity!!)
+        builder.setTitle("Выбираем кота") // заголовок для диалога
+
+        builder.setItems(mCatsName, DialogInterface.OnClickListener { dialog, item ->
+            sex.text = mCatsName[item]
+            Toast.makeText(
+                DocPlusApp.activity!!,
+                "Выбранный кот: " + mCatsName[item],
+                Toast.LENGTH_SHORT
+            ).show()
+        }).show()
+
+    }
+
+    fun onClickBirthDate(birthDate: TextView) {
+        this.birthDate = birthDate
+        val dialog = DatePickerDialog(DocPlusApp.activity!!, this, 1990, 1, 1)
+        dialog.datePicker.touchables[0].performClick()
+        dialog.show()
+
+    }
+
+    fun onClickName(nameMain: TextView) {
+
+        val dialog = Dialog(activity!!)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.alert_name)
+
+        val name = dialog.findViewById(R.id.name) as EditText
+        val surname = dialog.findViewById(R.id.surname) as EditText
+        val forename = dialog.findViewById(R.id.forename) as EditText
+        val btnOk = dialog.findViewById(R.id.btn_ok) as Button
+        val cancel = dialog.findViewById(R.id.cancel) as ImageView
+
+        btnOk.setOnClickListener {
+            var bool = true
+            if (!name.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
+            if (!surname.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
+            if (!surname.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
+
+            if (bool) {
+                val s = surname.text.toString() + "\n" + name.text.toString() + " " + forename.text.toString()
+                nameMain.text = s
+                dialog.cancel()
+            }
+
+        }
+
+        cancel.setOnClickListener { dialog.cancel() }
+
+        dialog.show()
+
+
+    }
+
+
+    fun onClickAvatar() {
+        var activity: MainActivity = (DocPlusApp.activity as MainActivity?)!!
+        activity.showPickImageDialog()
+    }
+
+    fun postImage(path: String) {
+        var file = File(path)
+        val requestBody = RequestBody.create(MediaType.parse("multipart/data"), file)
+        val multiPartBody = MultipartBody.Part
+            .createFormData("file", file.name, requestBody)
+
+        subscription.add(
+            postApi.postImage(multiPartBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { showProgress() }
+                .subscribe(
+                    { result ->
+                        hideProgress()
+                        if (result.isSuccessful) {
+                            Log.e("IMAGEDS", result.body()!!.file)
+                            this.path = result.body()!!.file
+                            avatar.value = this.path
+                        } else {
+                            var error = result.errorBody()!!.string()
+                            Log.e("Error", error)
+
+                        }
+
+                    },
+                    {
+                        hideProgress()
+
+                        Log.e("DDD", it.toString())
+                    }
+
+                )
+        )
+
+    }
+
+    fun onClickSave(name: TextView, sex: TextView, birth: TextView) {
+        var bool = true
+        if (!name.validate({ s -> s.length > 3 }, "Поле не может быть пустым")) bool = false
+        if (!sex.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
+        if (!birth.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
+
+        if (path.isNullOrEmpty()) {
+            DocPlusApp.activity!!.toast("Выберите Фото")
+        }
+
+        Log.e("Name", name.text.toString())
+
+        if (bool) {
+            var textName = name.text.toString()
+            val lastName = textName.split("\n")[0]
+            textName = textName.split("\n")[1]
+            val firstName = textName.split(" ")[0]
+            val midName = textName.split(" ")[1]
+
+
+            val patientDetail = PatientDetail(path, firstName, midName, lastName,getGender(sex.text.toString()),birthDate.text.toString())
+            putProfile(ProfilePost(patientDetail))
+        }
+
+    }
+
+    private fun getGender(sex: String): String {
+        return if (sex == "Мужской") {
+            "0"
+        } else {
+            "1"
+        }
+    }
+
+    private fun getGenderForId(sex: String): String {
+        return if (sex == "0") {
+            "Мужской"
+        } else {
+            "Женский"
+        }
+    }
+
+
+    private fun putProfile(patientDetail: ProfilePost){
+        subscription.add(
+            postApi.putProfile(patientDetail)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { showProgress() }
+                .subscribe(
+                    { result ->
+                        hideProgress()
+                        if (result.isSuccessful) {
+                            Log.e("UY", result.body()!!.toString())
+                        } else {
+                            var error = result.errorBody()!!.string()
+                            Log.e("Error", error)
+
+                        }
+
+                    },
+                    {
+                        hideProgress()
+
+                        Log.e("DDD", it.toString())
+                    }
+
+                )
+        )
+    }
+
+    fun onClickBack(){
+        (DocPlusApp.activity as MainActivity).onBackFromFragment()
+    }
+
+    fun onClickFavourite(){
+
+        DocPlusApp.activity!!.startActivity(Intent(DocPlusApp.activity,FavouriteActivity::class.java))
+
+    }
 
 }

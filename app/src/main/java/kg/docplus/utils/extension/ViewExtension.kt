@@ -1,5 +1,6 @@
 package kg.docplus.utils.extension
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
@@ -10,6 +11,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun View.getParentActivity(): AppCompatActivity?{
     var context = this.context
@@ -91,4 +94,16 @@ fun Activity.hideKeyboard(){
         view = View(this)
     }
     imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+@SuppressLint("SimpleDateFormat")
+fun dateToPostFormat(date: Date): String {
+    val postFormat = SimpleDateFormat("yyyy-MM-dd")
+    return postFormat.format(date)
+}
+
+
+@SuppressLint("SimpleDateFormat")
+fun dateToChatFormat(date: Date): String {
+    val postFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    return postFormat.format(date)
 }

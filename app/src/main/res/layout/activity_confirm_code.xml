@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="kg.docplus.ui.register.confirm_code.ConfirmCodeViewModel" />
+            type="kg.docplus.ui.auth.register.confirm_code.ConfirmCodeViewModel" />
     </data>
 
     <ScrollView

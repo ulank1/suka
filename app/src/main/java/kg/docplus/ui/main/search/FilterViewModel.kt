@@ -1,26 +1,16 @@
 package kg.docplus.ui.main.search
 
 import android.arch.lifecycle.MutableLiveData
-import android.content.Intent
 import android.util.Log
 import android.view.View
-import android.widget.EditText
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kg.docplus.DocPlusApp
-import kg.docplus.R
 import kg.docplus.base.BaseViewModel
 import kg.docplus.model.Product
 import kg.docplus.model.get.DoctorGet
 import kg.docplus.network.PostApi
-import kg.docplus.post.PostListActivity
 import kg.docplus.ui.main.filter.Filter
-import kg.docplus.ui.register.RegisterActivity
-import kg.docplus.utils.UserToken
-import kg.docplus.utils.extension.getParentActivity
-import kg.docplus.utils.extension.toast
-import kg.docplus.utils.extension.validate
 import javax.inject.Inject
 
 class FilterViewModel : BaseViewModel() {
@@ -89,6 +79,7 @@ class FilterViewModel : BaseViewModel() {
                 Filter.name,
 //                Filter.specialty_title,
                 "Педиатр",
+                Filter.date,
                 Filter.ordering)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
