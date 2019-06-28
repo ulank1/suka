@@ -1,8 +1,8 @@
 package kg.docplus.ui.chat
 
 import android.graphics.Bitmap
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import kg.docplus.R
 import kotlinx.android.synthetic.main.activity_image.*

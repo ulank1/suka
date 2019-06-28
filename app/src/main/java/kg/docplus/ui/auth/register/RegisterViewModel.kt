@@ -1,15 +1,13 @@
 package kg.docplus.ui.auth.register
 
-import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.util.Log
 import android.widget.EditText
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kg.docplus.DocPlusApp
+import kg.docplus.App
 import kg.docplus.base.BaseViewModel
-import kg.docplus.model.Product
 import kg.docplus.network.PostApi
 import kg.docplus.ui.auth.login.LoginActivity
 import kg.docplus.ui.auth.register.confirm_code.ConfirmCodeActivity
@@ -21,8 +19,6 @@ class RegisterViewModel : BaseViewModel() {
 
     @Inject
     lateinit var postApi: PostApi
-    var postList: ArrayList<Product> = ArrayList()
-    val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
 
     private var subscription: CompositeDisposable = CompositeDisposable()
@@ -62,24 +58,24 @@ class RegisterViewModel : BaseViewModel() {
 
                                 if (result.body()!!.success == null && result.body()!!.token != null) {
 
-                                    DocPlusApp.activity?.toast("Вы уже зарестрированы в приложении для докторов")
-                                    DocPlusApp.activity?.startActivity(
+                                    App.activity?.toast("Вы уже зарестрированы в приложении для докторов")
+                                    App.activity?.startActivity(
                                         Intent(
-                                            DocPlusApp.activity!!,
+                                            App.activity!!,
                                             LoginActivity::class.java
                                         )
                                     )
-                                    DocPlusApp.activity?.finish()
+                                    App.activity?.finish()
                                 } else {
                                     if (result.body()!!.success!!) {
-                                        val intent = Intent(DocPlusApp.activity, ConfirmCodeActivity::class.java)
+                                        val intent = Intent(App.activity, ConfirmCodeActivity::class.java)
                                         intent.putExtra("phone", phone.text.toString())
                                         intent.putExtra("password", password.text.toString())
                                         intent.putExtra("isRegister", 0)
-                                        DocPlusApp.activity?.startActivity(intent)
-                                        DocPlusApp.activity?.finish()
+                                        App.activity?.startActivity(intent)
+                                        App.activity?.finish()
                                     } else {
-                                        DocPlusApp.activity?.toast(result.body()?.error.toString())
+                                        App.activity?.toast(result.body()?.error.toString())
                                     }
                                 }
 
@@ -89,7 +85,7 @@ class RegisterViewModel : BaseViewModel() {
 
                                 if (error.contains("Невозможно войти с", true)) {
                                     Log.e("TAF", "DDD")
-                                    DocPlusApp.activity!!.toast("Невозможно войти с предоставленными учетными данными")
+                                    App.activity!!.toast("Невозможно войти с предоставленными учетными данными")
                                 }
                             }
                         },

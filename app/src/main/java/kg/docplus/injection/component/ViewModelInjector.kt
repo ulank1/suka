@@ -2,10 +2,6 @@ package kg.docplus.injection.component
 
 import dagger.Component
 import kg.docplus.injection.module.NetworkModule
-import kg.docplus.post.PostListViewModel
-import kg.docplus.post.PostViewModel
-import kg.docplus.product.ProductListViewModel
-import kg.docplus.product.ProductViewModel
 import kg.docplus.ui.auth.change_password.PhoneViewModel
 import kg.docplus.ui.auth.change_password.new_password.NewPasswordViewModel
 import kg.docplus.ui.doctor_deatail.DoctorDetailViewModel
@@ -26,18 +22,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [(NetworkModule::class)])
 interface ViewModelInjector {
-    /**
-     * Injects required dependencies into the specified PostListViewModel.
-     * @param postListViewModel PostListViewModel in which to inject the dependencies
-     */
-    fun inject(postListViewModel: PostListViewModel)
-    fun inject(productListViewModel: ProductListViewModel)
-    /**
-     * Injects required dependencies into the specified PostViewModel.
-     * @param postViewModel PostViewModel in which to inject the dependencies
-     */
-    fun inject(postViewModel: PostViewModel)
-    fun inject(productViewModel: ProductViewModel)
 
     fun inject(loginViewModel: LoginViewModel)
     fun inject(registerViewModel: RegisterViewModel)

@@ -2,14 +2,14 @@ package kg.docplus.ui.main.search
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
-import kg.docplus.DocPlusApp
+import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.model.get.DoctorGet
 import kg.docplus.ui.doctor_deatail.DoctorDetailActivity
@@ -61,7 +61,7 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
 
             itemView.setOnClickListener {
                 Log.e("ID_DOCTOR",item.id.toString())
-                DocPlusApp.activity!!.startActivity(Intent(DocPlusApp.activity, DoctorDetailActivity::class.java))
+                App.activity!!.startActivity(Intent(App.activity, DoctorDetailActivity::class.java))
             }
 
 
@@ -69,7 +69,7 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
     }
 
     fun setImage(image:String,avatar:ImageView){
-        Glide.with(DocPlusApp.activity!!).load(image).into(avatar)
+        Glide.with(App.activity!!).load(image).into(avatar)
 
     }
 

@@ -1,14 +1,13 @@
 package kg.docplus.ui.main.home
 
-import android.arch.lifecycle.MutableLiveData
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kg.docplus.DocPlusApp
+import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.base.BaseViewModel
-import kg.docplus.model.Product
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.MainActivity
 import kg.docplus.ui.main.filter.Filter
@@ -19,7 +18,6 @@ class HomeViewModel : BaseViewModel() {
 
     @Inject
     lateinit var postApi: PostApi
-    var postList: ArrayList<Product> = ArrayList()
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
 
@@ -47,7 +45,7 @@ class HomeViewModel : BaseViewModel() {
            R.id.call_home -> service = 4
        }
 
-        (DocPlusApp.activity as MainActivity).selectSearch()
+        (App.activity as MainActivity).selectSearch()
 
     }
     fun filterDocs(){
@@ -71,7 +69,7 @@ class HomeViewModel : BaseViewModel() {
 
                         if (result.isSuccessful) {
 
-                            //UserToken.saveToken(result.body()!!.token, DocPlusApp.context!!)
+                            //UserToken.saveToken(result.body()!!.token, App.context!!)
                             Log.e("TOK",result.body()!!.toString())
 
                         } else {
@@ -80,7 +78,7 @@ class HomeViewModel : BaseViewModel() {
 
                             if (error.contains("Невозможно войти с",true)){
                                 Log.e("TAF","DDD")
-                                DocPlusApp.activity!!.toast("Невозможно войти с предоставленными учетными данными")
+                                App.activity!!.toast("Невозможно войти с предоставленными учетными данными")
                             }
                         }
 

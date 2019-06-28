@@ -1,22 +1,21 @@
 package kg.docplus.ui.chat
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kg.docplus.R
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import jp.wasabeef.glide.transformations.CropCircleTransformation
-import kg.docplus.DocPlusApp
+import kg.docplus.App
 import kg.docplus.injection.ViewModelFactory
 import kg.docplus.model.firebase.Message
-import kg.docplus.ui.favorite_doctor.FavouriteViewModel
 import kg.docplus.ui.main.filter.Filter
 import kg.docplus.utils.ImagePickerHelper
 import kotlinx.android.synthetic.main.activity_test.*
@@ -42,7 +41,7 @@ class ChatActivity : ImagePickerHelper() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
-        DocPlusApp.activity = this
+        App.activity = this
         Glide.with(this).load(Filter.chatAvatar)
             .apply(
                 RequestOptions.bitmapTransform(
@@ -51,7 +50,7 @@ class ChatActivity : ImagePickerHelper() {
             ).into(avatar)
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(ChatViewModel::class.java)
         setupRv()
-        viewModel.avatar.observe(this,android.arch.lifecycle.Observer {
+        viewModel.avatar.observe(this, androidx.lifecycle.Observer {
             if (it != null) {
                 sendPhoto(it)
             }

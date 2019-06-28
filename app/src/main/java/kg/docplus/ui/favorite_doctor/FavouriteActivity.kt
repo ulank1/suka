@@ -1,18 +1,16 @@
 package kg.docplus.ui.favorite_doctor
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.databinding.DataBindingUtil
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
 import android.util.Log
-import kg.docplus.DocPlusApp
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.databinding.ActivityFavouriteBinding
 import kg.docplus.injection.ViewModelFactory
-import kg.docplus.utils.UserToken
 
 class FavouriteActivity : AppCompatActivity() {
 
@@ -21,7 +19,7 @@ class FavouriteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DocPlusApp.activity = this
+        App.activity = this
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_favourite)
 

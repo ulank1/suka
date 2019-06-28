@@ -1,18 +1,17 @@
 package kg.docplus.ui.auth.login
 
-import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kg.docplus.DocPlusApp
+import kg.docplus.App
 import kg.docplus.base.BaseViewModel
-import kg.docplus.model.Product
 import kg.docplus.network.PostApi
-import kg.docplus.post.PostListActivity
+import kg.docplus.ui.auth.change_password.new_password.NewPasswordActivity
 import kg.docplus.ui.auth.register.RegisterActivity
 import kg.docplus.utils.extension.getParentActivity
 import kg.docplus.utils.extension.toast
@@ -23,7 +22,6 @@ class LoginViewModel : BaseViewModel() {
 
     @Inject
     lateinit var postApi: PostApi
-    var postList: ArrayList<Product> = ArrayList()
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
 
@@ -60,7 +58,7 @@ class LoginViewModel : BaseViewModel() {
 
                             if (result.isSuccessful) {
 
-                                //UserToken.saveToken(result.body()!!.token, DocPlusApp.context!!)
+                                //UserToken.saveToken(result.body()!!.token, App.context!!)
                                 Log.e("TOK",result.body()!!.toString())
 
                             } else {
@@ -69,7 +67,7 @@ class LoginViewModel : BaseViewModel() {
 
                                 if (error.contains("Невозможно войти с",true)){
                                     Log.e("TAF","DDD")
-                                    DocPlusApp.activity!!.toast("Невозможно войти с предоставленными учетными данными")
+                                    App.activity!!.toast("Невозможно войти с предоставленными учетными данными")
                                 }
                             }
 
@@ -85,13 +83,13 @@ class LoginViewModel : BaseViewModel() {
     fun onClickForgotPassword(view: View) {
 
         val activity: LoginActivity = view.getParentActivity() as LoginActivity
-        (activity).startActivityForResult(Intent(activity, PostListActivity::class.java), 1)
+        (activity).startActivityForResult(Intent(activity, NewPasswordActivity::class.java), 1)
 
     }
 
     fun onClickRegister(view: View) {
 
-        DocPlusApp.activity!!.startActivity(Intent(DocPlusApp.activity,RegisterActivity::class.java))
+        App.activity!!.startActivity(Intent(App.activity,RegisterActivity::class.java))
 
     }
 

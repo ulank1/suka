@@ -1,22 +1,12 @@
 package kg.docplus.ui.chat
 
-import android.arch.lifecycle.MutableLiveData
 import android.util.Log
-import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
+import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kg.docplus.DocPlusApp
 import kg.docplus.base.BaseViewModel
-import kg.docplus.model.Product
-import kg.docplus.model.get.DoctorFull
-import kg.docplus.model.get.DoctorGet
 import kg.docplus.network.PostApi
-import kg.docplus.ui.main.search.DoctorRvAdapter
-import kg.docplus.utils.extension.gone
-import kg.docplus.utils.extension.visible
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

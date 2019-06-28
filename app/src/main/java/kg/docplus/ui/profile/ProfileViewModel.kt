@@ -1,20 +1,15 @@
 package kg.docplus.ui.profile
 
 import android.app.AlertDialog
-import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kg.docplus.DocPlusApp
 import kg.docplus.R
 import kg.docplus.base.BaseViewModel
-import kg.docplus.model.Product
 import kg.docplus.model.get.ProfileGet
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.MainActivity
-import kg.docplus.ui.main.filter.Filter
-import kg.docplus.utils.extension.toast
 import javax.inject.Inject
 import android.content.DialogInterface
 import android.app.DatePickerDialog
@@ -24,10 +19,12 @@ import android.app.Dialog
 import android.content.Intent
 import android.view.Window
 import android.widget.*
-import kg.docplus.DocPlusApp.Companion.activity
+import androidx.lifecycle.MutableLiveData
+import kg.docplus.App
 import kg.docplus.model.get.PatientDetail
 import kg.docplus.model.post.ProfilePost
 import kg.docplus.ui.favorite_doctor.FavouriteActivity
+import kg.docplus.utils.extension.toast
 import kg.docplus.utils.extension.validate
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -100,13 +97,13 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
         Log.e("DDD", "sdfdssex")
         val mCatsName = arrayOf("Мужской", "Женский")
 
-        var builder = AlertDialog.Builder(DocPlusApp.activity!!)
+        var builder = AlertDialog.Builder(App.activity!!)
         builder.setTitle("Выбираем кота") // заголовок для диалога
 
         builder.setItems(mCatsName, DialogInterface.OnClickListener { dialog, item ->
             sex.text = mCatsName[item]
             Toast.makeText(
-                DocPlusApp.activity!!,
+                App.activity!!,
                 "Выбранный кот: " + mCatsName[item],
                 Toast.LENGTH_SHORT
             ).show()
@@ -116,7 +113,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
 
     fun onClickBirthDate(birthDate: TextView) {
         this.birthDate = birthDate
-        val dialog = DatePickerDialog(DocPlusApp.activity!!, this, 1990, 1, 1)
+        val dialog = DatePickerDialog(App.activity!!, this, 1990, 1, 1)
         dialog.datePicker.touchables[0].performClick()
         dialog.show()
 
@@ -124,7 +121,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
 
     fun onClickName(nameMain: TextView) {
 
-        val dialog = Dialog(activity!!)
+        val dialog = Dialog(App.activity!!)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.alert_name)
@@ -158,7 +155,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
 
 
     fun onClickAvatar() {
-        var activity: MainActivity = (DocPlusApp.activity as MainActivity?)!!
+        var activity: MainActivity = (App.activity as MainActivity?)!!
         activity.showPickImageDialog()
     }
 
@@ -205,7 +202,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
         if (!birth.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
 
         if (path.isNullOrEmpty()) {
-            DocPlusApp.activity!!.toast("Выберите Фото")
+            App.activity!!.toast("Выберите Фото")
         }
 
         Log.e("Name", name.text.toString())
@@ -270,12 +267,12 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
     }
 
     fun onClickBack(){
-        (DocPlusApp.activity as MainActivity).onBackFromFragment()
+        (App.activity as MainActivity).onBackFromFragment()
     }
 
     fun onClickFavourite(){
 
-        DocPlusApp.activity!!.startActivity(Intent(DocPlusApp.activity,FavouriteActivity::class.java))
+        App.activity!!.startActivity(Intent(App.activity,FavouriteActivity::class.java))
 
     }
 

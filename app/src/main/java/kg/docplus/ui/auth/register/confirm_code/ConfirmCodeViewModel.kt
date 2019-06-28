@@ -1,9 +1,9 @@
 package kg.docplus.ui.auth.register.confirm_code
 
 import android.app.Activity
-import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
@@ -13,11 +13,9 @@ import com.google.firebase.auth.PhoneAuthProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kg.docplus.DocPlusApp
-import kg.docplus.DocPlusApp.Companion.activity
-import kg.docplus.DocPlusApp.Companion.context
+import kg.docplus.App
+import kg.docplus.App.activity
 import kg.docplus.base.BaseViewModel
-import kg.docplus.model.Product
 import kg.docplus.network.PostApi
 import kg.docplus.ui.auth.change_password.new_password.NewPasswordActivity
 import kg.docplus.utils.UserToken
@@ -28,7 +26,6 @@ import javax.inject.Inject
 class ConfirmCodeViewModel : BaseViewModel() {
     @Inject
     lateinit var postApi: PostApi
-    var postList: ArrayList<Product> = ArrayList()
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
     lateinit var phone: String
@@ -103,7 +100,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
     }
 
     fun getSmsCode(activity: Activity, phone: String, password: String, isRegister: Int) {
-        context = activity
+
         this.isRegister = isRegister
         this.password = password
         this.phone = phone
@@ -150,7 +147,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
           if (isRegister==0) {
               register()
           } else if (isRegister==1){
-                DocPlusApp.activity?.startActivity(Intent(DocPlusApp.activity!!,NewPasswordActivity::class.java).putExtra("phone",phone))
+                App.activity?.startActivity(Intent(App.activity!!,NewPasswordActivity::class.java).putExtra("phone",phone))
           }else{
 
           }
@@ -169,7 +166,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
 
                         if (result.isSuccessful) {
 
-                            UserToken.saveToken(result.body()!!.token, DocPlusApp.activity!!)
+                            UserToken.saveToken(result.body()!!.token, App.activity!!)
 //                            activity?.startActivity(Intent(this,EditProfileActivity::class.java))
 
                         } else {
@@ -178,7 +175,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
 
                             if (error.contains("Невозможно войти с", true)) {
                                 Log.e("TAF", "DDD")
-                                DocPlusApp.activity!!.toast("Невозможно войти с предоставленными учетными данными")
+                                App.activity!!.toast("Невозможно войти с предоставленными учетными данными")
                             }
                         }
 

@@ -1,18 +1,16 @@
 package kg.docplus.ui.profile
 
-
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kg.docplus.DocPlusApp
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import kg.docplus.App
 import kg.docplus.R
-import kg.docplus.databinding.FragmentHomeBinding
 import kg.docplus.databinding.FragmentProfileBinding
 import kg.docplus.injection.ViewModelFactory
 import kg.docplus.ui.main.MainActivity
@@ -55,7 +53,7 @@ class ProfileFragment : Fragment() {
             binding.profile = it
         })
 
-        (DocPlusApp.activity as MainActivity).pathPhoto.observe(activity!!, Observer {
+        (App.activity as MainActivity).pathPhoto.observe(activity!!, Observer {
            viewModel.postImage(it!!)
         })
 

@@ -1,10 +1,10 @@
 package kg.docplus.ui.auth.register.confirm_code
 
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import kg.docplus.DocPlusApp
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.databinding.ActivityConfirmCodeBinding
 import kg.docplus.injection.ViewModelFactory
@@ -15,7 +15,7 @@ class ConfirmCodeActivity : AppCompatActivity() {
     private lateinit var viewModel: ConfirmCodeViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DocPlusApp.activity = this
+        App.activity = this
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_confirm_code)
 

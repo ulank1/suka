@@ -44,6 +44,12 @@ android {
         targetCompatibility = '1.8'
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
+
+
 }
 
 dependencies {
@@ -114,4 +120,12 @@ dependencies {
     implementation 'com.karumi:dexter:5.0.0'
     implementation 'id.zelory:compressor:2.1.0'
     implementation 'com.jsibbold:zoomage:1.2.0'
+
+    implementation(project(":sample-core"))
+
+    implementation "com.quickblox:quickblox-android-sdk-videochat-webrtc:$rootProject.qbSdkVersion"
+
+    implementation "com.navercorp.pulltorefresh:library:${rootProject.pullToRefreshVersion}@aar"
+
 }
+apply from: "../artifacts.gradle"

@@ -1,16 +1,12 @@
 package kg.docplus.base
 
 import android.app.ProgressDialog
-import android.arch.lifecycle.ViewModel
 import android.util.Log
-import kg.docplus.DocPlusApp
+import androidx.lifecycle.ViewModel
+import kg.docplus.App
 import kg.docplus.injection.component.DaggerViewModelInjector
 import kg.docplus.injection.component.ViewModelInjector
 import kg.docplus.injection.module.NetworkModule
-import kg.docplus.post.PostListViewModel
-import kg.docplus.post.PostViewModel
-import kg.docplus.product.ProductListViewModel
-import kg.docplus.product.ProductViewModel
 import kg.docplus.ui.auth.change_password.PhoneViewModel
 import kg.docplus.ui.auth.change_password.new_password.NewPasswordViewModel
 import kg.docplus.ui.doctor_deatail.DoctorDetailViewModel
@@ -24,7 +20,7 @@ import kg.docplus.ui.chat.ChatViewModel
 import kg.docplus.ui.favorite_doctor.FavouriteViewModel
 import kg.docplus.ui.my_doctor.DoctorViewModel
 
-abstract class BaseViewModel():ViewModel(){
+abstract class BaseViewModel(): ViewModel(){
 
     private var progressBar: ProgressDialog? = null
 
@@ -35,7 +31,7 @@ abstract class BaseViewModel():ViewModel(){
             progressBar!!.dismiss()
             progressBar = null
         }
-        progressBar = ProgressDialog(DocPlusApp.activity)
+        progressBar = ProgressDialog(App.activity)
         progressBar!!.show()
     }
 
@@ -61,11 +57,6 @@ abstract class BaseViewModel():ViewModel(){
      */
     private fun inject() {
         when (this) {
-            is PostListViewModel -> injector.inject(this)
-            is PostViewModel -> injector.inject(this)
-
-            is ProductListViewModel -> injector.inject(this)
-            is ProductViewModel -> injector.inject(this)
 
             is LoginViewModel -> injector.inject(this)
             is RegisterViewModel -> injector.inject(this)

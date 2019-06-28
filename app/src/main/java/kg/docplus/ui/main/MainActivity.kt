@@ -1,41 +1,33 @@
 package kg.docplus.ui.main
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.MutableLiveData
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import kg.docplus.DocPlusApp
+import kg.docplus.App
 import kg.docplus.R
-import kg.docplus.model.get.ProfileGet
 import kg.docplus.ui.main.home.HomeFragment
 import kg.docplus.ui.main.search.FilterFragment
 import kg.docplus.ui.profile.ProfileFragment
 import kg.docplus.utils.ImagePickerHelper
 import kotlinx.android.synthetic.main.activity_main2.*
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.File
 
 class MainActivity : ImagePickerHelper() {
 
 
     val pathPhoto: MutableLiveData<String> = MutableLiveData()
     var isBack = false
-    lateinit var fragmentManager:FragmentManager
+    lateinit var fragmentManager: FragmentManager
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -61,7 +53,7 @@ class MainActivity : ImagePickerHelper() {
 
     override fun onResume() {
         super.onResume()
-        DocPlusApp.activity = this
+        App.activity = this
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

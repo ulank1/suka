@@ -1,13 +1,9 @@
 package kg.docplus.ui.main.search
 
 
-import android.annotation.SuppressLint
 import android.app.TimePickerDialog
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -32,7 +28,11 @@ import java.util.*
 import kg.docplus.utils.extension.hideKeyboard
 import kotlin.collections.ArrayList
 import android.widget.ArrayAdapter
-import kg.docplus.DocPlusApp
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import kg.docplus.App
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -91,13 +91,13 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         val view = inflater.inflate(R.layout.fragment_filter, container, false)
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(FilterViewModel::class.java)
 
-        viewModel.specialities.observe(this,android.arch.lifecycle.Observer {
+        viewModel.specialities.observe(this, Observer {
             specialties.addAll(it!!)
             adapter.notifyDataSetChanged()
         })
-        viewModel.status.observe(this,android.arch.lifecycle.Observer { setupStatus(it!!) })
-        viewModel.loadingVisibility.observe(this,android.arch.lifecycle.Observer { progress.visibility = it!! })
-        viewModel.doctors.observe(this,android.arch.lifecycle.Observer { adapterResult.swapData(it!!)
+        viewModel.status.observe(this, Observer { setupStatus(it!!) })
+        viewModel.loadingVisibility.observe(this,Observer { progress.visibility = it!! })
+        viewModel.doctors.observe(this,Observer { adapterResult.swapData(it!!)
         changeStatus(3)})
 
         Log.e("Token",UserToken.getToken(activity!!))
@@ -281,7 +281,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
 
         Log.e("DATES",dateList.toString())
 
-        var adapter = ArrayAdapter(DocPlusApp.activity!!, R.layout.spinner_country_item, dateList)
+        var adapter = ArrayAdapter(App.activity!!, R.layout.spinner_country_item, dateList)
         adapter.setDropDownViewResource(R.layout.spinner_country_dropdown_item)
         date.adapter = adapter
 

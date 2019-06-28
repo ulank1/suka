@@ -3,11 +3,10 @@ package kg.docplus.injection.module
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
-import kg.docplus.DocPlusApp
+import kg.docplus.App
 import kg.docplus.utils.UserToken
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
@@ -30,11 +29,11 @@ class  HttpClient {
             val original = chain.request()
 
 
-            val request = if (UserToken.hasToken(DocPlusApp.context!!)) {
+            val request = if (UserToken.hasToken(App.activity!!)) {
 
                 original.newBuilder()
                         .method(original.method(), original.body())
-                        .addHeader("Authorization", "Token ${UserToken.getToken(DocPlusApp.context!!)}")
+                        .addHeader("Authorization", "Token ${UserToken.getToken(App.activity!!)}")
                         .build()
             }else{
 
@@ -49,7 +48,7 @@ class  HttpClient {
 
                 // Magic is here ( Handle the error as your way )
                 Log.e("_________________", "Unauthorized")
-                UserToken.clearToken(DocPlusApp.context!!)
+                UserToken.clearToken(App.activity!!)
                 return@Interceptor response
             }
             response
@@ -61,7 +60,7 @@ class  HttpClient {
     }
 
     private fun isConnected() : Boolean {
-        val cm = DocPlusApp.context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val cm = App.activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
         val activeNetwork = cm?.activeNetworkInfo
         return activeNetwork?.isConnectedOrConnecting ?: true
     }

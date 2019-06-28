@@ -1,13 +1,12 @@
 package kg.docplus.ui.main.search
 
-import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kg.docplus.base.BaseViewModel
-import kg.docplus.model.Product
 import kg.docplus.model.get.DoctorGet
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.filter.Filter
@@ -20,7 +19,6 @@ class FilterViewModel : BaseViewModel() {
     @Inject
     lateinit var postApi: PostApi
 
-    var postList: ArrayList<Product> = ArrayList()
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
     val status: MutableLiveData<Int> = MutableLiveData()
     val specialities: MutableLiveData<ArrayList<String>> = MutableLiveData()
@@ -90,7 +88,7 @@ class FilterViewModel : BaseViewModel() {
                         hideProgress()
                         if (result.isSuccessful) {
 
-                            //UserToken.saveToken(result.body()!!.token, DocPlusApp.context!!)
+                            //UserToken.saveToken(result.body()!!.token, App.context!!)
                             Log.e("TOK",result.body()!!.toString())
 
                         } else {

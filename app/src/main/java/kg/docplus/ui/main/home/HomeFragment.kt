@@ -1,13 +1,13 @@
 package kg.docplus.ui.main.home
 
 
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import kg.docplus.R
 import kg.docplus.databinding.FragmentHomeBinding
 import kg.docplus.injection.ViewModelFactory

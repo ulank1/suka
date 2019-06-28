@@ -1,14 +1,14 @@
 package kg.docplus.utils
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.databinding.BindingAdapter
-import android.support.v7.widget.RecyclerView
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.BindingAdapter
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import kg.docplus.R
 import kg.docplus.model.get.Services

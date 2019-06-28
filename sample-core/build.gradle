@@ -1,0 +1,27 @@
+
+apply plugin: 'com.android.library'
+
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    api("com.quickblox:quickblox-android-sdk-messages:$rootProject.qbSdkVersion")
+
+    api "com.google.android.material:material:${rootProject.materialVersion}"
+    api "androidx.fragment:fragment:${rootProject.fragmentAndroidXVersion}"
+    api "com.github.johnkil.android-robototextview:robototextview:${rootProject.robotoTextViewVersion}"
+}

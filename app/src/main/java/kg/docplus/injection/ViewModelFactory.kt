@@ -1,9 +1,7 @@
 package kg.docplus.injection
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import kg.docplus.post.PostListViewModel
-import kg.docplus.product.ProductListViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import kg.docplus.ui.auth.change_password.PhoneViewModel
 import kg.docplus.ui.auth.change_password.new_password.NewPasswordViewModel
 import kg.docplus.ui.doctor_deatail.DoctorDetailViewModel
@@ -19,14 +17,7 @@ import kg.docplus.ui.my_doctor.DoctorViewModel
 
 class ViewModelFactory(): ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PostListViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return PostListViewModel() as T
-        }
-        if (modelClass.isAssignableFrom(ProductListViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return ProductListViewModel() as T
-        }
+
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return LoginViewModel() as T

@@ -1,12 +1,12 @@
 package kg.docplus.ui.auth.login
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.databinding.DataBindingUtil
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import kg.docplus.DocPlusApp
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.databinding.ActivityLoginBinding
 import kg.docplus.injection.ViewModelFactory
@@ -17,7 +17,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DocPlusApp.activity = this
+        App.activity = this
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 

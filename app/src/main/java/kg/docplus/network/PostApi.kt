@@ -1,12 +1,8 @@
 package kg.docplus.network
 
-import android.arch.persistence.room.Delete
 import io.reactivex.Observable
-import io.reactivex.Single
 import kg.docplus.model.Token
 import kg.docplus.model.ApiResponse
-import kg.docplus.model.Product
-import kg.docplus.model.Post
 import kg.docplus.model.get.*
 import kg.docplus.model.post.ProfilePost
 import okhttp3.MultipartBody
@@ -20,11 +16,6 @@ interface PostApi {
     /**
      * Get the list of the pots from the API
      */
-    @GET("/posts")
-    fun getPosts(): Observable<List<Post>>
-
-    @GET("index/products/last")
-    fun getProducts(@Query("category_id") category_id: String, @Query("page") page: Int): Observable<Response<ApiResponse<Product>>>
 
     @FormUrlEncoded
     @POST("doc-plus/sign-in")

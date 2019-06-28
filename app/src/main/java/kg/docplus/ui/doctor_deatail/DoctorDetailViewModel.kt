@@ -1,16 +1,14 @@
 package kg.docplus.ui.doctor_deatail
 
-import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kg.docplus.DocPlusApp
+import kg.docplus.App
 import kg.docplus.base.BaseViewModel
-import kg.docplus.model.Product
 import kg.docplus.model.get.DoctorFull
 import kg.docplus.network.PostApi
 import kg.docplus.utils.extension.gone
@@ -21,11 +19,10 @@ class DoctorDetailViewModel : BaseViewModel() {
 
     @Inject
     lateinit var postApi: PostApi
-    var postList: ArrayList<Product> = ArrayList()
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
     val doctor: MutableLiveData<DoctorFull> = MutableLiveData()
     val active: MutableLiveData<Boolean> = MutableLiveData()
-    var adapter = ImageRvAdapter(DocPlusApp.activity!!)
+    var adapter = ImageRvAdapter(App.activity!!)
     var isActive = false
     var idDoctor:Int=-1
 
