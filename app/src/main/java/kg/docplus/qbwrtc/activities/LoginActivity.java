@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +27,8 @@ import kg.docplus.qbwrtc.utils.Consts;
 import kg.docplus.qbwrtc.utils.QBEntityCallbackImpl;
 import kg.docplus.qbwrtc.utils.UsersUtils;
 import kg.docplus.qbwrtc.utils.ValidationUtils;
+import kg.docplus.ui.auth.register.SharedVideo;
+import kg.docplus.ui.main.MainActivity;
 
 public class LoginActivity extends BaseActivity {
 
@@ -47,6 +50,8 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login1);
 
         initUI();
+        startSignUpNewUser(createUserWithEnteredData());
+
     }
 
     @Override
@@ -55,19 +60,17 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initUI() {
-        setActionBarTitle(R.string.title_login_activity);
+       // setActionBarTitle(R.string.title_login_activity);
         userNameEditText = (EditText) findViewById(R.id.user_name);
         userNameEditText.addTextChangedListener(new LoginEditTextWatcher(userNameEditText));
+        userNameEditText.setText(getIntent().getStringExtra("login"));
 
         chatRoomNameEditText = (EditText) findViewById(R.id.chat_room_name);
         chatRoomNameEditText.addTextChangedListener(new LoginEditTextWatcher(chatRoomNameEditText));
+        chatRoomNameEditText.setText("Das");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_login, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -104,6 +107,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onSuccess(QBUser result, Bundle params) {
                         loginToChat(result);
+                        Log.e("VIDEO_QBUSER",result.toString());
                     }
 
                     @Override
@@ -113,6 +117,7 @@ public class LoginActivity extends BaseActivity {
                         } else {
                             hideProgressDialog();
                             Toaster.longToast(R.string.sign_up_error);
+                            startSignUpNewUser(newUser);
                         }
                     }
                 }
@@ -127,11 +132,13 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void startOpponentsActivity() {
-        OpponentsActivity.start(LoginActivity.this, false);
+        setResult(RESULT_OK);
         finish();
     }
 
     private void saveUserData(QBUser qbUser) {
+        Log.e("QbUser",qbUser.toString());
+        SharedVideo.qbUser = qbUser;
         SharedPrefsHelper sharedPrefsHelper = SharedPrefsHelper.getInstance();
         sharedPrefsHelper.save(Consts.PREF_CURREN_ROOM_NAME, qbUser.getTags().get(0));
         sharedPrefsHelper.saveQbUser(qbUser);
@@ -150,7 +157,7 @@ public class LoginActivity extends BaseActivity {
 
             qbUser = new QBUser();
             qbUser.setFullName(userName);
-            qbUser.setLogin(getCurrentDeviceId());
+            qbUser.setLogin("l"+userName);
             qbUser.setPassword(Consts.DEFAULT_USER_PASSWORD);
             qbUser.setTags(userTags);
         }

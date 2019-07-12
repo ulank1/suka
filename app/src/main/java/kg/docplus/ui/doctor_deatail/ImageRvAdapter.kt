@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kg.docplus.R
 import kotlin.collections.ArrayList
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.request.RequestOptions
 import kg.docplus.App
 
 
@@ -40,8 +42,14 @@ class ImageRvAdapter(val context: Context) : RecyclerView.Adapter<ImageRvAdapter
         fun bind(item: String) = with(itemView) {
 
             val image:ImageView = itemView.findViewById(R.id.image)
-            Glide.with(App.activity!!).load(item).transform(CenterCrop(),RoundedCorners(16)).into(image)
+//            Glide.with(App.activity!!).load(item).transform(CenterCrop(),RoundedCorners(16)).into(image)
 
+            var requestOptions = RequestOptions()
+            requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16))
+            Glide.with(itemView.getContext())
+                .load(item)
+                .apply(requestOptions)
+                .into(image)
             itemView.setOnClickListener {
 
             }

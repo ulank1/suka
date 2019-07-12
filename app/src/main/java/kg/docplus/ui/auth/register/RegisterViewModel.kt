@@ -55,7 +55,7 @@ class RegisterViewModel : BaseViewModel() {
                         { result ->
 
                             if (result.isSuccessful) {
-
+                                Log.e("Result",result.body().toString())
                                 if (result.body()!!.success == null && result.body()!!.token != null) {
 
                                     App.activity?.toast("Вы уже зарестрированы в приложении для докторов")
@@ -68,12 +68,7 @@ class RegisterViewModel : BaseViewModel() {
                                     App.activity?.finish()
                                 } else {
                                     if (result.body()!!.success!!) {
-                                        val intent = Intent(App.activity, ConfirmCodeActivity::class.java)
-                                        intent.putExtra("phone", phone.text.toString())
-                                        intent.putExtra("password", password.text.toString())
-                                        intent.putExtra("isRegister", 0)
-                                        App.activity?.startActivity(intent)
-                                        App.activity?.finish()
+                                       App.activity?.startActivityForResult(Intent(App.activity,kg.docplus.qbwrtc.activities.LoginActivity::class.java).putExtra("login","dp${phone.text.toString().substring(1)}"),456)
                                     } else {
                                         App.activity?.toast(result.body()?.error.toString())
                                     }

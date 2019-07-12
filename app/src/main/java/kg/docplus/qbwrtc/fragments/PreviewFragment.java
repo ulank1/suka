@@ -35,9 +35,6 @@ public class PreviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_item_screen_share, container, false);
         Glide.with(getActivity())
                 .load(getArguments().getInt(PREVIEW_IMAGE))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .override(ResourceUtils.getDimen(R.dimen.pager_image_width),
-                        ResourceUtils.getDimen(R.dimen.pager_image_height))
                 .into((ImageView) view.findViewById(R.id.image_preview));
         return view;
     }

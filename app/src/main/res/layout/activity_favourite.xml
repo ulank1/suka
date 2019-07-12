@@ -43,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Поиск специалиста"
+                    android:text="Избранное"
                     android:textColor="#1ACDEE"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -57,6 +57,7 @@
             android:layout_height="1dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="16dp"
             android:id="@+id/rv"
             app:adapter="@{viewModel.getAdapter()}"
             android:layout_width="match_parent"

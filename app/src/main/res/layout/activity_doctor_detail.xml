@@ -32,6 +32,7 @@
                     android:layout_height="match_parent">
 
                     <ImageView
+                        android:onClick="@{(view) -> viewModel.onClickBack()}"
                         android:id="@+id/back"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -124,17 +125,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="#E5E5E5"
+                android:background="#f5f5f5"
                 android:orientation="vertical"
                 android:visibility="visible">
 
                 <LinearLayout
+                    android:layout_marginTop="3dp"
                     android:id="@+id/chat"
                     mutableLinearVisibility="@{doctor.services}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:onClick="@{(view) -> viewModel.onClickService(0)}"
+                    android:onClick="@{(view) -> viewModel.onClickService(1)}"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -152,6 +154,7 @@
                         android:textSize="15sp" />
 
                     <TextView
+
                         android:id="@+id/price_chat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -172,6 +175,7 @@
                 <LinearLayout
                     android:id="@+id/appointment"
                     mutableLinearVisibility="@{doctor.services}"
+                    android:onClick="@{(view) -> viewModel.onClickService(0)}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8dp"
@@ -213,6 +217,7 @@
                 <LinearLayout
                     android:id="@+id/video_chat"
                     mutableLinearVisibility="@{doctor.services}"
+                    android:onClick="@{(view) -> viewModel.onClickService(2)}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8dp"
@@ -254,10 +259,11 @@
                 <LinearLayout
                     android:id="@+id/call_home"
                     mutableLinearVisibility="@{doctor.services}"
+                    android:onClick="@{(view) -> viewModel.onClickService(3)}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginBottom="3dp"
                     android:background="@color/white"
                     android:orientation="horizontal">
 
@@ -412,6 +418,7 @@
             </LinearLayout>
 
             <Button
+                android:layout_marginBottom="26dp"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
@@ -427,7 +434,6 @@
                 android:id="@+id/line_more"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="26dp"
                 android:orientation="vertical"
                 android:padding="16dp"
                 android:visibility="gone">

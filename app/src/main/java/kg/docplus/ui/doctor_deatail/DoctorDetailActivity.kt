@@ -12,6 +12,7 @@ import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.injection.ViewModelFactory
 import kg.docplus.utils.UserToken
+import kg.docplus.utils.extension.setRoundedImage
 
 class DoctorDetailActivity : AppCompatActivity() {
 
@@ -30,14 +31,18 @@ class DoctorDetailActivity : AppCompatActivity() {
 
         viewModel.active.value = false
         setupRv()
-        viewModel.getDoctorFull(intent.getIntExtra("id",7))
-        viewModel.doctor.observe(this, Observer {binding.doctor = it })
-        Log.e("TOKEN",UserToken.getToken(this))
+        viewModel.getDoctorFull(intent.getIntExtra("id", 7))
+        viewModel.doctor.observe(this, Observer {
+            binding.doctor = it
+            setRoundedImage(binding.avatar,it.doctor_detail.avatar,this@DoctorDetailActivity)
+
+        })
+        Log.e("TOKEN", UserToken.getToken(this))
 
     }
 
-    fun setupRv(){
-        var manager = GridLayoutManager(this,2)
+    private fun setupRv() {
+        var manager = GridLayoutManager(this, 2)
         binding.rv.layoutManager = manager
         binding.rv.setHasFixedSize(false)
 
@@ -45,7 +50,12 @@ class DoctorDetailActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("ResultCode",requestCode.toString())
+        Log.e("ResultCode", requestCode.toString())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        App.activity = this
     }
 
 }

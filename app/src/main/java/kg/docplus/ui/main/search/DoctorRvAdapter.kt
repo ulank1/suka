@@ -8,11 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.bumptech.glide.Glide
 import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.model.get.DoctorGet
 import kg.docplus.ui.doctor_deatail.DoctorDetailActivity
+import kg.docplus.utils.extension.setRoundedImage
 import kotlin.collections.ArrayList
 
 class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapter.AdvertViewHolder>() {
@@ -33,6 +33,7 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
     fun swapData(data: List<DoctorGet>) {
         this.data.addAll(data)
         notifyDataSetChanged()
+        Log.e("DATARR",data.toString())
     }
 
     fun clearData(){
@@ -50,7 +51,7 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
             val avatar:ImageView  = itemView.findViewById(R.id.avatar)
 
             name.text = "${item.doctor_detail.first_name} ${item.doctor_detail.mid_name}"
-
+            specialities.text =""
             for (speciality in item.doctor_detail.specialties){
                 specialities.append(speciality.title)
             }
@@ -61,7 +62,7 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
 
             itemView.setOnClickListener {
                 Log.e("ID_DOCTOR",item.id.toString())
-                App.activity!!.startActivity(Intent(App.activity, DoctorDetailActivity::class.java))
+                App.activity!!.startActivity(Intent(App.activity, DoctorDetailActivity::class.java).putExtra("id",item.id))
             }
 
 
@@ -69,7 +70,8 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
     }
 
     fun setImage(image:String,avatar:ImageView){
-        Glide.with(App.activity!!).load(image).into(avatar)
+       setRoundedImage(avatar,image,context
+       )
 
     }
 

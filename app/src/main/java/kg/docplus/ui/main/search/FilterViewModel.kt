@@ -65,20 +65,19 @@ class FilterViewModel : BaseViewModel() {
         )
     }
 
-    fun filterDocs(){
-        Log.e("DATE",Filter.schedule_time_after+" "+Filter.schedule_time_before)
-        /*subscription.add(
+    fun filterDocs() {
+        Log.e("DATE", Filter.schedule_time_after + " " + Filter.schedule_time_before)
+        Log.e("Filter", "${Filter.min_price} ${Filter.max_price} ${Filter.services} ${Filter.name} ")
+        subscription.add(
             postApi.getDocs(
                 Filter.min_price,
                 Filter.max_price,
-                Filter.services,
+                Filter.service,
                 Filter.schedule_time_before,
                 Filter.schedule_time_after,
-                Filter.name,
-//                Filter.specialty_title,
-                "Педиатр",
-                Filter.date,
-                Filter.ordering)
+                Filter.specialty_title,
+                Filter.date
+            )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { showProgress() }
@@ -87,23 +86,23 @@ class FilterViewModel : BaseViewModel() {
                     { result ->
                         hideProgress()
                         if (result.isSuccessful) {
-
-                            //UserToken.saveToken(result.body()!!.token, App.context!!)
-                            Log.e("TOK",result.body()!!.toString())
+                            doctors.value = (result.body() as ArrayList<DoctorGet>?)!!
+                            Log.e("TOK", result.body()!!.toString())
 
                         } else {
                             var error = result.errorBody()!!.string()
-                            Log.e("Error",error)
+                            Log.e("Error", error)
 
                         }
 
                     },
                     {
-                        Log.e("DDD",it.toString())}
+                        Log.e("DDD", it.toString())
+                    }
 
                 )
-        )*/
-        subscription.add(
+        )
+        /* subscription.add(
             postApi.getDocsTest()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -114,7 +113,7 @@ class FilterViewModel : BaseViewModel() {
                         hideProgress()
                         if (result.isSuccessful) {
                             doctors.value = (result.body() as ArrayList<DoctorGet>?)!!
-                            Log.e("TOK",result.body()!!.toString())
+                            Log.e("TOKLLLLLL",result.body()!!.toString())
 
                         } else {
                             var error = result.errorBody()!!.string()
@@ -128,6 +127,7 @@ class FilterViewModel : BaseViewModel() {
 
                 )
         )
+    }*/
     }
 
     fun getAllDropdown() {

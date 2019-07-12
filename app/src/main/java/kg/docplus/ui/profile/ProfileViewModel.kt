@@ -24,6 +24,7 @@ import kg.docplus.App
 import kg.docplus.model.get.PatientDetail
 import kg.docplus.model.post.ProfilePost
 import kg.docplus.ui.favorite_doctor.FavouriteActivity
+import kg.docplus.ui.my_doctor.DoctorActivity
 import kg.docplus.utils.extension.toast
 import kg.docplus.utils.extension.validate
 import okhttp3.MediaType
@@ -42,7 +43,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
     val avatar: MutableLiveData<String> = MutableLiveData()
     lateinit var profileGet: ProfileGet
     lateinit var birthDate: TextView
-    lateinit var path: String
+    var path: String? = null
 
     override fun onCleared() {
         super.onCleared()
@@ -203,6 +204,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
 
         if (path.isNullOrEmpty()) {
             App.activity!!.toast("Выберите Фото")
+            bool = false
         }
 
         Log.e("Name", name.text.toString())
@@ -215,7 +217,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
             val midName = textName.split(" ")[1]
 
 
-            val patientDetail = PatientDetail(path, firstName, midName, lastName,getGender(sex.text.toString()),birthDate.text.toString())
+            val patientDetail = PatientDetail(path, firstName, midName, lastName,getGender(sex.text.toString()),birth.text.toString())
             putProfile(ProfilePost(patientDetail))
         }
 
@@ -275,5 +277,11 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
         App.activity!!.startActivity(Intent(App.activity,FavouriteActivity::class.java))
 
     }
+    fun onClickDoctor(){
+
+        App.activity!!.startActivity(Intent(App.activity,DoctorActivity::class.java))
+
+    }
+
 
 }

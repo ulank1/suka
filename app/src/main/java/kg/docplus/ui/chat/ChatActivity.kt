@@ -33,30 +33,37 @@ class ChatActivity : ImagePickerHelper() {
     }
 
     var db = FirebaseFirestore.getInstance()
-    lateinit var doc_id:String
-    lateinit var patient_id:String
+    var doc_id:String = "12"
+    var patient_id:String = "15"
     lateinit var adapter: MessageRvAdapter
     private lateinit var viewModel: ChatViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
+
         App.activity = this
-        Glide.with(this).load(Filter.chatAvatar)
+
+        name.text = intent.getStringExtra("name").toString()
+        Glide.with(this).load(intent.getStringExtra("avatar"))
             .apply(
                 RequestOptions.bitmapTransform(
                     (CropCircleTransformation())
                 )
             ).into(avatar)
+
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(ChatViewModel::class.java)
-        setupRv()
+         setupRv()
         viewModel.avatar.observe(this, androidx.lifecycle.Observer {
             if (it != null) {
                 sendPhoto(it)
             }
         })
-        doc_id = "12"
-        patient_id = "15"
+
+        doc_id = intent.getStringExtra("doc_id").toString()
+        patient_id = intent.getStringExtra("patient_id").toString()
+        specialities.text = intent.getStringExtra("speciality").toString()
+
         getMessages()
         setOnClickListeners()
     }

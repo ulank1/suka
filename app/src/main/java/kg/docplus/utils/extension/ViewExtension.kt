@@ -7,10 +7,18 @@ import android.content.ContextWrapper
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import jp.wasabeef.glide.transformations.CropCircleTransformation
+import jp.wasabeef.glide.transformations.CropTransformation
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -107,3 +115,50 @@ fun dateToChatFormat(date: Date): String {
     val postFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
     return postFormat.format(date)
 }
+
+fun getServiceName(service:Int):String{
+
+    return when(service){
+        0->"Записатья на прием"
+        1->"Онлайн чат"
+        2->"Видео консультация"
+        3->"Вызвать на дом"
+        else -> "Онлайн чат"
+    }
+
+}
+
+@SuppressLint("SimpleDateFormat")
+fun getDayOfWeekName(date:String):String {
+    val format = SimpleDateFormat("yyyy-MM-dd")
+    var day = 0
+    try {
+        val data = format.parse(date)
+        System.out.println(date)
+        var calendar = Calendar.getInstance()
+        calendar.time = data
+        day = calendar.get(Calendar.DAY_OF_WEEK)
+
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    return when(day){
+        0->"Пн"
+        1->"Вт"
+        2->"Ср"
+        3->"Чт"
+        4->"Пт"
+        5->"Сб"
+        6->"Вс"
+        else -> "Пн"
+    }
+}
+fun setRoundedImage(imageView: ImageView, url:String, context: Context){
+
+    Glide.with(context).load(url)
+        .apply(RequestOptions().transforms(CenterCrop(),RoundedCorners(16)))
+        .into(imageView)
+
+}
+

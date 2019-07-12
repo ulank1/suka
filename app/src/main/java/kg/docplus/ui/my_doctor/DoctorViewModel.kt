@@ -1,11 +1,14 @@
 package kg.docplus.ui.my_doctor
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kg.docplus.App
 import kg.docplus.base.BaseViewModel
+import kg.docplus.model.get.ProfileGet
+import kg.docplus.model.get.my_doctor.MyDoctor
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.search.DoctorRvAdapter
 import javax.inject.Inject
@@ -14,10 +17,8 @@ class DoctorViewModel : BaseViewModel() {
 
     @Inject
     lateinit var postApi: PostApi
-    var adapter = DoctorRvAdapter(App.activity!!)
-
     private var subscription: CompositeDisposable = CompositeDisposable()
-
+    val myDoctor: MutableLiveData<ArrayList<MyDoctor>> = MutableLiveData()
     override fun onCleared() {
         super.onCleared()
         subscription = CompositeDisposable()
@@ -26,7 +27,7 @@ class DoctorViewModel : BaseViewModel() {
     fun getDoctorFavourite() {
 
         subscription.add(
-            postApi.getDocFavourite()
+            postApi.getMyDoctors()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { showProgress() }
@@ -35,8 +36,7 @@ class DoctorViewModel : BaseViewModel() {
                         hideProgress()
                         if (result.isSuccessful) {
                             Log.e("DOC_FULL",result.body()!!.toString())
-                            adapter.swapData(result.body()!!)
-
+                            myDoctor.value = result.body()!!
                         } else {
                             var error = result.errorBody()!!.string()
                             Log.e("Error",error)

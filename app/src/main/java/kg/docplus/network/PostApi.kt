@@ -1,9 +1,11 @@
 package kg.docplus.network
 
+import com.quickblox.users.model.QBUser
 import io.reactivex.Observable
 import kg.docplus.model.Token
 import kg.docplus.model.ApiResponse
 import kg.docplus.model.get.*
+import kg.docplus.model.get.my_doctor.MyDoctor
 import kg.docplus.model.post.ProfilePost
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -22,13 +24,14 @@ interface PostApi {
     fun login(
         @Field("phone_number") phone: String,
         @Field("password") password: String
-    ): Observable<Response<Token>>
+    ): Observable<Response<TokenWithVideo>>
 
     @FormUrlEncoded
     @POST("doc-plus/sign-up")
     fun register(
         @Field("phone_number") email: String,
-        @Field("password") password: String
+        @Field("password") password: String,
+        @Field("video_chat_credentials") qbUser: String
     ): Observable<Response<Token>>
 
     @FormUrlEncoded
@@ -45,13 +48,11 @@ interface PostApi {
     fun getDocs(
         @Query("min_price") min_price:Int,
         @Query("max_price") max_price:Int,
-        @Query("service") service:ArrayList<Int>,
-        @Query("schedule_time") firstTime:String,
-        @Query("schedule_time") secondTime:String,
-        @Query("name") name:String,
+        @Query("service") service:Int,
+        @Query("starts_at_time") firstTime:String,
+        @Query("expires_at_time") secondTime:String,
         @Query("specialty_title") specialty_title:String,
-        @Query("schedule_date") date:String,
-        @Query("ordering") ordering:String?
+        @Query("date") date:String
     ): Observable<Response<List<DoctorGet>>>
 
     @GET("doc-plus/doctors")
@@ -93,5 +94,27 @@ interface PostApi {
     fun putProfile(
         @Body patientDetail: ProfilePost
     ): Observable<Response<Any>>
+
+    @GET("doc-plus/available-times")
+    fun getAviableTimes(
+        @Query("date") date: String,
+        @Query("doctor") doctor: Int,
+        @Query("service") q:Int)
+            : Observable<Response<AvailableTime>>
+
+
+    @GET("doc-plus/my-doctors")
+    fun getMyDoctors()
+            : Observable<Response<ArrayList<MyDoctor>>>
+
+    @FormUrlEncoded
+    @POST("doc-plus/appointment-request")
+    fun postAppointment(
+        @Field("service") service: Int,
+        @Field("doctor") doctor: Int,
+        @Field("exact_time") exact_time: String,
+        @Field("date") date: String
+
+        ): Observable<Response<Any?>>
 
 }

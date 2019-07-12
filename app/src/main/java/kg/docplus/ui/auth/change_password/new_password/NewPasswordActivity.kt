@@ -32,4 +32,9 @@ class NewPasswordActivity : AppCompatActivity() {
         Log.e("ResultCode",requestCode.toString())
     }
 
+    override fun onResume() {
+        super.onResume()
+        App.activity = this
+    }
+
 }

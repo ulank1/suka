@@ -84,6 +84,7 @@
 
     </RelativeLayout>
     <ImageView
+        android:scaleType="centerCrop"
         android:layout_marginTop="16dp"
         android:src="@drawable/rounded_rect_10dp_blue"
         android:id="@+id/avatar"

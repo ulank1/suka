@@ -113,7 +113,7 @@
             android:layout_height="30dp" />
 
         <TextView
-            android:onClick="@{(view) -> viewModel.onClickForgotPassword(view)}"
+            android:onClick="@{(view) -> viewModel.onClickForgotPassword(phone)}"
             android:padding="5dp"
             android:textStyle="bold"
             android:textSize="14sp"

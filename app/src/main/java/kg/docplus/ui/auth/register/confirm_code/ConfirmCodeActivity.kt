@@ -25,4 +25,10 @@ class ConfirmCodeActivity : AppCompatActivity() {
 
         viewModel.getSmsCode(this,intent.getStringExtra("phone"),intent.getStringExtra("password"),intent.getIntExtra("isRegister",0))
     }
+
+    override fun onResume() {
+        super.onResume()
+        App.activity = this
+    }
+
 }

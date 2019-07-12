@@ -166,18 +166,18 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
                 1->{
                     adapterResult.clearData()
                     refresh.visible()
-                    line_filter.gone()
+                    scroll.gone()
                     line_result.gone()
                 }
                 2->{
                     initDateSpinner()
                     refresh.gone()
-                    line_filter.visible()
+                    scroll.visible()
                     line_result.gone()
                 }
                 3->{
                     refresh.gone()
-                    line_filter.gone()
+                    scroll.gone()
                     line_result.visible()
                 }
             }
@@ -197,18 +197,22 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
 
                     if (appointment.isChecked){
                         Filter.services.add(0)
+                        Filter.service = 0
                     }
 
                     if (chat.isChecked){
                         Filter.services.add(1)
+                        Filter.service = 1
                     }
 
                     if (video_chat.isChecked){
                         Filter.services.add(2)
+                        Filter.service = 2
                     }
 
                     if (call_home.isChecked){
                         Filter.services.add(3)
+                        Filter.service = 3
                     }
 
                     if (min_price.text.toString().isNotEmpty()){
@@ -223,8 +227,8 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
                         Filter.max_price = 100000
                     }
 
-                    Filter.schedule_time_before = "schedule_time_before ${from_time.text.toString()}"
-                    Filter.schedule_time_after = "schedule_time_after ${to_time.text.toString()}"
+                    Filter.schedule_time_before = "${from_time.text}"
+                    Filter.schedule_time_after = to_time.text.toString()
 
                     Filter.date = dateList[date.selectedItemPosition]
 

@@ -36,7 +36,6 @@ abstract class BaseViewModel(): ViewModel(){
     }
 
      fun hideProgress() {
-        Log.e("DDD","ddsas");
         if (progressBar != null /*&& progressBar!!.isShowing*/) {
             progressBar!!.dismiss()
         }

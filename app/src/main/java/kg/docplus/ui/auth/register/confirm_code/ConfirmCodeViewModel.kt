@@ -10,6 +10,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -18,6 +20,8 @@ import kg.docplus.App.activity
 import kg.docplus.base.BaseViewModel
 import kg.docplus.network.PostApi
 import kg.docplus.ui.auth.change_password.new_password.NewPasswordActivity
+import kg.docplus.ui.auth.register.SharedVideo
+import kg.docplus.ui.main.MainActivity
 import kg.docplus.utils.UserToken
 import kg.docplus.utils.extension.toast
 import java.util.concurrent.TimeUnit
@@ -76,6 +80,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.e(TAG, "signed in successfully")
+                    Log.e("ISreg",isRegister.toString())
                     onVerificationComplete()
                 } else {
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
@@ -154,9 +159,19 @@ class ConfirmCodeViewModel : BaseViewModel() {
     }
 
     fun register() {
+        var qbUser = SharedVideo.qbUser
+        var json = JsonObject()
+        json.addProperty("id",qbUser.id)
+        json.addProperty("full_name",qbUser.fullName)
+        json.addProperty("login",qbUser.login)
+        json.addProperty("password",qbUser.password)
+        var tags = JsonArray()
+        tags.add(qbUser.tags[0])
+        json.add("tags",tags)
 
+        Log.e("QSSSQDFF",json.toString())
         subscription.add(
-            postApi.register(phone, password)
+            postApi.register(phone, password,json.toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { showProgress() }
@@ -167,7 +182,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
                         if (result.isSuccessful) {
 
                             UserToken.saveToken(result.body()!!.token, App.activity!!)
-//                            activity?.startActivity(Intent(this,EditProfileActivity::class.java))
+                            activity?.startActivity(Intent(activity,MainActivity::class.java))
 
                         } else {
                             var error = result.errorBody()!!.string()

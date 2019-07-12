@@ -39,8 +39,8 @@ object UserToken{
         mSettings = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         val token = mSettings!!.getString(TOKEN, "empty")
 //        Log.e(TAG, token)
-       // return token != "empty" && token != ""
-        return true
+        return token != "empty" && token != ""
+      //  return true
     }
     fun saveProfile(token: String, context: Context) {
 
@@ -51,4 +51,6 @@ object UserToken{
 //        Log.e(TAG, "saved $token")
         editor.apply()
     }
+
+
 }

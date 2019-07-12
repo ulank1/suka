@@ -5,14 +5,22 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
+import com.quickblox.core.helper.StringifyArrayList
+import com.quickblox.sample.core.utils.SharedPrefsHelper
+import com.quickblox.users.model.QBUser
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kg.docplus.App
 import kg.docplus.base.BaseViewModel
 import kg.docplus.network.PostApi
+import kg.docplus.qbwrtc.services.CallService
+import kg.docplus.qbwrtc.utils.Consts
+import kg.docplus.ui.auth.change_password.PhoneActivity
 import kg.docplus.ui.auth.change_password.new_password.NewPasswordActivity
 import kg.docplus.ui.auth.register.RegisterActivity
+import kg.docplus.ui.main.MainActivity
+import kg.docplus.utils.UserToken
 import kg.docplus.utils.extension.getParentActivity
 import kg.docplus.utils.extension.toast
 import kg.docplus.utils.extension.validate
@@ -52,18 +60,21 @@ class LoginViewModel : BaseViewModel() {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSubscribe { showProgress() }
-                    .doOnTerminate { hideProgress() }
+                    .doOnTerminate {  }
                     .subscribe(
                         { result ->
-
+                            hideProgress()
                             if (result.isSuccessful) {
 
-                                //UserToken.saveToken(result.body()!!.token, App.context!!)
-                                Log.e("TOK",result.body()!!.toString())
+                                UserToken.saveToken(result.body()!!.token, App.activity!!)
+                                Log.e("TOKsssaas",result.body()!!.toString())
+                                saveUserData(result.body()!!.video_chat_credentials)
+                                App.activity.startActivity(Intent(App.activity,MainActivity::class.java))
 
                             } else {
                                 var error = result.errorBody()!!.string()
                                 Log.e("Error",error)
+                               // App.activity.startActivityForResult(Intent(App.activity,kg.docplus.qbwrtc.activities.LoginActivity::class.java).putExtra("login","dp${phone.text.toString().substring(1)}"),456)
 
                                 if (error.contains("Невозможно войти с",true)){
                                     Log.e("TAF","DDD")
@@ -73,18 +84,21 @@ class LoginViewModel : BaseViewModel() {
 
                         },
                         {
-                            Log.e("DDD",it.toString())
+                            hideProgress()
+                            Log.e("DDrergojpfD",it.toString())
                             onRetrievePostListError() }
                     )
             )
         }
     }
 
-    fun onClickForgotPassword(view: View) {
-
-        val activity: LoginActivity = view.getParentActivity() as LoginActivity
-        (activity).startActivityForResult(Intent(activity, NewPasswordActivity::class.java), 1)
-
+    fun onClickForgotPassword(view: EditText) {
+        if (view.text.toString().length<10){
+            view.error = "Введите телефонный номер"
+        }else {
+            val activity: LoginActivity = view.getParentActivity() as LoginActivity
+            (activity).startActivityForResult(Intent(activity, PhoneActivity::class.java).putExtra("phone",view.text.toString()), 1)
+        }
     }
 
     fun onClickRegister(view: View) {
@@ -92,6 +106,19 @@ class LoginViewModel : BaseViewModel() {
         App.activity!!.startActivity(Intent(App.activity,RegisterActivity::class.java))
 
     }
+    private fun saveUserData(qbUser: QBUser) {
+        var tags:StringifyArrayList<String> = StringifyArrayList()
+        tags.add("Das")
+        qbUser.tags = tags
+        Log.e("QbUser", qbUser.toString())
+        val sharedPrefsHelper = SharedPrefsHelper.getInstance()
+        sharedPrefsHelper.save(Consts.PREF_CURREN_ROOM_NAME, qbUser.tags[0])
+        sharedPrefsHelper.saveQbUser(qbUser)
+        startLoginService(qbUser)
+    }
+    private fun startLoginService(qbUser: QBUser) {
 
+        CallService.start(App.activity, qbUser)
+    }
 
 }

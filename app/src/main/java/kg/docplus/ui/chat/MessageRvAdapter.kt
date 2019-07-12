@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.item_message.view.*
 import java.util.*
 
 
-class MessageRvAdapter(val context: Context) : RecyclerView.Adapter<MessageRvAdapter.AdvertViewHolder>() {
+class  MessageRvAdapter(val context: Context) : RecyclerView.Adapter<MessageRvAdapter.AdvertViewHolder>() {
 
     private var data: ArrayList<Message> = ArrayList()
 

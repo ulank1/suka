@@ -37,6 +37,7 @@
                 android:textStyle="bold" />
             
             <TextView
+                android:id="@+id/specialities"
                 android:text="Педиатр, Иммунолог "
                 android:textColor="@color/colorPrimary"
                 android:textSize="12sp"

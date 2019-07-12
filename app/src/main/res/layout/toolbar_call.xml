@@ -18,6 +18,7 @@
             android:textColor="@color/text_color_light_grey"
             android:textSize="@dimen/text_size"
             android:visibility="invisible" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <View

@@ -19,6 +19,7 @@ import kg.docplus.utils.extension.visible
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import jp.wasabeef.glide.transformations.CropCircleTransformation
+import kg.docplus.utils.extension.setRoundedImage
 
 
 @BindingAdapter("adapter")
@@ -100,6 +101,23 @@ fun setImage(view: ImageView, url: MutableLiveData<String>?) {
                         (CropCircleTransformation())
                     )
                 ).into(view)
+        })
+
+    }
+}
+
+
+@BindingAdapter("mutableRoundedImageUrl")
+fun setRoundedImage(view: ImageView, url: MutableLiveData<String>?) {
+    val parentActivity: AppCompatActivity? = view.getParentActivity()
+    if (parentActivity != null && url != null) {
+        val sCorner = 15
+        val sMargin = 20
+
+        val sBorder = 10
+        val sColor = "#7D9067"
+        url.observe(parentActivity, Observer {
+           setRoundedImage(view,it,parentActivity)
         })
 
     }

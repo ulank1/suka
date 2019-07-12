@@ -1,11 +1,14 @@
 package kg.docplus.qbwrtc.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import com.quickblox.sample.core.ui.activity.CoreSplashActivity;
 import com.quickblox.sample.core.utils.SharedPrefsHelper;
 import com.quickblox.users.model.QBUser;
 import kg.docplus.R;
 import kg.docplus.qbwrtc.services.CallService;
+import kg.docplus.ui.auth.login.LoginActivity;
+import kg.docplus.ui.main.MainActivity;
 
 public class SplashActivity extends CoreSplashActivity {
 
@@ -35,7 +38,7 @@ public class SplashActivity extends CoreSplashActivity {
 
     @Override
     protected void proceedToTheNextActivity() {
-        LoginActivity.start(this);
+        startActivity(new Intent(this,LoginActivity.class));
         finish();
     }
 
@@ -44,7 +47,7 @@ public class SplashActivity extends CoreSplashActivity {
     }
 
     private void startOpponentsActivity() {
-        OpponentsActivity.start(SplashActivity.this, false);
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 }

@@ -34,7 +34,7 @@ class FavouriteActivity : AppCompatActivity() {
     }
 
     fun setupRv(){
-        var manager = GridLayoutManager(this,2)
+        var manager = GridLayoutManager(this,1)
         binding.rv.layoutManager = manager
         binding.rv.setHasFixedSize(false)
 
@@ -44,5 +44,8 @@ class FavouriteActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         Log.e("ResultCode",requestCode.toString())
     }
-
+    override fun onResume() {
+        super.onResume()
+        App.activity = this
+    }
 }

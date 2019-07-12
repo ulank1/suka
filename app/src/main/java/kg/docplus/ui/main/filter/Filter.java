@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Filter {
 
     public static ArrayList<Integer> services = new ArrayList<>();
+    public static int service = 0;
     public static int max_price = 10000;
     public static int min_price = 0;
     public static String schedule_time_before = "00:00";

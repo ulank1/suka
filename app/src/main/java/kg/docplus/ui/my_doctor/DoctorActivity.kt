@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import kg.docplus.App
@@ -14,28 +15,34 @@ import kotlinx.android.synthetic.main.activity_doctor.*
 class DoctorActivity : AppCompatActivity() {
 
     private lateinit var viewModel: DoctorViewModel
+    lateinit var adapter: MyDoctorRvAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_doctor)
 
-        App.activity = this
 
 
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(DoctorViewModel::class.java)
+        viewModel.myDoctor.observe(this, Observer { adapter.swapData(it) })
 
-
-
+        back.setOnClickListener { finish() }
         setupRv()
         viewModel.getDoctorFavourite()
 
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        App.activity = this
+    }
+
     fun setupRv(){
-        var manager = GridLayoutManager(this,2)
+        var manager = GridLayoutManager(this,1)
        rv.layoutManager = manager
         rv.setHasFixedSize(false)
-
+        adapter = MyDoctorRvAdapter(this)
+        rv.adapter = adapter
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

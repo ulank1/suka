@@ -3,6 +3,7 @@ package com.quickblox.sample.core.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import android.util.Log;
 import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.sample.core.CoreApp;
 import com.quickblox.users.model.QBUser;
@@ -41,6 +42,7 @@ public class SharedPrefsHelper {
 
     public void save(String key, Object value) {
         SharedPreferences.Editor editor = getEditor();
+        Log.e("ROOFFF",value.toString());
         if (value instanceof Boolean) {
             editor.putBoolean(key, (Boolean) value);
         } else if (value instanceof Integer) {

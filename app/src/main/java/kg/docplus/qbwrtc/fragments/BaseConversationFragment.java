@@ -197,6 +197,7 @@ public abstract class BaseConversationFragment extends BaseToolBarFragment imple
         if (!isStarted) {
             timerChronometer.setVisibility(View.VISIBLE);
             timerChronometer.setBase(SystemClock.elapsedRealtime());
+
             timerChronometer.start();
             isStarted = true;
         }

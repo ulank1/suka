@@ -86,6 +86,7 @@ public class CallActivity extends BaseActivity implements QBRTCClientSessionCall
                              boolean isIncomingCall) {
 
         Intent intent = new Intent(context, CallActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(Consts.EXTRA_IS_INCOMING_CALL, isIncomingCall);
 
         context.startActivity(intent);

@@ -23,6 +23,7 @@ import kg.docplus.qbwrtc.adapters.OpponentsAdapter;
 import kg.docplus.qbwrtc.db.QbUsersDbManager;
 import kg.docplus.qbwrtc.services.CallService;
 import kg.docplus.qbwrtc.utils.*;
+import kg.docplus.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -56,7 +57,9 @@ public class OpponentsActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opponents);
-
+        if (getIntent().getIntExtra("status", 0) == 1) {
+            startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        }
         initFields();
 
         initDefaultActionBar();
@@ -70,7 +73,9 @@ public class OpponentsActivity extends BaseActivity {
         }
 
         checker = new PermissionsChecker(getApplicationContext());
+
     }
+
 
     @Override
     protected void onResume() {
@@ -105,6 +110,7 @@ public class OpponentsActivity extends BaseActivity {
         }
 
         currentUser = sharedPrefsHelper.getQbUser();
+        Log.e("CurrentUser",currentUser.toString()+"dsf");
         dbManager = QbUsersDbManager.getInstance(getApplicationContext());
         webRtcSessionManager = WebRtcSessionManager.getInstance(getApplicationContext());
     }
@@ -115,7 +121,11 @@ public class OpponentsActivity extends BaseActivity {
         requestExecutor.loadUsersByTag(currentRoomName, new QBEntityCallback<ArrayList<QBUser>>() {
             @Override
             public void onSuccess(ArrayList<QBUser> result, Bundle params) {
-                hideProgressDialog();
+                try {
+                    hideProgressDialog();
+                }catch (Exception e){
+
+                }
                 dbManager.saveAllUsers(result, true);
                 initUsersList();
             }
@@ -248,11 +258,11 @@ public class OpponentsActivity extends BaseActivity {
             return;
         }
 
-        Log.d(TAG, "startCall()");
         ArrayList<Integer> opponentsList = CollectionsUtils.getIdsSelectedOpponents(opponentsAdapter.getSelectedItems());
         QBRTCTypes.QBConferenceType conferenceType = isVideoCall
                 ? QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO
                 : QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_AUDIO;
+        Log.e(TAG, "startCall()"+opponentsList.toString());
 
         QBRTCClient qbrtcClient = QBRTCClient.getInstance(getApplicationContext());
 
