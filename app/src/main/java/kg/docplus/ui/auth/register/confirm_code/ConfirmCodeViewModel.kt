@@ -18,6 +18,7 @@ import io.reactivex.schedulers.Schedulers
 import kg.docplus.App
 import kg.docplus.App.activity
 import kg.docplus.base.BaseViewModel
+import kg.docplus.fcm.FCMTokenUtils
 import kg.docplus.network.PostApi
 import kg.docplus.ui.auth.change_password.new_password.NewPasswordActivity
 import kg.docplus.ui.auth.register.SharedVideo
@@ -182,7 +183,9 @@ class ConfirmCodeViewModel : BaseViewModel() {
                         if (result.isSuccessful) {
 
                             UserToken.saveToken(result.body()!!.token, App.activity!!)
-                            activity?.startActivity(Intent(activity,MainActivity::class.java))
+                            FCMTokenUtils.deleteToken(App.activity)
+
+                            postFCMToken()
 
                         } else {
                             var error = result.errorBody()!!.string()
@@ -203,5 +206,40 @@ class ConfirmCodeViewModel : BaseViewModel() {
         )
     }
 
+    private fun postFCMToken(){
+        val registrationId = FCMTokenUtils.getTokenFromPrefs(App.activity!!)
+        Log.e("REGISTER_ID",registrationId)
+
+        subscription.add(
+            postApi.postDeviceId(registrationId,"android")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { showProgress() }
+                .doOnTerminate {  }
+                .subscribe(
+                    { result ->
+                        hideProgress()
+                        if (result.isSuccessful) {
+                            Log.e("TOKENFCM",result.body().toString())
+                            App.activity.startActivity(Intent(App.activity,MainActivity::class.java))
+
+                        } else {
+                            var error = result.errorBody()!!.string()
+                            Log.e("Error",error)
+
+                            if (error.contains("Невозможно войти с",true)){
+                                Log.e("TAF","DDD")
+                            }
+                        }
+
+                    },
+                    {
+                        hideProgress()
+                        Log.e("DDrergojpfD",it.toString())
+                        onRetrievePostListError() }
+                )
+        )
+
+    }
 
 }

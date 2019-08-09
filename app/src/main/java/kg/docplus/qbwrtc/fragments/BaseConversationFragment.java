@@ -1,6 +1,7 @@
 package kg.docplus.qbwrtc.fragments;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -199,6 +200,21 @@ public abstract class BaseConversationFragment extends BaseToolBarFragment imple
             timerChronometer.setBase(SystemClock.elapsedRealtime());
 
             timerChronometer.start();
+            timerChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+                @Override
+                public void onChronometerTick(Chronometer chronometer) {
+
+                    if (chronometer.getText().toString().equalsIgnoreCase("01:00")){
+                        chronometer.setTextColor(Color.RED);
+                        chronometer.setTextSize(18);
+                    }
+
+                    if (chronometer.getText().toString().equalsIgnoreCase("02:00")){
+                        conversationFragmentCallbackListener.onHangUpCurrentSession();
+                    }
+
+                }
+            });
             isStarted = true;
         }
     }

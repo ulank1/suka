@@ -11,6 +11,7 @@ import kg.docplus.R
 import kg.docplus.databinding.ActivityLoginBinding
 import kg.docplus.injection.ViewModelFactory
 import kg.docplus.ui.main.MainActivity
+import kg.docplus.utils.extension.cursorToEnd
 
 class LoginActivity : AppCompatActivity() {
 
@@ -21,6 +22,7 @@ class LoginActivity : AppCompatActivity() {
         App.activity = this
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        binding.phone.cursorToEnd()
 
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(LoginViewModel::class.java)
 

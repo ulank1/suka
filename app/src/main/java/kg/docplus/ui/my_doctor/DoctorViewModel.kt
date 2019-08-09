@@ -19,6 +19,7 @@ class DoctorViewModel : BaseViewModel() {
     lateinit var postApi: PostApi
     private var subscription: CompositeDisposable = CompositeDisposable()
     val myDoctor: MutableLiveData<ArrayList<MyDoctor>> = MutableLiveData()
+   // val token: MutableLiveData<String> = MutableLiveData()
     override fun onCleared() {
         super.onCleared()
         subscription = CompositeDisposable()

@@ -16,23 +16,25 @@
             android:id="@+id/name"
             style="@style/EditText.Login"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:gravity="top"
             android:hint="Ваше имя"
             android:inputType="text"
             android:textSize="14sp"
-            android:theme="@style/EditText.Login" />
+            android:maxLines="1"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/surname"
             style="@style/EditText.Login"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:gravity="top"
             android:hint="Ваша фамилия"
             android:inputType="text"
             android:textSize="14sp"
-            android:theme="@style/EditText.Login"
+            android:maxLines="1"
+            android:singleLine="true"
             android:visibility="visible" />
 
 
@@ -40,13 +42,14 @@
             android:id="@+id/forename"
             style="@style/EditText.Login"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:gravity="top"
             android:hint="Ваше отчество"
             android:inputType="text"
             android:textSize="14sp"
-            android:theme="@style/EditText.Login"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:maxLines="1"
+            android:singleLine="true"/>
 
 
 

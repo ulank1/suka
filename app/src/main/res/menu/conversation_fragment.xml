@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:visible="false"
         android:id="@+id/camera_switch"
         android:checkable="true"
         android:icon="@drawable/ic_camera_front"
@@ -10,6 +11,7 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:visible="false"
         android:id="@+id/screen_share"
         android:checkable="true"
         android:icon="@drawable/ic_screen_share"

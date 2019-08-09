@@ -30,6 +30,8 @@ import kg.docplus.qbwrtc.utils.ValidationUtils;
 import kg.docplus.ui.auth.register.SharedVideo;
 import kg.docplus.ui.main.MainActivity;
 
+import java.util.Objects;
+
 public class LoginActivity extends BaseActivity {
 
     private String TAG = LoginActivity.class.getSimpleName();
@@ -48,6 +50,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
 
         initUI();
         startSignUpNewUser(createUserWithEnteredData());
@@ -116,7 +119,6 @@ public class LoginActivity extends BaseActivity {
                             signInCreatedUser(newUser, true);
                         } else {
                             hideProgressDialog();
-                            Toaster.longToast(R.string.sign_up_error);
                             startSignUpNewUser(newUser);
                         }
                     }

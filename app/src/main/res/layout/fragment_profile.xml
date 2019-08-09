@@ -281,7 +281,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/stethoscope_profile" />
+                            android:src="@drawable/like_profile" />
 
                         <TextView
                             android:layout_width="match_parent"

@@ -20,8 +20,6 @@ class DoctorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_doctor)
 
-
-
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(DoctorViewModel::class.java)
         viewModel.myDoctor.observe(this, Observer { adapter.swapData(it) })
 

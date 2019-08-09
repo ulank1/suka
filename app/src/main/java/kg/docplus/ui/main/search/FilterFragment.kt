@@ -100,6 +100,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         viewModel.doctors.observe(this,Observer { adapterResult.swapData(it!!)
         changeStatus(3)})
 
+
         Log.e("Token",UserToken.getToken(activity!!))
         return view
     }
@@ -118,6 +119,17 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
         spinner.onItemSelectedListener = this
+
+        val choosen=arguments!!.getInt("service")
+        Log.e("CHOOSEN", choosen.toString())
+        when(choosen){
+            0->appointment.isChecked = true
+            1->chat.isChecked = true
+            2->video_chat.isChecked = true
+            3->call_home.isChecked = true
+        }
+
+
     }
 
     private fun setupRv() {

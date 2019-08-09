@@ -4,5 +4,7 @@ import com.quickblox.users.model.QBUser
 
 data class TokenWithVideo(
     val token: String,
-    val video_chat_credentials:QBUser
+    val video_chat_credentials:QBUser,
+    val is_profile_filled:Boolean
+
 )

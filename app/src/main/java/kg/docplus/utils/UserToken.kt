@@ -10,7 +10,8 @@ object UserToken{
     val APP_PREFERENCES = "mysettings"
     val TOKEN = "tokenID"
     val PROFILE = "profile"
-
+    val NAME = "name"
+    val AVATAR = "avatar"
 
     private var mSettings: SharedPreferences? = null
 
@@ -52,5 +53,33 @@ object UserToken{
         editor.apply()
     }
 
+    fun saveName(token: String, context: Context) {
 
+        mSettings = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+
+        val editor = mSettings!!.edit()
+        editor.putString(NAME, token)
+//        Log.e(TAG, "saved $token")
+        editor.apply()
+    }
+
+    fun saveAvatar(token: String, context: Context) {
+
+        mSettings = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+
+        val editor = mSettings!!.edit()
+        editor.putString(AVATAR, token)
+//        Log.e(TAG, "saved $token")
+        editor.apply()
+    }
+
+    fun getName(context: Context): String? {
+        mSettings = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        return mSettings!!.getString(NAME, "ebc78b613f7947506cc1e5d4f5a53f8c7a34a9e0")
+    }
+
+    fun getAvatar(context: Context): String? {
+        mSettings = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        return mSettings!!.getString(AVATAR, "ebc78b613f7947506cc1e5d4f5a53f8c7a34a9e0")
+    }
 }

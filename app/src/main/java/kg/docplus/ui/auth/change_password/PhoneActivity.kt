@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProviders
 import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.injection.ViewModelFactory
+import kg.docplus.utils.extension.cursorToEnd
+
 class PhoneActivity : AppCompatActivity() {
 
     private lateinit var binding: kg.docplus.databinding.ActivityPhoneBinding
@@ -19,7 +21,7 @@ class PhoneActivity : AppCompatActivity() {
         App.activity = this
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_phone)
-
+        binding.phone.cursorToEnd()
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(PhoneViewModel::class.java)
 
         binding.viewModel = viewModel

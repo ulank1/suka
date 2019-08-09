@@ -2,6 +2,7 @@ package kg.docplus.network
 
 import com.quickblox.users.model.QBUser
 import io.reactivex.Observable
+import io.reactivex.Single
 import kg.docplus.model.Token
 import kg.docplus.model.ApiResponse
 import kg.docplus.model.get.*
@@ -35,6 +36,14 @@ interface PostApi {
     ): Observable<Response<Token>>
 
     @FormUrlEncoded
+    @POST("doc/device")
+    fun postDeviceId(
+        @Field("registration_id") registration_id: String,
+        @Field("type") type: String
+    ): Observable<Response<Any>>
+
+
+    @FormUrlEncoded
     @POST("doc-plus/change-password")
     fun newPassword(
         @Field("new_password") password: String,
@@ -52,6 +61,7 @@ interface PostApi {
         @Query("starts_at_time") firstTime:String,
         @Query("expires_at_time") secondTime:String,
         @Query("specialty_title") specialty_title:String,
+        @Query("name") name:String,
         @Query("date") date:String
     ): Observable<Response<List<DoctorGet>>>
 
@@ -116,5 +126,15 @@ interface PostApi {
         @Field("date") date: String
 
         ): Observable<Response<Any?>>
+    @FormUrlEncoded
+    @POST("doc-plus/send-push")
+    fun sendPush(
+        @Field("user_id") user_id:Int,
+        @Field("data") data:String
+    ): Observable<Response<Any>>
 
+
+    @GET("doc-plus/notification/")
+    fun getNotifications()
+            : Observable<Response<ArrayList<Notification>>>
 }

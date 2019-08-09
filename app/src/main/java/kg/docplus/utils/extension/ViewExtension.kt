@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -61,7 +62,10 @@ fun EditText.text(
         this.setText(message)
     }
 }
-
+fun EditText.cursorToEnd(
+) {
+    setSelection(text.toString().length)
+}
 fun TextView.text(
     message: String?
 ) {
@@ -162,3 +166,21 @@ fun setRoundedImage(imageView: ImageView, url:String, context: Context){
 
 }
 
+fun isTime(time: String) :Boolean{
+    // var test = "2019-07-08 11:20:00"
+    val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    try {
+        val data = format.parse(time)
+//        val testdata = format.parse(test)
+        val testdata = Date()
+        val lastDate = Date(data.time+(25*60000))
+
+        Log.e("DAtes",format.format(data)+" "+format.format(lastDate))
+
+        return testdata.after(data)&&testdata.before(lastDate)
+
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+    return false
+}

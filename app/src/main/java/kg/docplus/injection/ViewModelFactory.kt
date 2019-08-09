@@ -14,6 +14,7 @@ import kg.docplus.ui.auth.register.confirm_code.ConfirmCodeViewModel
 import kg.docplus.ui.chat.ChatViewModel
 import kg.docplus.ui.favorite_doctor.FavouriteViewModel
 import kg.docplus.ui.my_doctor.DoctorViewModel
+import kg.docplus.ui.notification.NotificationViewModel
 
 class ViewModelFactory(): ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -67,6 +68,11 @@ class ViewModelFactory(): ViewModelProvider.Factory{
         if (modelClass.isAssignableFrom(DoctorViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return DoctorViewModel() as T
+        }
+
+        if (modelClass.isAssignableFrom(NotificationViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return NotificationViewModel() as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")

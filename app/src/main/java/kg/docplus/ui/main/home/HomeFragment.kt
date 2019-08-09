@@ -1,6 +1,7 @@
 package kg.docplus.ui.main.home
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import androidx.lifecycle.ViewModelProviders
 import kg.docplus.R
 import kg.docplus.databinding.FragmentHomeBinding
 import kg.docplus.injection.ViewModelFactory
+import kg.docplus.model.get.Notification
+import kg.docplus.ui.notification.NotificationActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +38,8 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(HomeViewModel::class.java)
 
         binding.viewModel = viewModel
+
+        binding.notif.setOnClickListener { startActivity(Intent(context,NotificationActivity::class.java)) }
 
         //viewModel.filterDocs()
 

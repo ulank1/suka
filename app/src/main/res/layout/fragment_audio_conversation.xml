@@ -36,6 +36,7 @@
             android:visibility="invisible" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/text_also_on_call"
             style="@style/WrapContent"
             android:layout_marginTop="24dp"
@@ -44,6 +45,7 @@
             android:textSize="@dimen/also_on_call_text_size" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/text_other_inc_users"
             style="@style/WrapContent"
             android:layout_marginTop="16dp"

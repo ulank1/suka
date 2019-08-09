@@ -55,9 +55,8 @@ class PhoneViewModel : BaseViewModel() {
 
                             if (result.isSuccessful) {
 
-                                if (result.body()!!.success == null && result.body()!!.token != null) {
+                                if (result.body()!!.is_profile_filled != null ) {
 
-                                    App.activity?.toast("Вы уже зарестрированы в приложении для пациентов")
                                     val intent = Intent(App.activity, ConfirmCodeActivity::class.java)
                                     intent.putExtra("phone", phone.text.toString())
                                     intent.putExtra("isRegister", 1)
@@ -69,7 +68,7 @@ class PhoneViewModel : BaseViewModel() {
                                         App.activity?.startActivity(Intent(App.activity!!,RegisterActivity::class.java))
                                         App.activity?.finish()
                                     } else {
-                                        App.activity?.toast(result.body()?.error.toString())
+                                        App.activity?.toast(result.body()?.message.toString())
                                     }
                                 }
 

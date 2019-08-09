@@ -185,7 +185,7 @@ fun setMutableGridManager(view: RecyclerView, text: String) {
 fun setTextName(view: TextView, text: String) {
     val parentActivity: AppCompatActivity? = view.getParentActivity()
     if (parentActivity != null) {
-        if (text.length<6){
+        if (text.length<6|| text.contains("null")){
             view.text = ""
         }else{
             view.text = text

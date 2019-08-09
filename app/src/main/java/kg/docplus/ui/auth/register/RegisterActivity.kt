@@ -11,6 +11,7 @@ import kg.docplus.databinding.ActivityRegisterBinding
 import kg.docplus.injection.ViewModelFactory
 import kg.docplus.ui.auth.register.confirm_code.ConfirmCodeActivity
 import kg.docplus.ui.main.MainActivity
+import kg.docplus.utils.extension.cursorToEnd
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -21,7 +22,7 @@ class RegisterActivity : AppCompatActivity() {
         App.activity = this
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register)
-
+        binding.phone.cursorToEnd()
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(RegisterViewModel::class.java)
 
         binding.viewModel = viewModel

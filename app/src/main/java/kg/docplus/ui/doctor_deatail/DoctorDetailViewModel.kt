@@ -19,6 +19,7 @@ import kg.docplus.network.PostApi
 import kg.docplus.ui.main.filter.Filter
 import kg.docplus.utils.extension.getServiceName
 import kg.docplus.utils.extension.gone
+import kg.docplus.utils.extension.toast
 import kg.docplus.utils.extension.visible
 import javax.inject.Inject
 
@@ -39,6 +40,8 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener {
     var idDoctor: Int = -1
     var service = 0
     lateinit var dialog:Dialog
+    lateinit var dialogResult:Dialog
+
 
 
     private var subscription: CompositeDisposable = CompositeDisposable()
@@ -50,7 +53,7 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener {
 
     fun getDoctorFull(id: Int) {
         Log.e("ID",id.toString())
-
+        idDoctor = id
         subscription.add(
             postApi.getDocFull(
                 id
@@ -86,9 +89,10 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener {
 
     }
 
-    fun onClickMore(line: LinearLayout) {
+    fun onClickMore(line: LinearLayout,scrollView: ScrollView,button: Button) {
         if (line.visibility == View.GONE) {
             line.visible()
+            scrollView.fullScroll(View.FOCUS_DOWN)
         } else {
             line.gone()
         }
@@ -118,6 +122,7 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener {
                         },
                         {
                             hideProgress()
+                            active.value = false
 
                             Log.e("DDD", it.toString())
                         }
@@ -247,6 +252,7 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener {
                         } else {
                             var error = result.errorBody()!!.string()
                             Log.e("Error", error)
+                            App.activity.toast(error)
 
                         }
 
@@ -265,22 +271,22 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener {
         this.service = service
         getAvailableTimes(service)
 
-        val dialog = Dialog(App.activity!!)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-        dialog.setContentView(R.layout.alert_result)
+        dialogResult = Dialog(App.activity!!)
+        dialogResult.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogResult.setCancelable(true)
+        dialogResult.setContentView(R.layout.alert_result)
 
-        val title = dialog.findViewById(R.id.service) as TextView
-        val text = dialog.findViewById(R.id.text) as TextView
-        val btnOk = dialog.findViewById(R.id.btn_ok) as Button
+        val title = dialogResult.findViewById(R.id.service) as TextView
+        val text = dialogResult.findViewById(R.id.text) as TextView
+        val btnOk = dialogResult.findViewById(R.id.btn_ok) as Button
 
         title.text = getServiceName(service)
 
         text.text = "Ваш запрос ${getServiceName(service)} успешно отправлен."
 
-        btnOk.setOnClickListener { dialog.cancel() }
+        btnOk.setOnClickListener { dialogResult.cancel() }
 //        dialog.setCancelable(false)
-        dialog.show()
+        dialogResult.show()
 
     }
     fun onClickBack(){

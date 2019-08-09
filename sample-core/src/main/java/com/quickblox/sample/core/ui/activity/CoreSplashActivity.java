@@ -29,13 +29,13 @@ public abstract class CoreSplashActivity extends CoreBaseActivity {
             getSupportActionBar().hide();
         }
 
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_splash1);
 
-        TextView appNameTextView = _findViewById(R.id.text_splash_app_title);
-        TextView versionTextView = _findViewById(R.id.text_splash_app_version);
+       /* TextView appNameTextView = _findViewById(R.id.text_splash_app_title);
+        TextView versionTextView = _findViewById(R.id.text_splash_app_version);*/
 
-        appNameTextView.setText(getAppName());
-        versionTextView.setText(getString(R.string.splash_app_version, VersionUtils.getAppVersionName()));
+       /* appNameTextView.setText(getAppName());
+        versionTextView.setText(getString(R.string.splash_app_version, VersionUtils.getAppVersionName()));*/
     }
 
     protected abstract String getAppName();

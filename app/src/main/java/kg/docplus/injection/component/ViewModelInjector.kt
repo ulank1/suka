@@ -14,6 +14,7 @@ import kg.docplus.ui.auth.register.confirm_code.ConfirmCodeViewModel
 import kg.docplus.ui.chat.ChatViewModel
 import kg.docplus.ui.favorite_doctor.FavouriteViewModel
 import kg.docplus.ui.my_doctor.DoctorViewModel
+import kg.docplus.ui.notification.NotificationViewModel
 import javax.inject.Singleton
 
 /**
@@ -35,6 +36,7 @@ interface ViewModelInjector {
     fun inject(favouriteViewModel: FavouriteViewModel)
     fun inject(chatViewModel: ChatViewModel)
     fun inject(doctorViewModel: DoctorViewModel)
+    fun inject(notificationViewModel: NotificationViewModel)
 
     @Component.Builder
     interface Builder {

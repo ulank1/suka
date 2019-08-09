@@ -76,6 +76,7 @@ class FilterViewModel : BaseViewModel() {
                 Filter.schedule_time_before,
                 Filter.schedule_time_after,
                 Filter.specialty_title,
+                Filter.name,
                 Filter.date
             )
                 .subscribeOn(Schedulers.io())

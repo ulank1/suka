@@ -14,6 +14,7 @@ import kotlin.collections.ArrayList
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
 import kg.docplus.App
+import kg.docplus.utils.extension.setRoundedImage
 
 
 class ImageRvAdapter(val context: Context) : RecyclerView.Adapter<ImageRvAdapter.AdvertViewHolder>() {
@@ -44,12 +45,9 @@ class ImageRvAdapter(val context: Context) : RecyclerView.Adapter<ImageRvAdapter
             val image:ImageView = itemView.findViewById(R.id.image)
 //            Glide.with(App.activity!!).load(item).transform(CenterCrop(),RoundedCorners(16)).into(image)
 
-            var requestOptions = RequestOptions()
-            requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16))
-            Glide.with(itemView.getContext())
-                .load(item)
-                .apply(requestOptions)
-                .into(image)
+
+            setRoundedImage(image,item,context)
+
             itemView.setOnClickListener {
 
             }

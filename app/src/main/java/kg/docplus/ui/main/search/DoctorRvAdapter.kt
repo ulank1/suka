@@ -52,8 +52,13 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
 
             name.text = "${item.doctor_detail.first_name} ${item.doctor_detail.mid_name}"
             specialities.text =""
-            for (speciality in item.doctor_detail.specialties){
-                specialities.append(speciality.title)
+
+            for ((i, text) in item.doctor_detail.specialties.withIndex()) {
+                if (i == item.doctor_detail.specialties.size - 1) {
+                    specialities.append(text.title)
+                } else {
+                    specialities.append("${text.title}, ")
+                }
             }
 
             minPrice.text = "${item.min_price} сом"

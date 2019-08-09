@@ -18,6 +18,8 @@ import kg.docplus.injection.ViewModelFactory
 import kg.docplus.model.firebase.Message
 import kg.docplus.ui.main.filter.Filter
 import kg.docplus.utils.ImagePickerHelper
+import kg.docplus.utils.extension.isTime
+import kg.docplus.utils.extension.toast
 import kotlinx.android.synthetic.main.activity_test.*
 import java.util.*
 
@@ -43,6 +45,7 @@ class ChatActivity : ImagePickerHelper() {
         setContentView(R.layout.activity_test)
 
         App.activity = this
+        Filter.chatAvatar = intent.getStringExtra("avatar")
 
         name.text = intent.getStringExtra("name").toString()
         Glide.with(this).load(intent.getStringExtra("avatar"))
@@ -128,17 +131,21 @@ class ChatActivity : ImagePickerHelper() {
     }
 
     private fun sendMessage(){
-
-        val messageText = Message(Date().time.toString(),message.text.toString(),1)
-        message.setText("")
-        db.collection("chat").document(doc_id).collection(patient_id)
-            .add(messageText)
-            .addOnSuccessListener { documentReference ->
-                Log.e("TRUE", "DocumentSnapshot added with ID: $documentReference")
-            }
-            .addOnFailureListener { e ->
-                Log.e("FALSE", "Error adding document", e)
-            }
+        if (isTime(intent.getStringExtra("time"))) {
+            val messageText = Message(Date().time.toString(), message.text.toString(), 1)
+            viewModel.sendPush(messageText.message, doc_id, patient_id,intent.getStringExtra("time"))
+            message.setText("")
+            db.collection("chat").document(doc_id).collection(patient_id)
+                .add(messageText)
+                .addOnSuccessListener { documentReference ->
+                    Log.e("TRUE", "DocumentSnapshot added with ID: $documentReference")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("FALSE", "Error adding document", e)
+                }
+        }else{
+            toast("Вы не можете отправлять сообщение")
+        }
     }
 
 

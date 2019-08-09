@@ -18,6 +18,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.quickblox.core.helper.Utils
 import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.qbwrtc.activities.OpponentsActivity
@@ -41,6 +42,7 @@ class MainActivity : ImagePickerHelper() {
     val pathPhoto: MutableLiveData<String> = MutableLiveData()
     var isBack = false
     lateinit var fragmentManager: FragmentManager
+    var choosenService = -1
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -77,6 +79,9 @@ class MainActivity : ImagePickerHelper() {
         webRtcSessionManager = WebRtcSessionManager.getInstance(applicationContext)
         replaceFragment(1)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        Log.e("DEVICE_ID",getCurrentDeviceId())
+
         //chronoMeter()
     }
 
@@ -134,7 +139,12 @@ class MainActivity : ImagePickerHelper() {
                     tag = "home"
                 }
                 2 -> {
+                    var bundle = Bundle()
+                    bundle.putInt("service",choosenService)
+                    Log.e("BUNDLE",bundle.toString())
                     fragment = FilterFragment()
+                    fragment.arguments = bundle
+                    choosenService = -1
                     tag = "filter"
                 }
                 3 -> {
@@ -160,7 +170,8 @@ class MainActivity : ImagePickerHelper() {
         }
     }
 
-    fun selectSearch() {
+    fun selectSearch(service:Int) {
+        choosenService = service
         navigation.selectedItemId = R.id.navigation_search
     }
 
@@ -255,5 +266,11 @@ class MainActivity : ImagePickerHelper() {
 
     override fun openGallery(mItemId: String) {
     }
+
+
+    private fun getCurrentDeviceId(): String {
+        return Utils.generateDeviceId(this)
+    }
+
 
 }

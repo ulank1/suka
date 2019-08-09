@@ -39,13 +39,13 @@ class HomeViewModel : BaseViewModel() {
         var service = -1
 
        when(id){
-           R.id.appointment -> service = 1
-           R.id.chat -> service = 2
-           R.id.video_chat -> service = 3
-           R.id.call_home -> service = 4
+           R.id.appointment -> service = 0
+           R.id.chat -> service = 1
+           R.id.video_chat -> service = 2
+           R.id.call_home -> service = 3
        }
 
-        (App.activity as MainActivity).selectSearch()
+        (App.activity as MainActivity).selectSearch(service)
 
     }
 

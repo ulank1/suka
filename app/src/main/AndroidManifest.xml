@@ -90,7 +90,15 @@
             android:theme="@style/AppTheme.NoActionBar" >
 
         </activity>
-
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_path" />
+        </provider>
 
 
         <activity
@@ -126,6 +134,8 @@
             android:name=".qbwrtc.activities.SettingsActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.notification.NotificationActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <service android:name=".qbwrtc.services.CallService" />
 
@@ -173,6 +183,11 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <service android:name="kg.docplus.fcm.FMService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

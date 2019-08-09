@@ -25,6 +25,7 @@ import kg.docplus.model.get.PatientDetail
 import kg.docplus.model.post.ProfilePost
 import kg.docplus.ui.favorite_doctor.FavouriteActivity
 import kg.docplus.ui.my_doctor.DoctorActivity
+import kg.docplus.utils.UserToken
 import kg.docplus.utils.extension.toast
 import kg.docplus.utils.extension.validate
 import okhttp3.MediaType
@@ -70,6 +71,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
                         hideProgress()
                         if (result.isSuccessful) {
                             profileGet = result.body()!!
+                            Log.e("PRRRRR",profileGet.toString())
                             profileGet.patient_detail.gender = getGenderForId(profileGet.patient_detail.gender!!)
                             profile.value = profileGet
                             path = profileGet.patient_detail.avatar.toString()
@@ -99,15 +101,10 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
         val mCatsName = arrayOf("Мужской", "Женский")
 
         var builder = AlertDialog.Builder(App.activity!!)
-        builder.setTitle("Выбираем кота") // заголовок для диалога
+        builder.setTitle("Выберите пол") // заголовок для диалога
 
         builder.setItems(mCatsName, DialogInterface.OnClickListener { dialog, item ->
             sex.text = mCatsName[item]
-            Toast.makeText(
-                App.activity!!,
-                "Выбранный кот: " + mCatsName[item],
-                Toast.LENGTH_SHORT
-            ).show()
         }).show()
 
     }
@@ -137,7 +134,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
             var bool = true
             if (!name.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
             if (!surname.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
-            if (!surname.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
+            if (!forename.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
 
             if (bool) {
                 val s = surname.text.toString() + "\n" + name.text.toString() + " " + forename.text.toString()
@@ -218,7 +215,14 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
 
 
             val patientDetail = PatientDetail(path, firstName, midName, lastName,getGender(sex.text.toString()),birth.text.toString())
+
+            Log.e("Profile",patientDetail.toString())
+
             putProfile(ProfilePost(patientDetail))
+
+            UserToken.saveAvatar(path!!,App.activity!!)
+            UserToken.saveName("$firstName $lastName",App.activity!!)
+
         }
 
     }
@@ -251,6 +255,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
                         hideProgress()
                         if (result.isSuccessful) {
                             Log.e("UY", result.body()!!.toString())
+                            App.activity.toast("Сохранено")
                         } else {
                             var error = result.errorBody()!!.string()
                             Log.e("Error", error)

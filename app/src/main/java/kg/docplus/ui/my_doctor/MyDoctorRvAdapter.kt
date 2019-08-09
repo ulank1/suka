@@ -61,9 +61,15 @@ class MyDoctorRvAdapter(val context: Context) : RecyclerView.Adapter<MyDoctorRvA
             setService(serviceIcon, titleService, item.service)
 
             specialities.text = ""
-            for (speciality in item.doctor_detail.specialties) {
-                specialities.append(speciality.title)
+
+            for ((i, text) in item.doctor_detail.specialties.withIndex()) {
+                if (i == item.doctor_detail.specialties.size - 1) {
+                    specialities.append(text.title)
+                } else {
+                    specialities.append("${text.title}, ")
+                }
             }
+
             date.text = getDate(item.date,item.exact_time)
             avatar.setOnClickListener {
                 context.startActivity(
@@ -85,6 +91,7 @@ class MyDoctorRvAdapter(val context: Context) : RecyclerView.Adapter<MyDoctorRvA
                     intent.putExtra("patient_id",item.id.toString())
                     intent.putExtra("avatar",item.doctor_detail.avatar)
                     intent.putExtra("speciality",specialities.text.toString())
+                    intent.putExtra("time",item.date+" "+item.exact_time)
                     intent.putExtra("name",name.text.toString())
                     context.startActivity(intent) }
             } else {

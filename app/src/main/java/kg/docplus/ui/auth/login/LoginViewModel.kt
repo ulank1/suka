@@ -13,6 +13,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kg.docplus.App
 import kg.docplus.base.BaseViewModel
+import kg.docplus.fcm.FCMTokenUtils
 import kg.docplus.network.PostApi
 import kg.docplus.qbwrtc.services.CallService
 import kg.docplus.qbwrtc.utils.Consts
@@ -69,8 +70,9 @@ class LoginViewModel : BaseViewModel() {
                                 UserToken.saveToken(result.body()!!.token, App.activity!!)
                                 Log.e("TOKsssaas",result.body()!!.toString())
                                 saveUserData(result.body()!!.video_chat_credentials)
-                                App.activity.startActivity(Intent(App.activity,MainActivity::class.java))
+                                FCMTokenUtils.deleteToken(App.activity)
 
+                                postFCMToken()
                             } else {
                                 var error = result.errorBody()!!.string()
                                 Log.e("Error",error)
@@ -92,13 +94,48 @@ class LoginViewModel : BaseViewModel() {
         }
     }
 
+
+    private fun postFCMToken(){
+        val registrationId = FCMTokenUtils.getTokenFromPrefs(App.activity!!)
+        Log.e("REGISTER_ID",registrationId)
+
+        subscription.add(
+            postApi.login(registrationId,"android")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { showProgress() }
+                .doOnTerminate {  }
+                .subscribe(
+                    { result ->
+                        hideProgress()
+                        if (result.isSuccessful) {
+                            Log.e("TOKENFCM",result.body().toString())
+                            App.activity.startActivity(Intent(App.activity,MainActivity::class.java))
+
+                        } else {
+                            var error = result.errorBody()!!.string()
+                            Log.e("Error",error)
+
+                            if (error.contains("Невозможно войти с",true)){
+                                Log.e("TAF","DDD")
+                            }
+                        }
+
+                    },
+                    {
+                        hideProgress()
+                        Log.e("DDrergojpfD",it.toString())
+                        onRetrievePostListError() }
+                )
+        )
+
+    }
+
     fun onClickForgotPassword(view: EditText) {
-        if (view.text.toString().length<10){
-            view.error = "Введите телефонный номер"
-        }else {
+
             val activity: LoginActivity = view.getParentActivity() as LoginActivity
-            (activity).startActivityForResult(Intent(activity, PhoneActivity::class.java).putExtra("phone",view.text.toString()), 1)
-        }
+            (activity).startActivityForResult(Intent(activity, PhoneActivity::class.java), 1)
+
     }
 
     fun onClickRegister(view: View) {

@@ -36,9 +36,9 @@ class RegisterViewModel : BaseViewModel() {
     fun onClickRegister(phone: EditText, password: EditText, repeatPassword: EditText) {
         var isValidate = true
 
-        if (!phone.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым.")) isValidate = false
+        if (!phone.validate({ s -> s.length>10}, "Поле не может быть пустым.")) isValidate = false
         if (!password.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым.")) isValidate = false
-        if (!password.validate({ s -> s == repeatPassword.text.toString() }, "Пароли не совпадают.")) isValidate = false
+        if (!repeatPassword.validate({ s -> s == password.text.toString() }, "Пароли не совпадают.")) isValidate = false
 
 
         Log.e("DDDD", isValidate.toString())
@@ -56,9 +56,9 @@ class RegisterViewModel : BaseViewModel() {
 
                             if (result.isSuccessful) {
                                 Log.e("Result",result.body().toString())
-                                if (result.body()!!.success == null && result.body()!!.token != null) {
+                                if (result.body()!!.is_profile_filled!=null) {
 
-                                    App.activity?.toast("Вы уже зарестрированы в приложении для докторов")
+                                    App.activity?.toast("Вы уже зарестрированы")
                                     App.activity?.startActivity(
                                         Intent(
                                             App.activity!!,
@@ -70,7 +70,7 @@ class RegisterViewModel : BaseViewModel() {
                                     if (result.body()!!.success!!) {
                                        App.activity?.startActivityForResult(Intent(App.activity,kg.docplus.qbwrtc.activities.LoginActivity::class.java).putExtra("login","dp${phone.text.toString().substring(1)}"),456)
                                     } else {
-                                        App.activity?.toast(result.body()?.error.toString())
+                                        App.activity?.toast(result.body()?.message.toString())
                                     }
                                 }
 

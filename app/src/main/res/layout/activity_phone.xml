@@ -26,12 +26,12 @@
 
     <TextView
         android:id="@+id/title"
-        android:textColor="#fff"
+        android:textColor="@color/color_primary"
         android:textSize="14sp"
         android:layout_marginTop="16dp"
         android:layout_below="@+id/logo"
         android:layout_centerHorizontal="true"
-        android:text="Вход"
+        android:text="Восстановление пароля"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

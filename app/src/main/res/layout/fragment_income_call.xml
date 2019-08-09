@@ -4,7 +4,14 @@
     android:id="@+id/fragmentIncomeCall"
     style="@style/MatchParent">
 
+    <TextView
+        android:text="Вам звонит доктор"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/layout_info_about_call"
         style="@style/MatchWidth"
         android:layout_marginTop="@dimen/action_bar_height"

@@ -65,7 +65,7 @@ abstract class ImagePickerHelper : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= 24) {
                     intent.putExtra(MediaStore.EXTRA_OUTPUT,
                             FileProvider.getUriForFile(this,
-                                    "io.jachoteam.kaska.fileprovider", file))
+                                    "kg.docplus.provider", file))
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 } else

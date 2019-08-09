@@ -14,6 +14,7 @@
     </data>
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -95,7 +96,6 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginStart="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="15dp"
@@ -418,13 +418,14 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/more"
                 android:layout_marginBottom="26dp"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="53dp"
                 android:background="@drawable/rounded_rect_10dp_blue"
-                android:onClick="@{(view) -> viewModel.onClickMore(lineMore)}"
+                android:onClick="@{(view) -> viewModel.onClickMore(lineMore,scroll,more)}"
                 android:padding="5dp"
                 android:text="Подробная информация"
                 android:textAllCaps="true"
@@ -521,6 +522,7 @@
                         android:src="@drawable/guarantee_certificate_icon_profile" />
 
                     <TextView
+                        android:layout_marginStart="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Дипломы и сертификаты"
@@ -553,6 +555,7 @@
                         android:src="@drawable/info_icon_profile" />
 
                     <TextView
+                        android:layout_marginStart="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Дополнительная информация"
@@ -562,6 +565,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:layout_marginStart="36dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{doctor.doctor_detail.extra_info}"
