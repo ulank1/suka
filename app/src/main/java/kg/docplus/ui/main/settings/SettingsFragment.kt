@@ -71,6 +71,19 @@ class SettingsFragment : Fragment() {
 
         }
 
+        terms.setOnClickListener{
+            startActivity(Intent(context!!,TesrmsActivity::class.java))
+        }
+
+        fails. setOnClickListener {
+            startActivity(Intent(context!!,TesrmsActivity::class.java).putExtra("type",1))
+
+        }
+        support.setOnClickListener {
+            startActivity(Intent(context!!,TesrmsActivity::class.java).putExtra("type",2))
+
+        }
+
     }
 
     private fun logOut() {

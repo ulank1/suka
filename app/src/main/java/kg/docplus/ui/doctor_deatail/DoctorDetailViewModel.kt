@@ -21,10 +21,22 @@ import kg.docplus.utils.extension.getServiceName
 import kg.docplus.utils.extension.gone
 import kg.docplus.utils.extension.toast
 import kg.docplus.utils.extension.visible
+import kotlinx.android.synthetic.main.fragment_filter.*
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
-class DoctorDetailViewModel : BaseViewModel(), DetailListener {
+class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItemSelectedListener {
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        getAvailableTimes(service)
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+    }
+
     override fun postAppointment(time: String) {
         createAppointment(service, time)
     }
@@ -174,7 +186,7 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener {
 
     private fun showAlert(service: Int) {
         this.service = service
-        getAvailableTimes(service)
+
 
         dialog = Dialog(App.activity!!)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -183,6 +195,26 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener {
 
         val rv = dialog.findViewById(R.id.rv_times) as RecyclerView
         val title = dialog.findViewById(R.id.service) as TextView
+        val date:Spinner = dialog.findViewById(R.id.date)
+
+        var dateList:ArrayList<String> = ArrayList()
+
+        for (i in 0..6){
+            var calendar = Calendar.getInstance()
+            calendar.add(Calendar.DAY_OF_YEAR,i)
+            var date1 = Date(calendar.timeInMillis)
+            val postFormat = SimpleDateFormat("yyyy-MM-dd")
+            dateList.add(postFormat.format(date1))
+        }
+
+        Log.e("DATES",dateList.toString())
+
+        var adapter = ArrayAdapter(App.activity!!, R.layout.spinner_country_item, dateList)
+        adapter.setDropDownViewResource(R.layout.spinner_country_dropdown_item)
+        date.adapter = adapter
+
+        date.onItemSelectedListener = this
+
 
         title.text = getServiceName(service)
 
@@ -195,6 +227,7 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener {
         dialog.show()
 
     }
+
 
     private fun getAvailableTimes(service: Int) {
         Log.e("DDD", Filter.date + " " + idDoctor + " " + service)

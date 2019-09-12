@@ -382,15 +382,27 @@
                     android:layout_height="20dp"
                     android:layout_marginStart="16dp"
                     android:src="@drawable/graduate_cap_icon_profile" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                <TextView
+                    android:text="Квалификация:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textSize="15sp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
                     android:text="@{doctor.doctor_detail.qualification}"
-                    android:textSize="15sp" />
-
+                    android:textColor="@color/orange"
+                    android:textSize="16dp" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -407,19 +419,33 @@
                     android:layout_marginStart="16dp"
                     android:src="@drawable/hospital_icon_profile" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
-                    android:text="@{doctor.doctor_detail.workplace}"
-                    android:textSize="15sp" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <TextView
+                        android:text="Место работы:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:textSize="15sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="@{doctor.doctor_detail.workplace}"
+                        android:textColor="@color/orange"
+                        android:textSize="16dp" />
+                </LinearLayout>
             </LinearLayout>
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/more"
-                android:layout_marginBottom="26dp"
+                android:layout_marginBottom="56dp"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
@@ -437,7 +463,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="16dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"

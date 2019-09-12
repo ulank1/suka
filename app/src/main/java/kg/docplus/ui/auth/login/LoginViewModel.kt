@@ -118,6 +118,12 @@ class LoginViewModel : BaseViewModel() {
 
                             if (error.contains("Невозможно войти с",true)){
                                 Log.e("TAF","DDD")
+                                App.activity.toast("Невозможно войти с предоставленными учетными данными")
+                            }else if (error.contains("Unable to log-in with doctor account")){
+
+                                App.activity.toast("Невозможно войти с аккаунтом доктора в приложение для пациентов")
+
+
                             }
                         }
 
