@@ -12,7 +12,10 @@ import kg.docplus.R
 import kg.docplus.injection.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_doctor.*
 
-class DoctorActivity : AppCompatActivity() {
+class DoctorActivity : AppCompatActivity(), MydoctorListener {
+    override fun sendPush(patient_id: String?) {
+        viewModel.postNotification(patient_id)
+    }
 
     private lateinit var viewModel: DoctorViewModel
     lateinit var adapter: MyDoctorRvAdapter
@@ -39,7 +42,7 @@ class DoctorActivity : AppCompatActivity() {
         var manager = GridLayoutManager(this,1)
        rv.layoutManager = manager
         rv.setHasFixedSize(false)
-        adapter = MyDoctorRvAdapter(this)
+        adapter = MyDoctorRvAdapter(this,this)
         rv.adapter = adapter
     }
 

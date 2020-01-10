@@ -66,16 +66,19 @@ class FilterViewModel : BaseViewModel() {
     }
 
     fun filterDocs() {
+        if (Filter.date=="гггг-MM-дд"){
+            Filter.date=null
+        }
         Log.e("DATE", Filter.schedule_time_after + " " + Filter.schedule_time_before)
         Log.e("Filter", "${Filter.min_price} ${Filter.max_price} ${Filter.services} ${Filter.name} ")
+        Log.e("FILTER",Filter.ttt())
         subscription.add(
             postApi.getDocs(
                 Filter.min_price,
                 Filter.max_price,
-                Filter.service,
+//                Filter.services,
                 Filter.schedule_time_before,
                 Filter.schedule_time_after,
-                Filter.specialty_title,
                 Filter.name,
                 Filter.date
             )
@@ -144,8 +147,8 @@ class FilterViewModel : BaseViewModel() {
                     { result ->
                         hideProgress()
                         if (result.isSuccessful) {
-                            specialities.value = result.body()!!.results
-                            pageOfAllDropDown = result.body()!!.next
+                            //specialities.value = result.body()!!.results
+                            //pageOfAllDropDown = result.body()!!.next
                             Log.e("TOK",result.body()!!.toString())
                         } else {
                             var error = result.errorBody()!!.string()

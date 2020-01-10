@@ -41,7 +41,14 @@ class TimesRvAdapter(val context: Context,val listener: DetailListener) : Recycl
 
             val text:TextView = itemView.findViewById(R.id.text)
 
-            text.text = item
+            var time = item
+
+            if (item.length>5){
+                time = item.substring(0,6)
+            }
+
+
+            text.text = time
 
             itemView.setOnClickListener {
                 listener.postAppointment(item)

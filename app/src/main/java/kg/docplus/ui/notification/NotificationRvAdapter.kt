@@ -10,6 +10,8 @@ import android.widget.*
 import kg.docplus.R
 import kg.docplus.model.get.Notification
 import kg.docplus.ui.my_doctor.DoctorActivity
+import kg.docplus.utils.extension.gone
+import kg.docplus.utils.extension.visible
 import kotlin.collections.ArrayList
 
 
@@ -42,9 +44,15 @@ class NotificationRvAdapter(val context: Context) : RecyclerView.Adapter<Notific
 
             val name:TextView = itemView.findViewById(R.id.title)
             val desc:TextView = itemView.findViewById(R.id.desc)
+            val online:ImageView = itemView.findViewById(R.id.online)
 
             name.text = item.title
             desc.text = item.body
+            if (item.viewed){
+                online.gone()
+            }else{
+                online.visible()
+            }
 
             itemView.setOnClickListener { context.startActivity(Intent(context,DoctorActivity::class.java)) }
 

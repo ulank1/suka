@@ -77,7 +77,7 @@ class ChatViewModel : BaseViewModel() {
         json.addProperty("avatar", UserToken.getAvatar(App.activity!!))
         json.addProperty("name",UserToken.getName(App.activity!!))
         subscription.add(
-            postApi.sendPush(doc_id.toInt(),json.toString())
+            postApi.sendPush(doc_id,json.toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { showProgress() }

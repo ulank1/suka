@@ -13,7 +13,8 @@
         android:theme="@style/AppTheme1"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.main.settings.SendFailActivity"></activity>
+        <activity android:name=".ui.main.settings.SendFailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.main.settings.TesrmsActivity" />
         <activity
             android:name=".ui.chat.ImageActivity"

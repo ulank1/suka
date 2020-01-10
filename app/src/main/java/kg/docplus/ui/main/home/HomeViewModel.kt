@@ -49,4 +49,34 @@ class HomeViewModel : BaseViewModel() {
 
     }
 
+    fun getNotCounts() {
+
+        subscription.add(
+                postApi.getNotCount()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe { showProgress() }
+                        .subscribe(
+                                { result ->
+                                    hideProgress()
+                                    if (result.isSuccessful) {
+                                        loadingVisibility.value = result.body()?.notifications_count
+                                    } else {
+                                        var error = result.errorBody()!!.string()
+                                        Log.e("Error", error)
+
+                                    }
+
+                                },
+                                {
+                                    hideProgress()
+
+                                    Log.e("DDD", it.toString())
+                                }
+
+                        )
+        )
+
+    }
+
 }

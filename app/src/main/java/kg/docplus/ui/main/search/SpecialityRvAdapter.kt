@@ -1,6 +1,7 @@
 package kg.docplus.ui.main.search
 
 import android.content.Context
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +39,7 @@ class SpecialityRvAdapter(val context: Context, val listener: FilterListener) : 
             text.text = item
 
             itemView.setOnClickListener {
+                Log.e("Onclick","Onclick")
                 listener.choose(text.text.toString())
             }
 

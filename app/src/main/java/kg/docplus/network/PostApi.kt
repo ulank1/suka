@@ -36,7 +36,7 @@ interface PostApi {
     ): Observable<Response<Token>>
 
     @FormUrlEncoded
-    @POST("doc/device")
+    @POST("doc-plus/device")
     fun postDeviceId(
         @Field("registration_id") registration_id: String,
         @Field("type") type: String
@@ -57,12 +57,11 @@ interface PostApi {
     fun getDocs(
         @Query("min_price") min_price:Int,
         @Query("max_price") max_price:Int,
-        @Query("service") service:Int,
-        @Query("starts_at_time") firstTime:String,
-        @Query("expires_at_time") secondTime:String,
-        @Query("specialty_title") specialty_title:String,
+        @Query("schedule_time_after") secondTime:String,
+        @Query("schedule_time_before") firstTime:String,
+//        @Query("specialty_title") specialty_title:String,
         @Query("name") name:String,
-        @Query("date") date:String
+        @Query("date") date:String?
     ): Observable<Response<List<DoctorGet>>>
 
     @GET("doc-plus/doctors")
@@ -74,6 +73,9 @@ interface PostApi {
 
     @GET("doc-plus/doctor-page/{id}")
     fun getDocFull(@Path("id") id: Int): Observable<Response<DoctorFull>>
+
+    @GET("core/city/")
+    fun getCities(): Observable<Response<List<Cities>>>
 
     @GET("doc-plus/favorite-doctor/")
     fun getDocFavourite(): Observable<Response<ArrayList<DoctorGet>>>
@@ -117,19 +119,32 @@ interface PostApi {
     fun getMyDoctors()
             : Observable<Response<ArrayList<MyDoctor>>>
 
+
     @FormUrlEncoded
     @POST("doc-plus/appointment-request")
     fun postAppointment(
         @Field("service") service: Int,
         @Field("doctor") doctor: Int,
         @Field("exact_time") exact_time: String,
-        @Field("date") date: String
+        @Field("date") date: String,
+        @Field("city") city: String?,
+        @Field("address") address: String?
 
         ): Observable<Response<Any?>>
+
+    @FormUrlEncoded
+    @POST("doc-plus/appointment-request")
+    fun postAppointment(
+            @Field("service") service: Int,
+            @Field("doctor") doctor: Int,
+            @Field("exact_time") exact_time: String,
+            @Field("date") date: String
+    ): Observable<Response<Any?>>
+
     @FormUrlEncoded
     @POST("doc-plus/send-push")
     fun sendPush(
-        @Field("user_id") user_id:Int,
+        @Field("user_id") user_id:String,
         @Field("data") data:String
     ): Observable<Response<Any>>
 
@@ -137,4 +152,24 @@ interface PostApi {
     @GET("doc-plus/notification/")
     fun getNotifications()
             : Observable<Response<ArrayList<Notification>>>
+
+    @GET("doc-plus/notification/count/")
+    fun getNotCount()
+            : Observable<Response<NotificationCount>>
+    @GET("core/privacy_and_agreement/")
+    fun getTerms()
+            : Observable<Response<Term>>
+
+    @FormUrlEncoded
+    @POST("core/report-bug-new-message")
+    fun postReport(
+            @Field("message") message: String
+    ): Observable<Response<Any?>>
+
+    @FormUrlEncoded
+    @POST("core/support-new-message")
+    fun postSupport(
+            @Field("message") message: String
+    ): Observable<Response<Any?>>
+
 }

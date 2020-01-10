@@ -19,7 +19,7 @@ import kg.docplus.ui.doctor_deatail.DoctorDetailActivity
 import kg.docplus.utils.extension.*
 import kotlin.collections.ArrayList
 
-class MyDoctorRvAdapter(val context: Context) : RecyclerView.Adapter<MyDoctorRvAdapter.AdvertViewHolder>() {
+class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : RecyclerView.Adapter<MyDoctorRvAdapter.AdvertViewHolder>() {
 
     private var data: ArrayList<MyDoctor> = ArrayList()
 
@@ -94,7 +94,21 @@ class MyDoctorRvAdapter(val context: Context) : RecyclerView.Adapter<MyDoctorRvA
                     intent.putExtra("time",item.date+" "+item.exact_time)
                     intent.putExtra("name",name.text.toString())
                     context.startActivity(intent) }
-            } else {
+
+
+            }else if (item.service==2){
+                action.setImageResource(R.drawable.video_camera)
+                action.visible()
+                action.setOnClickListener {
+                    if (isTime(item.exact_time)) {
+                        listener.sendPush(item.doctor_detail.id.toString())
+                        startCall(name.text.toString(), item.video_chat_credentials.id)
+                    }else{
+                        context.toast("Вы не можете звонить, вне расписания")
+                    }
+                }
+
+            }else {
                 action.gone()
             }
 
@@ -134,6 +148,11 @@ class MyDoctorRvAdapter(val context: Context) : RecyclerView.Adapter<MyDoctorRvA
             text.text = getServiceName(service)
         }
 
+    }
+
+    private fun startCall(name:String,videoId:Int) {
+
+        Suka.suka(context,name,videoId)
     }
 
 

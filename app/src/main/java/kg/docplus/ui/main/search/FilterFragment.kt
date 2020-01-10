@@ -1,6 +1,7 @@
 package kg.docplus.ui.main.search
 
 
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.AdapterView
 import android.widget.TextView
 import com.cjj.MaterialRefreshLayout
@@ -31,8 +33,10 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kg.docplus.App
+import kotlin.text.Typography.times
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -90,7 +94,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_filter, container, false)
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(FilterViewModel::class.java)
-
+        setTime()
         viewModel.specialities.observe(this, Observer {
             specialties.addAll(it!!)
             adapter.notifyDataSetChanged()
@@ -104,6 +108,49 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         Log.e("Token",UserToken.getToken(activity!!))
         return view
     }
+    var times:ArrayList<String> = ArrayList()
+
+    fun setTime(){
+        times.clear()
+        times.add("06:00")
+        times.add("06:30")
+        times.add("07:00")
+        times.add("07:30")
+        times.add("08:00")
+        times.add("08:30")
+        times.add("09:00")
+        times.add("09:30")
+        times.add("10:00")
+        times.add("10:30")
+        times.add("11:00")
+        times.add("11:30")
+        times.add("12:00")
+        times.add("12:30")
+        times.add("13:00")
+        times.add("13:30")
+        times.add("14:00")
+        times.add("14:30")
+        times.add("15:00")
+        times.add("15:30")
+        times.add("16:00")
+        times.add("16:30")
+        times.add("17:00")
+        times.add("17:30")
+        times.add("18:00")
+        times.add("18:30")
+        times.add("19:00")
+        times.add("19:30")
+        times.add("20:00")
+        times.add("20:30")
+        times.add("21:00")
+        times.add("21:30")
+        times.add("22:00")
+        times.add("22:30")
+        times.add("23:00")
+        times.add("23:30")
+        times.add("00:00")
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -249,44 +296,42 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
                 }
                 R.id.from_time -> {
 
-                    val cal = Calendar.getInstance()
-                    val timeSetListener = TimePickerDialog.OnTimeSetListener { time_picker, hour, minute ->
-                        cal.set(Calendar.HOUR_OF_DAY, hour)
-                        cal.set(Calendar.MINUTE, minute)
-                        (v as TextView).text = SimpleDateFormat("HH:mm").format(cal.time)
-                    }
-                    TimePickerDialog(
-                        activity,
-                        timeSetListener,
-                        cal.get(Calendar.HOUR_OF_DAY),
-                        cal.get(Calendar.MINUTE),
-                        true
-                    ).show()
+                  showAlertTime(from_time)
 
                 }
                 R.id.to_time -> {
 
-                    val cal = Calendar.getInstance()
-                    val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-                        cal.set(Calendar.HOUR_OF_DAY, hour)
-                        cal.set(Calendar.MINUTE, minute)
-                        (v as TextView).text = SimpleDateFormat("HH:mm").format(cal.time)
-                    }
-                    TimePickerDialog(
-                        activity,
-                        timeSetListener,
-                        cal.get(Calendar.HOUR_OF_DAY),
-                        cal.get(Calendar.MINUTE),
-                        true
-                    ).show()
+                    showAlertTime(to_time)
 
                 }
             }
         }
     }
 
-    private fun  initDateSpinner() {
 
+    private fun showAlertTime(text:TextView){
+        var dialog = Dialog(context)
+        var listener = DetailListener { _time ->
+            text.text = _time
+            dialog.cancel()
+        }
+
+        var  adapterTimes = AlertTimesRvAdapter(context!!,listener)
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.item_alert_time)
+        val rv = dialog.findViewById(R.id.rv_times) as RecyclerView
+        var manager = GridLayoutManager(context, 3)
+        rv.layoutManager = manager
+        rv.setHasFixedSize(false)
+        rv.adapter = adapterTimes
+        adapterTimes.swapData(times)
+        dialog.show()
+    }
+
+    private fun  initDateSpinner() {
+        dateList.add("гггг-MM-дд")
         for (i in 0..6){
             var calendar = Calendar.getInstance()
             calendar.add(Calendar.DAY_OF_YEAR,i)

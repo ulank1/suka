@@ -28,6 +28,7 @@ class DoctorDetailActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(DoctorDetailViewModel::class.java)
 
         binding.viewModel = viewModel
+        viewModel.getCities()
 
         viewModel.active.value = false
         setupRv()

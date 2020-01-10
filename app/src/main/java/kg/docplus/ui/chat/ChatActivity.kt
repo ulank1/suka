@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
+import android.widget.Button
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -25,7 +26,7 @@ import java.util.*
 
 
 class ChatActivity : ImagePickerHelper() {
-
+    private var isVideoActive = false
     override fun setImagePath(imgpath: Uri) {
         Log.e("sdfsdf",imgpath.path)
         viewModel.postImage(imgpath.path!!)
@@ -88,6 +89,7 @@ class ChatActivity : ImagePickerHelper() {
         avatar.setOnClickListener { startActivity(Intent(this,ImageActivity::class.java).putExtra("image",Filter.chatAvatar)) }
         send_message.setOnClickListener { sendMessage() }
         attachment_photo.setOnClickListener { showPickImageDialog() }
+        video.setOnClickListener { showAlertSuccess() }
     }
 
     private fun setupRv(){
@@ -119,6 +121,11 @@ class ChatActivity : ImagePickerHelper() {
                     messages.add(Message(time,text,user))
 
                 }
+                if (messages.size>0) {
+                    if (messages[messages.size - 1].message == ChatConstants.video_success) {
+                        showAlertSuccess()
+                    }
+                }
 
                 adapter.swapData(messages)
 
@@ -128,6 +135,13 @@ class ChatActivity : ImagePickerHelper() {
             }
         }
 
+    }
+
+    private fun showAlertSuccess() {
+
+        var dialog = VideoSuccessDialog(this)
+        dialog.setUp(intent.getStringExtra("name").toString(),intent.getStringExtra("avatar").toString())
+        var btnPay:Button = dialog.findViewById(R.id.btn_pay)
     }
 
     private fun sendMessage(){
@@ -148,5 +162,27 @@ class ChatActivity : ImagePickerHelper() {
         }
     }
 
+    private fun sendMessage(text:String,notification:String){
 
+        Log.e("ISTIME",isTime(intent.getStringExtra("time")).toString())
+        if (isTime(intent.getStringExtra("time"))) {
+
+            val messageText = Message(Date().time.toString(), text, 0)
+            message.setText("")
+
+            viewModel.sendPush(notification,doc_id,patient_id,intent.getStringExtra("time").toString())
+
+
+            db.collection("chat").document(doc_id).collection(patient_id)
+                    .add(messageText)
+                    .addOnSuccessListener { documentReference ->
+                        //                        Log.e("TRUE", "DocumentSnapshot added with ID: $documentReference")
+                    }
+                    .addOnFailureListener { e ->
+                        //                        Log.e("FALSE", "Error adding document", e)
+                    }
+        }else{
+            toast("Вы не можете отправлять сообщение")
+        }
+    }
 }

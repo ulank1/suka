@@ -84,8 +84,9 @@ class ConfirmCodeViewModel : BaseViewModel() {
                     Log.e("ISreg",isRegister.toString())
                     onVerificationComplete()
                 } else {
+                        Log.e("ERROR",task.exception.toString())
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
-
+                        Log.e("LOH","LOH")
                     }
                 }
             }
@@ -181,6 +182,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
                     { result ->
 
                         if (result.isSuccessful) {
+                            Log.e("jhdjsdsj",result.body().toString())
 
                             UserToken.saveToken(result.body()!!.token, App.activity!!)
                             FCMTokenUtils.deleteToken(App.activity)

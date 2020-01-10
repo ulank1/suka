@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Message (
 
-	@SerializedName("time") val time : String,
-	@SerializedName("message") val message : String,
-	@SerializedName("user") val user : Int
+        @SerializedName("time") val time : String,
+        @SerializedName("message") var message : String,
+        @SerializedName("user") val user : Int
 )

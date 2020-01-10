@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:background="@drawable/round_rect_15_white_stroke_grey"
+        android:layout_below="@id/video_icon"
+        android:layout_marginTop="-25dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="#8A8A8A"
+            android:text="Ваш врач"
+            android:textSize="16sp"
+            android:layout_marginTop="29dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:layout_marginTop="13dp"
+            android:layout_gravity="center"
+            android:id="@+id/image_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:textColor="@color/color_primary"
+            android:text="Елена Васильевна"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textColor="#8A8A8A"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:text="Принял(а) ваш запрос\n на видеозвонок"
+            android:layout_marginTop="9dp"
+            android:id="@+id/status"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_marginTop="14dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="доплата "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/price"
+                android:textColor="@color/colorPrimary"
+                android:text="100 сом"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_marginTop="37dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/rounded_rect_10dp_pink"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:text="Закрыть"
+                android:id="@+id/btn_cancel"
+                android:layout_width="120dp"
+                android:layout_height="30dp"/>
+
+            <Button
+                android:layout_marginStart="5dp"
+                android:background="@drawable/rounded_rect_10dp_blue"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:text="Оплатить"
+                android:id="@+id/btn_pay"
+                android:layout_width="120dp"
+                android:layout_height="30dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/video_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/circle_white"
+        android:padding="14dp"
+        android:src="@drawable/video_camera" />
+
+</RelativeLayout>

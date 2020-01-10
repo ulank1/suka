@@ -14,6 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.base.BaseViewModel
+import kg.docplus.model.get.Cities
 import kg.docplus.model.get.DoctorFull
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.filter.Filter
@@ -30,15 +31,34 @@ import kotlin.collections.ArrayList
 
 class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
-        getAvailableTimes(service)
+
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
+        date = dateList[position]
+        getAvailableTimes(service)
     }
 
     override fun postAppointment(time: String) {
-        createAppointment(service, time)
+        if (service==3){
+            var bool = true
+            if (city.selectedItemPosition==0){
+                App.activity.toast("Выберите город")
+                bool= false
+            }
+
+            if (address.text.toString().isEmpty()){
+                address.error = "Введите адрес"
+                bool = false
+            }
+
+            if (bool){
+                createAppointment(service,time,cities[city.selectedItemPosition].id.toString(),address.text.toString())
+            }
+
+        }else {
+            createAppointment(service, time)
+        }
     }
 
     @Inject
@@ -53,6 +73,7 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
     var service = 0
     lateinit var dialog:Dialog
     lateinit var dialogResult:Dialog
+    lateinit var cities:ArrayList<Cities>
 
 
 
@@ -83,6 +104,36 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
                             adapter.swapData(result.body()!!.doctor_detail.certificates as ArrayList<String>)
                             isActive = result.body()!!.doctor_detail.is_favorite
                             active.value = isActive
+                        } else {
+                            var error = result.errorBody()!!.string()
+                            Log.e("Error", error)
+
+                        }
+
+                    },
+                    {
+                        hideProgress()
+
+                        Log.e("DDD", it.toString())
+                    }
+
+                )
+        )
+
+    }
+   fun getCities() {
+        subscription.add(
+            postApi.getCities()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { showProgress() }
+                .subscribe(
+                    { result ->
+                        hideProgress()
+                        if (result.isSuccessful) {
+                            Log.e("DOC_FULL", result.body()!!.toString())
+                            cities = (result.body() as ArrayList<Cities>?)!!
+
                         } else {
                             var error = result.errorBody()!!.string()
                             Log.e("Error", error)
@@ -183,7 +234,11 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
 
     }
 
+    var date = ""
 
+    var dateList:ArrayList<String> = ArrayList()
+    lateinit var city:Spinner
+    lateinit var address:EditText
     private fun showAlert(service: Int) {
         this.service = service
 
@@ -195,9 +250,26 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
 
         val rv = dialog.findViewById(R.id.rv_times) as RecyclerView
         val title = dialog.findViewById(R.id.service) as TextView
+        address = dialog.findViewById(R.id.edit_address) as EditText
+        city = dialog.findViewById(R.id.cities) as Spinner
         val date:Spinner = dialog.findViewById(R.id.date)
 
-        var dateList:ArrayList<String> = ArrayList()
+        if (service!=3){
+            address.gone()
+            city.gone()
+        }else{
+
+            var cityList:ArrayList<String> = ArrayList()
+            cityList.add("Выберите город")
+            for (city1 in cities){
+                cityList.add(city1.name)
+            }
+
+            var adapter = ArrayAdapter(App.activity!!, R.layout.spinner_country_item, cityList)
+            adapter.setDropDownViewResource(R.layout.spinner_country_dropdown_item)
+            city.adapter = adapter
+        }
+
 
         for (i in 0..6){
             var calendar = Calendar.getInstance()
@@ -231,9 +303,10 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
 
     private fun getAvailableTimes(service: Int) {
         Log.e("DDD", Filter.date + " " + idDoctor + " " + service)
+
         subscription.add(
             postApi.getAviableTimes(
-                Filter.date,
+                date,
                 idDoctor,
                 service
             )
@@ -263,14 +336,16 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
 
     }
 
-    private fun createAppointment(service: Int, time: String) {
+    private fun createAppointment(service: Int, time: String,cityId:String?,address:String?) {
         Log.e("DDD", Filter.date + " " + idDoctor + " " + service)
         subscription.add(
             postApi.postAppointment(
                 service,
                 idDoctor,
                 time,
-                Filter.date
+                date,
+                    cityId,
+                    address
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -299,6 +374,46 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
         )
 
     }
+
+    private fun createAppointment(service: Int, time: String) {
+        Log.e("DDdfsdghjkhgfdsD", Filter.date + " " + idDoctor + " " + service)
+        subscription.add(
+                postApi.postAppointment(
+                        service,
+                        idDoctor,
+                        time,
+                        date,
+                        "",
+                        ""
+                )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe { showProgress() }
+                        .subscribe(
+                                { result ->
+                                    hideProgress()
+                                    if (result.isSuccessful) {
+                                        Log.e("TIMES", result.body()!!.toString())
+                                        dialog.cancel()
+                                        showAlertResult(service)
+                                    } else {
+                                        var error = result.errorBody()!!.string()
+                                        Log.e("Error", error)
+                                        App.activity.toast(error)
+
+                                    }
+
+                                },
+                                {
+                                    hideProgress()
+                                    Log.e("DDD", it.toString())
+                                }
+
+                        )
+        )
+
+    }
+
 
     private fun showAlertResult(service: Int) {
         this.service = service

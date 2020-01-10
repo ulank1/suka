@@ -82,6 +82,9 @@ class LoginViewModel : BaseViewModel() {
                                     Log.e("TAF","DDD")
                                     App.activity!!.toast("Невозможно войти с предоставленными учетными данными")
                                 }
+                                if (error.contains("Unable to log-in with doctor account.")){
+                                    App.activity!!.toast("Невозможно войти с аккаунта доктора в приложении для пациентов")
+                                }
                             }
 
                         },
@@ -100,7 +103,7 @@ class LoginViewModel : BaseViewModel() {
         Log.e("REGISTER_ID",registrationId)
 
         subscription.add(
-            postApi.login(registrationId,"android")
+            postApi.postDeviceId(registrationId,"android")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { showProgress() }

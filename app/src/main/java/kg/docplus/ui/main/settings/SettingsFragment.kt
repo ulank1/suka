@@ -76,11 +76,11 @@ class SettingsFragment : Fragment() {
         }
 
         fails. setOnClickListener {
-            startActivity(Intent(context!!,TesrmsActivity::class.java).putExtra("type",1))
+            startActivity(Intent(context!!,SendFailActivity::class.java).putExtra("type",1))
 
         }
         support.setOnClickListener {
-            startActivity(Intent(context!!,TesrmsActivity::class.java).putExtra("type",2))
+            startActivity(Intent(context!!,SendFailActivity::class.java).putExtra("type",2))
 
         }
 

@@ -59,6 +59,7 @@ class PhoneViewModel : BaseViewModel() {
 
                                     val intent = Intent(App.activity, ConfirmCodeActivity::class.java)
                                     intent.putExtra("phone", phone.text.toString())
+                                    intent.putExtra("password", "dd")
                                     intent.putExtra("isRegister", 1)
                                     App.activity?.startActivity(intent)
                                     App.activity?.finish()

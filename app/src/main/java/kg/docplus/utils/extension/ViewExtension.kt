@@ -19,6 +19,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import jp.wasabeef.glide.transformations.CropTransformation
+import kotlinx.android.synthetic.main.activity_test.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -164,6 +165,15 @@ fun setRoundedImage(imageView: ImageView, url:String, context: Context){
         .apply(RequestOptions().transforms(CenterCrop(),RoundedCorners(16)))
         .into(imageView)
 
+}
+
+fun setCircleImage(imageView: ImageView,url: String,context: Context){
+    Glide.with(context).load(url)
+            .apply(
+                    RequestOptions.bitmapTransform(
+                            (CropCircleTransformation())
+                    )
+            ).into(imageView)
 }
 
 fun isTime(time: String) :Boolean{
