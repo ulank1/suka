@@ -25,6 +25,7 @@ import kg.docplus.qbwrtc.activities.OpponentsActivity
 import kg.docplus.qbwrtc.activities.PermissionsActivity
 import kg.docplus.qbwrtc.utils.Consts
 import kg.docplus.qbwrtc.utils.WebRtcSessionManager
+import kg.docplus.ui.dialogs.TimeChooseDialog
 import kg.docplus.ui.main.home.HomeFragment
 import kg.docplus.ui.main.search.FilterFragment
 import kg.docplus.ui.main.settings.SettingsFragment
@@ -81,7 +82,7 @@ class MainActivity : ImagePickerHelper() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         Log.e("DEVICE_ID",getCurrentDeviceId())
-
+        TimeChooseDialog(this).setUp()
         //chronoMeter()
     }
 

@@ -48,12 +48,12 @@ class ProfileFragment : Fragment() {
 
         binding.viewModel = viewModel
         viewModel.getProfile()
-        viewModel.profile.observe(activity!!, Observer {
+        viewModel.profile.observe(this, Observer {
             Log.e("PROFILE_GET", it.toString())
             binding.profile = it
         })
 
-        (App.activity as MainActivity).pathPhoto.observe(activity!!, Observer {
+        (App.activity as MainActivity).pathPhoto.observe(this, Observer {
            viewModel.postImage(it!!)
         })
 

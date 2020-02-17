@@ -1,6 +1,7 @@
 package kg.docplus.ui.main.search
 
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -30,27 +31,29 @@ import java.util.*
 import kg.docplus.utils.extension.hideKeyboard
 import kotlin.collections.ArrayList
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kg.docplus.App
+import kg.docplus.ui.dialogs.TimeChooseDialog
 import kotlin.text.Typography.times
 
 
 // TODO: Rename parameter arguments, choose names that match
 
-class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterListener,AdapterView.OnItemSelectedListener {
+class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterListener, AdapterView.OnItemSelectedListener {
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (position==0) {
+        if (position == 0) {
             Filter.ordering = "schedule__starts_at_time"
-        }else{
+        } else {
             Filter.ordering = "schedule__services__price"
         }
         adapterResult.clearData()
@@ -81,76 +84,36 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     }
 
     lateinit var adapter: SpecialityRvAdapter
-    lateinit var adapterResult:DoctorRvAdapter
+    lateinit var adapterResult: DoctorRvAdapter
 
     private lateinit var viewModel: FilterViewModel
     var lateStatus = 0
 
-    var specialties:ArrayList<String> = ArrayList()
+    var specialties: ArrayList<String> = ArrayList()
 
-    var dateList:ArrayList<String> = ArrayList()
+    var dateList: ArrayList<String> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_filter, container, false)
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(FilterViewModel::class.java)
-        setTime()
         viewModel.specialities.observe(this, Observer {
             specialties.addAll(it!!)
             adapter.notifyDataSetChanged()
         })
         viewModel.status.observe(this, Observer { setupStatus(it!!) })
-        viewModel.loadingVisibility.observe(this,Observer { progress.visibility = it!! })
-        viewModel.doctors.observe(this,Observer { adapterResult.swapData(it!!)
-        changeStatus(3)})
+        viewModel.loadingVisibility.observe(this, Observer { progress.visibility = it!! })
+        viewModel.doctors.observe(this, Observer {
+            adapterResult.swapData(it!!)
+        })
 
 
-        Log.e("Token",UserToken.getToken(activity!!))
+        Log.e("Token", UserToken.getToken(activity!!))
         return view
     }
-    var times:ArrayList<String> = ArrayList()
 
-    fun setTime(){
-        times.clear()
-        times.add("06:00")
-        times.add("06:30")
-        times.add("07:00")
-        times.add("07:30")
-        times.add("08:00")
-        times.add("08:30")
-        times.add("09:00")
-        times.add("09:30")
-        times.add("10:00")
-        times.add("10:30")
-        times.add("11:00")
-        times.add("11:30")
-        times.add("12:00")
-        times.add("12:30")
-        times.add("13:00")
-        times.add("13:30")
-        times.add("14:00")
-        times.add("14:30")
-        times.add("15:00")
-        times.add("15:30")
-        times.add("16:00")
-        times.add("16:30")
-        times.add("17:00")
-        times.add("17:30")
-        times.add("18:00")
-        times.add("18:30")
-        times.add("19:00")
-        times.add("19:30")
-        times.add("20:00")
-        times.add("20:30")
-        times.add("21:00")
-        times.add("21:30")
-        times.add("22:00")
-        times.add("22:30")
-        times.add("23:00")
-        times.add("23:30")
-        times.add("00:00")
-    }
-
+    var times: ArrayList<String> = ArrayList()
+    lateinit var timeChooseDialog:TimeChooseDialog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -167,28 +130,31 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         spinner.adapter = adapter
         spinner.onItemSelectedListener = this
 
-        val choosen=arguments!!.getInt("service")
+        val choosen = arguments!!.getInt("service")
         Log.e("CHOOSEN", choosen.toString())
-        when(choosen){
-            0->appointment.isChecked = true
-            1->chat.isChecked = true
-            2->video_chat.isChecked = true
-            3->call_home.isChecked = true
+        when (choosen) {
+            0 -> appointment.isChecked = true
+            1 -> chat.isChecked = true
+            2 -> video_chat.isChecked = true
+            3 -> call_home.isChecked = true
         }
+        timeChooseDialog = TimeChooseDialog(context!!)
+        timeChooseDialog.setUp()
 
 
     }
 
     private fun setupRv() {
-        refresh.setMaterialRefreshListener(object:MaterialRefreshListener() {
+        refresh.setMaterialRefreshListener(object : MaterialRefreshListener() {
             override fun onRefresh(materialRefreshLayout: MaterialRefreshLayout) {
                 materialRefreshLayout.finishRefreshing()
                 materialRefreshLayout.finishRefresh()
             }
-            override fun onRefreshLoadMore(materialRefreshLayout:MaterialRefreshLayout) {
-                if (edit_search.text.toString().isNotEmpty()){
+
+            override fun onRefreshLoadMore(materialRefreshLayout: MaterialRefreshLayout) {
+                if (edit_search.text.toString().isNotEmpty()) {
                     viewModel.filterSpeciality(edit_search.text.toString())
-                }else {
+                } else {
                     viewModel.getAllDropdown()
                 }
             }
@@ -206,47 +172,59 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
 
     private fun setOnClickListeners() {
         btn_ok.setOnClickListener(this)
-        from_time.setOnClickListener(this)
-        to_time.setOnClickListener(this)
+        time.setOnClickListener(this)
+        btn_filter.setOnClickListener(this)
+        btn_search.setOnClickListener(this)
         back.setOnClickListener {
-            if (lateStatus>1){
+            if (lateStatus > 1) {
                 changeStatus(1)
-            }else{
+            } else {
                 (activity as MainActivity).onBackFromFragment()
             }
         }
     }
 
-    private fun setupStatus(status:Int){
-        if (status!=lateStatus){
+    private fun setupStatus(status: Int) {
+
+        if (status != lateStatus) {
             lateStatus = status
 
-            when(status){
-                1->{
+            when (status) {
+                1 -> {
                     adapterResult.clearData()
                     refresh.visible()
                     scroll.gone()
                     line_result.gone()
+                    search_line.visible()
+                    btn_filter.gone()
                 }
-                2->{
+                2 -> {
+                    refresh.gone()
+                    scroll.gone()
+                    line_result.visible()
+                    viewModel.filterDocs()
+                    search_line.visible()
+                    btn_filter.visible()
+                }
+                3 -> {
                     initDateSpinner()
                     refresh.gone()
                     scroll.visible()
                     line_result.gone()
-                }
-                3->{
-                    refresh.gone()
-                    scroll.gone()
-                    line_result.visible()
+                    search_line.gone()
                 }
             }
 
         }
     }
-    private fun changeStatus(status:Int){
+
+    private fun changeStatus(status: Int) {
         viewModel.status.value = status
     }
 
+
+
+    @SuppressLint("SetTextI18n")
     override fun onClick(v: View?) {
         if (v != null) {
             when (v.id) {
@@ -254,69 +232,77 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
 
                     Filter.services = ArrayList()
 
-                    if (appointment.isChecked){
+                    if (appointment.isChecked) {
                         Filter.services.add(0)
                         Filter.service = 0
                     }
 
-                    if (chat.isChecked){
+                    if (chat.isChecked) {
                         Filter.services.add(1)
                         Filter.service = 1
                     }
 
-                    if (video_chat.isChecked){
+                    if (video_chat.isChecked) {
                         Filter.services.add(2)
                         Filter.service = 2
                     }
 
-                    if (call_home.isChecked){
+                    if (call_home.isChecked) {
                         Filter.services.add(3)
                         Filter.service = 3
                     }
 
-                    if (min_price.text.toString().isNotEmpty()){
+                    if (min_price.text.toString().isNotEmpty()) {
                         Filter.min_price = min_price.text.toString().toInt()
-                    }else{
+                    } else {
                         Filter.min_price = 0
                     }
 
-                    if (max_price.text.toString().isNotEmpty()){
+                    if (max_price.text.toString().isNotEmpty()) {
                         Filter.max_price = max_price.text.toString().toInt()
-                    }else{
+                    } else {
                         Filter.max_price = 100000
                     }
-
-                    Filter.schedule_time_before = "${from_time.text}"
-                    Filter.schedule_time_after = to_time.text.toString()
 
                     Filter.date = dateList[date.selectedItemPosition]
 
                     viewModel.filterDocs()
 
                 }
-                R.id.from_time -> {
+                R.id.time -> {
 
-                  showAlertTime(from_time)
+                    timeChooseDialog.show()
+                    timeChooseDialog.findViewById<Button>(R.id.btn_ok).setOnClickListener {
+                        Filter.schedule_time_after = timeChooseDialog.getTimeFrom()
+                        Filter.schedule_time_before = timeChooseDialog.getTimeTo()
+                        time.text = "с ${timeChooseDialog.getTimeFrom()} до ${timeChooseDialog.getTimeTo()}"
+                        timeChooseDialog.hide()
+                    }
 
                 }
-                R.id.to_time -> {
+                R.id.btn_search -> {
+                    Filter.name = edit_search.text.toString()
+                    Filter.specialty_title = edit_search.text.toString()
+                    changeStatus(2)
+                    activity!!.hideKeyboard()
+                }
+                R.id.btn_filter -> {
 
-                    showAlertTime(to_time)
-
+                    changeStatus(3)
                 }
             }
         }
     }
 
 
-    private fun showAlertTime(text:TextView){
+    private fun showAlertTime(text: TextView) {
         var dialog = Dialog(context)
         var listener = DetailListener { _time ->
             text.text = _time
             dialog.cancel()
         }
 
-        var  adapterTimes = AlertTimesRvAdapter(context!!,listener)
+        var adapterTimes = AlertTimesRvAdapter(context!!, listener)
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
@@ -330,17 +316,17 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         dialog.show()
     }
 
-    private fun  initDateSpinner() {
+    private fun initDateSpinner() {
         dateList.add("гггг-MM-дд")
-        for (i in 0..6){
+        for (i in 0..6) {
             var calendar = Calendar.getInstance()
-            calendar.add(Calendar.DAY_OF_YEAR,i)
+            calendar.add(Calendar.DAY_OF_YEAR, i)
             var date = Date(calendar.timeInMillis)
             val postFormat = SimpleDateFormat("yyyy-MM-dd")
             dateList.add(postFormat.format(date))
         }
 
-        Log.e("DATES",dateList.toString())
+        Log.e("DATES", dateList.toString())
 
         var adapter = ArrayAdapter(App.activity!!, R.layout.spinner_country_item, dateList)
         adapter.setDropDownViewResource(R.layout.spinner_country_dropdown_item)

@@ -62,5 +62,6 @@
     <!--Pager fragment-->
     <dimen name="pager_image_width">400dp</dimen>
     <dimen name="pager_image_height">500dp</dimen>
+    <dimen name="selected_text_size">16dp</dimen>
 
 </resources>

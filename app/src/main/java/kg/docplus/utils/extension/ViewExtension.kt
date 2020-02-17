@@ -177,6 +177,7 @@ fun setCircleImage(imageView: ImageView,url: String,context: Context){
 }
 
 fun isTime(time: String) :Boolean{
+    return true
     // var test = "2019-07-08 11:20:00"
     val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     try {

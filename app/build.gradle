@@ -129,6 +129,5 @@ dependencies {
     implementation "com.quickblox:quickblox-android-sdk-videochat-webrtc:$rootProject.qbSdkVersion"
 
     implementation "com.navercorp.pulltorefresh:library:${rootProject.pullToRefreshVersion}@aar"
-
-}
+    compile 'com.github.devlight.shadowlayout:library:1.0.2'}
 apply from: "../artifacts.gradle"

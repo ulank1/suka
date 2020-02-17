@@ -142,6 +142,7 @@ class ChatActivity : ImagePickerHelper() {
         var dialog = VideoSuccessDialog(this)
         dialog.setUp(intent.getStringExtra("name").toString(),intent.getStringExtra("avatar").toString())
         var btnPay:Button = dialog.findViewById(R.id.btn_pay)
+
     }
 
     private fun sendMessage(){
