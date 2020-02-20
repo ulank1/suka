@@ -23,6 +23,7 @@ import kg.docplus.utils.extension.isTime
 import kg.docplus.utils.extension.toast
 import kotlinx.android.synthetic.main.activity_test.*
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class ChatActivity : ImagePickerHelper() {
@@ -73,7 +74,7 @@ class ChatActivity : ImagePickerHelper() {
     }
 
     private fun sendPhoto(imageUrl:String) {
-        val messageText = Message(Date().time.toString(),imageUrl,1)
+        val messageText = Message(Date().time.toString(),imageUrl,1,null,false)
         message.setText("")
         db.collection("chat").document(doc_id).collection(patient_id)
             .add(messageText)
@@ -89,7 +90,7 @@ class ChatActivity : ImagePickerHelper() {
         avatar.setOnClickListener { startActivity(Intent(this,ImageActivity::class.java).putExtra("image",Filter.chatAvatar)) }
         send_message.setOnClickListener { sendMessage() }
         attachment_photo.setOnClickListener { showPickImageDialog() }
-        video.setOnClickListener { showAlertSuccess() }
+        video.setOnClickListener { if (isVideoActive){sendMessage(ChatConstants.request_video,"Пациент хочет переключиться на видеозвонок") }}
     }
 
     private fun setupRv(){
@@ -114,19 +115,27 @@ class ChatActivity : ImagePickerHelper() {
                     Log.e("GET", "${document.id} => ${document.data}")
                     val text:String = document.data["message"] as String
                     val time:String = document.data["time"] as String
+                    val viewed:Boolean? = document.data["_viewed"] as Boolean?
+                    val status:String? = document.data["status"] as String?
                     var user:Int=1
                     if (document.data["user"] !=null)
                      user= (document.data["user"] as Long).toInt()
 
-                    messages.add(Message(time,text,user))
-
-                }
-                if (messages.size>0) {
-                    if (messages[messages.size - 1].message == ChatConstants.video_success) {
-                        showAlertSuccess()
+                    Log.e("VIEWED", viewed.toString())
+                    if (viewed.toString()=="false"){
+                        if (status==ChatConstants.video_success){
+                            showAlertSuccess()
+                            resendMessage(ChatConstants.video_success,document.id)
+                        }else if(status==ChatConstants.video_cancel){
+                            resendMessage(ChatConstants.video_cancel,document.id)
+                            showAlertCancel()
+                        }else if(status==ChatConstants.request_video){
+                            isVideoActive = !isTime(time.toLong())
+                        }
                     }
-                }
+                    messages.add(Message(time,text,user,status,viewed))
 
+                }
                 adapter.swapData(messages)
 
                 Log.e("MESSSAGE",messages.toString())
@@ -138,16 +147,19 @@ class ChatActivity : ImagePickerHelper() {
     }
 
     private fun showAlertSuccess() {
-
         var dialog = VideoSuccessDialog(this)
         dialog.setUp(intent.getStringExtra("name").toString(),intent.getStringExtra("avatar").toString())
         var btnPay:Button = dialog.findViewById(R.id.btn_pay)
+    }
 
+    private fun showAlertCancel() {
+        var dialog = VideoCancelDialog(this)
+        dialog.setUp(intent.getStringExtra("name").toString(),intent.getStringExtra("avatar").toString())
     }
 
     private fun sendMessage(){
         if (isTime(intent.getStringExtra("time"))) {
-            val messageText = Message(Date().time.toString(), message.text.toString(), 1)
+            val messageText = Message(Date().time.toString(), message.text.toString(), 1,null,null)
             viewModel.sendPush(messageText.message, doc_id, patient_id,intent.getStringExtra("time"))
             message.setText("")
             db.collection("chat").document(doc_id).collection(patient_id)
@@ -168,7 +180,7 @@ class ChatActivity : ImagePickerHelper() {
         Log.e("ISTIME",isTime(intent.getStringExtra("time")).toString())
         if (isTime(intent.getStringExtra("time"))) {
 
-            val messageText = Message(Date().time.toString(), text, 0)
+            val messageText = Message(Date().time.toString(), "", 1,text,false)
             message.setText("")
 
             viewModel.sendPush(notification,doc_id,patient_id,intent.getStringExtra("time").toString())
@@ -176,6 +188,26 @@ class ChatActivity : ImagePickerHelper() {
 
             db.collection("chat").document(doc_id).collection(patient_id)
                     .add(messageText)
+                    .addOnSuccessListener { documentReference ->
+                        //                        Log.e("TRUE", "DocumentSnapshot added with ID: $documentReference")
+                    }
+                    .addOnFailureListener { e ->
+                        //                        Log.e("FALSE", "Error adding document", e)
+                    }
+        }else{
+            toast("Вы не можете отправлять сообщение")
+        }
+    }
+
+    private fun resendMessage(text:String,id:String){
+
+        Log.e("ISTIME",isTime(intent.getStringExtra("time")).toString())
+        if (isTime(intent.getStringExtra("time"))) {
+
+            val messageText = Message(Date().time.toString(), "", 1,text,true)
+            db.collection("chat").document(doc_id).collection(patient_id)
+                    .document(id)
+                    .set(messageText)
                     .addOnSuccessListener { documentReference ->
                         //                        Log.e("TRUE", "DocumentSnapshot added with ID: $documentReference")
                     }

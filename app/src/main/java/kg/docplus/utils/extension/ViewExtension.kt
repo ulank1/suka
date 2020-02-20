@@ -24,7 +24,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun View.getParentActivity(): AppCompatActivity?{
+fun View.getParentActivity(): AppCompatActivity? {
     var context = this.context
     while (context is ContextWrapper) {
         if (context is AppCompatActivity) {
@@ -37,8 +37,8 @@ fun View.getParentActivity(): AppCompatActivity?{
 
 
 fun EditText.validate(
-    validator: (String) -> Boolean,
-    message: String
+        validator: (String) -> Boolean,
+        message: String
 ): Boolean {
     val flag = validator(this.text.toString())
     this.error = if (flag) null else message
@@ -47,8 +47,8 @@ fun EditText.validate(
 }
 
 fun TextView.validate(
-    validator: (String) -> Boolean,
-    message: String
+        validator: (String) -> Boolean,
+        message: String
 ): Boolean {
     val flag = validator(this.text.toString())
     this.error = if (flag) null else message
@@ -57,38 +57,41 @@ fun TextView.validate(
 }
 
 fun EditText.text(
-    message: String?
+        message: String?
 ) {
     if (!message.isNullOrEmpty()) {
         this.setText(message)
     }
 }
+
 fun EditText.cursorToEnd(
 ) {
     setSelection(text.toString().length)
 }
+
 fun TextView.text(
-    message: String?
+        message: String?
 ) {
     if (!message.isNullOrEmpty()) this.text = message
 }
 
 fun EditText.toInteger(
-    message: String?
+        message: String?
 ) {
     if (!message.isNullOrEmpty()) {
         this.setText(message)
     }
 }
+
 fun Context.toast(message: String, duration: Int = Toast.LENGTH_LONG): Toast =
-    Toast.makeText(this, message, duration).apply {
-        show()
-    }
+        Toast.makeText(this, message, duration).apply {
+            show()
+        }
 
 fun Context.toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_LONG): Toast =
-    Toast.makeText(this, resId, duration).apply {
-        show()
-    }
+        Toast.makeText(this, resId, duration).apply {
+            show()
+        }
 
 fun View.gone() {
     visibility = View.GONE
@@ -98,7 +101,7 @@ fun View.visible() {
     visibility = View.VISIBLE
 }
 
-fun Activity.hideKeyboard(){
+fun Activity.hideKeyboard() {
     val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     //Find the currently focused view, so we can grab the correct window token from it.
     var view = currentFocus
@@ -108,6 +111,7 @@ fun Activity.hideKeyboard(){
     }
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
+
 @SuppressLint("SimpleDateFormat")
 fun dateToPostFormat(date: Date): String {
     val postFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -121,20 +125,27 @@ fun dateToChatFormat(date: Date): String {
     return postFormat.format(date)
 }
 
-fun getServiceName(service:Int):String{
+@SuppressLint("SimpleDateFormat")
+fun dateToStatusFormat(date: Date): String {
+    val postFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    return postFormat.format(date)
+}
 
-    return when(service){
-        0->"Записатья на прием"
-        1->"Онлайн чат"
-        2->"Видео консультация"
-        3->"Вызвать на дом"
+
+fun getServiceName(service: Int): String {
+
+    return when (service) {
+        0 -> "Записатья на прием"
+        1 -> "Онлайн чат"
+        2 -> "Видео консультация"
+        3 -> "Вызвать на дом"
         else -> "Онлайн чат"
     }
 
 }
 
 @SuppressLint("SimpleDateFormat")
-fun getDayOfWeekName(date:String):String {
+fun getDayOfWeekName(date: String): String {
     val format = SimpleDateFormat("yyyy-MM-dd")
     var day = 0
     try {
@@ -148,26 +159,27 @@ fun getDayOfWeekName(date:String):String {
         e.printStackTrace()
     }
 
-    return when(day){
-        0->"Пн"
-        1->"Вт"
-        2->"Ср"
-        3->"Чт"
-        4->"Пт"
-        5->"Сб"
-        6->"Вс"
+    return when (day) {
+        0 -> "Пн"
+        1 -> "Вт"
+        2 -> "Ср"
+        3 -> "Чт"
+        4 -> "Пт"
+        5 -> "Сб"
+        6 -> "Вс"
         else -> "Пн"
     }
 }
-fun setRoundedImage(imageView: ImageView, url:String, context: Context){
+
+fun setRoundedImage(imageView: ImageView, url: String, context: Context) {
 
     Glide.with(context).load(url)
-        .apply(RequestOptions().transforms(CenterCrop(),RoundedCorners(16)))
-        .into(imageView)
+            .apply(RequestOptions().transforms(CenterCrop(), RoundedCorners(16)))
+            .into(imageView)
 
 }
 
-fun setCircleImage(imageView: ImageView,url: String,context: Context){
+fun setCircleImage(imageView: ImageView, url: String, context: Context) {
     Glide.with(context).load(url)
             .apply(
                     RequestOptions.bitmapTransform(
@@ -176,7 +188,7 @@ fun setCircleImage(imageView: ImageView,url: String,context: Context){
             ).into(imageView)
 }
 
-fun isTime(time: String) :Boolean{
+fun isTime(time: String): Boolean {
     return true
     // var test = "2019-07-08 11:20:00"
     val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -184,14 +196,34 @@ fun isTime(time: String) :Boolean{
         val data = format.parse(time)
 //        val testdata = format.parse(test)
         val testdata = Date()
-        val lastDate = Date(data.time+(25*60000))
+        val lastDate = Date(data.time + (25 * 60000))
 
-        Log.e("DAtes",format.format(data)+" "+format.format(lastDate))
+        Log.e("DAtes", format.format(data) + " " + format.format(lastDate))
 
-        return testdata.after(data)&&testdata.before(lastDate)
+        return testdata.after(data) && testdata.before(lastDate)
 
     } catch (e: ParseException) {
         e.printStackTrace()
     }
     return false
 }
+
+fun isTime(time: Long): Boolean {
+    var diff = (Date().time - time)
+    return diff < 25 * 60000
+}
+
+@SuppressLint("SimpleDateFormat")
+fun isTimeDoctor(date: String): Boolean {
+    var minute25 = 25 * 60000
+    val postFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    var date1 = postFormat.parse(date)
+    var now = Date()
+    if (date1.time - now.time in 1 until minute25) {
+        return true
+    }
+
+    return false
+}
+
+

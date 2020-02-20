@@ -32,10 +32,11 @@ class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : R
 
     override fun getItemCount() = data.size
 
-    override fun onBindViewHolder(holder: AdvertViewHolder, position: Int) = holder.bind(data[position])
-
-    fun swapData(data: List<MyDoctor>) {
+    override fun onBindViewHolder(holder: AdvertViewHolder, position: Int) = holder.bind(data[position],id)
+    private var id = -1
+    fun swapData(data: List<MyDoctor>,id:Int) {
         this.data.addAll(data)
+        this.id = id
         notifyDataSetChanged()
         Log.e("DATARR", data.toString())
     }
@@ -45,7 +46,7 @@ class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : R
     }
 
     inner class AdvertViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MyDoctor) = with(itemView) {
+        fun bind(item: MyDoctor,id: Int) = with(itemView) {
 
             val name: TextView = itemView.findViewById(R.id.name)
             val date: TextView = itemView.findViewById(R.id.date)
@@ -83,33 +84,44 @@ class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : R
             if (item.doctor_detail.avatar != null)
                 setImage(item.doctor_detail.avatar, avatar)
 
-            if (item.service == 1) {
-                action.visible()
-                action.setOnClickListener {
-                    var intent = Intent(context,ChatActivity::class.java)
-                    intent.putExtra("doc_id",item.doctor_detail.id.toString())
-                    intent.putExtra("patient_id",item.id.toString())
-                    intent.putExtra("avatar",item.doctor_detail.avatar)
-                    intent.putExtra("speciality",specialities.text.toString())
-                    intent.putExtra("time",item.date+" "+item.exact_time)
-                    intent.putExtra("name",name.text.toString())
-                    context.startActivity(intent) }
+            if (item.service == 1 && item.service == 2){
+                if (item.id==id){
 
-
-            }else if (item.service==2){
-                action.setImageResource(R.drawable.video_camera)
-                action.visible()
-                action.setOnClickListener {
-                    if (isTime(item.exact_time)) {
-                        listener.sendPush(item.doctor_detail.id.toString())
-                        startCall(name.text.toString(), item.video_chat_credentials.id)
-                    }else{
-                        context.toast("Вы не можете звонить, вне расписания")
-                    }
                 }
+            }
 
-            }else {
-                action.gone()
+            when {
+                item.service == 1 -> {
+                    action.visible()
+                    action.setImageResource(R.drawable.chat_doc)
+                    action.setOnClickListener {
+                        var intent = Intent(context,ChatActivity::class.java)
+                        intent.putExtra("doc_id",item.doctor_detail.id.toString())
+                        intent.putExtra("patient_id",item.id.toString())
+                        intent.putExtra("avatar",item.doctor_detail.avatar)
+                        intent.putExtra("speciality",specialities.text.toString())
+                        intent.putExtra("time",item.date+" "+item.exact_time)
+                        intent.putExtra("name",name.text.toString())
+                        context.startActivity(intent) }
+
+
+                }
+                item.service==2 -> {
+                    action.setImageResource(R.drawable.video_camera)
+                    action.visible()
+                    action.setOnClickListener {
+                        if (isTime(item.exact_time)) {
+                            listener.sendPush(item.doctor_detail.id.toString())
+                            startCall(name.text.toString(), item.video_chat_credentials.id)
+                        }else{
+                            context.toast("Вы не можете звонить, вне расписания")
+                        }
+                    }
+
+                }
+                else -> action.gone()
+
+
             }
 
             itemView.setOnClickListener {

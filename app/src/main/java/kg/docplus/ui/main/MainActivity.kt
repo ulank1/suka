@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -21,16 +22,21 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.quickblox.core.helper.Utils
 import kg.docplus.App
 import kg.docplus.R
+import kg.docplus.injection.ViewModelFactory
+import kg.docplus.model.get.my_doctor.MyDoctor
 import kg.docplus.qbwrtc.activities.OpponentsActivity
 import kg.docplus.qbwrtc.activities.PermissionsActivity
 import kg.docplus.qbwrtc.utils.Consts
 import kg.docplus.qbwrtc.utils.WebRtcSessionManager
 import kg.docplus.ui.dialogs.TimeChooseDialog
 import kg.docplus.ui.main.home.HomeFragment
+import kg.docplus.ui.main.home.HomeViewModel
 import kg.docplus.ui.main.search.FilterFragment
 import kg.docplus.ui.main.settings.SettingsFragment
+import kg.docplus.ui.my_doctor.DoctorActivity
 import kg.docplus.ui.profile.ProfileFragment
 import kg.docplus.utils.ImagePickerHelper
+import kg.docplus.utils.extension.isTimeDoctor
 import kotlinx.android.synthetic.main.activity_main2.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,6 +45,7 @@ import kotlin.concurrent.timer
 class MainActivity : ImagePickerHelper() {
 
     private var webRtcSessionManager: WebRtcSessionManager? = null
+    private lateinit var viewModel: MainViewModel
 
     val pathPhoto: MutableLiveData<String> = MutableLiveData()
     var isBack = false
@@ -79,6 +86,18 @@ class MainActivity : ImagePickerHelper() {
         PermissionsActivity.startActivity(this, false, *Consts.PERMISSIONS)
         webRtcSessionManager = WebRtcSessionManager.getInstance(applicationContext)
         replaceFragment(1)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(MainViewModel::class.java)
+        viewModel.getDoctorFavourite()
+        viewModel.myDoctor.observe(this,androidx.lifecycle.Observer {
+            for (i in 0..5){
+                var myDoctor = it[i]
+                if (isTimeDoctor(myDoctor.date+" "+myDoctor.exact_time)){
+                    startActivity(Intent(this,DoctorActivity::class.java).putExtra("service_id",myDoctor.id))
+                    break
+                }
+            }
+
+        })
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         Log.e("DEVICE_ID",getCurrentDeviceId())

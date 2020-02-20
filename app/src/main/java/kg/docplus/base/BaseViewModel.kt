@@ -18,6 +18,7 @@ import kg.docplus.ui.auth.register.RegisterViewModel
 import kg.docplus.ui.auth.register.confirm_code.ConfirmCodeViewModel
 import kg.docplus.ui.chat.ChatViewModel
 import kg.docplus.ui.favorite_doctor.FavouriteViewModel
+import kg.docplus.ui.main.MainViewModel
 import kg.docplus.ui.main.settings.SettingsViewModel
 import kg.docplus.ui.my_doctor.DoctorViewModel
 import kg.docplus.ui.notification.NotificationViewModel
@@ -73,6 +74,7 @@ abstract class BaseViewModel(): ViewModel(){
             is DoctorViewModel -> injector.inject(this)
             is NotificationViewModel -> injector.inject(this)
             is SettingsViewModel -> injector.inject(this)
+            is MainViewModel -> injector.inject(this)
 
         }
     }

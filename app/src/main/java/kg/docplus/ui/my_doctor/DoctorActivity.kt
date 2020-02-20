@@ -24,7 +24,7 @@ class DoctorActivity : AppCompatActivity(), MydoctorListener {
         setContentView(R.layout.activity_doctor)
 
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(DoctorViewModel::class.java)
-        viewModel.myDoctor.observe(this, Observer { adapter.swapData(it) })
+        viewModel.myDoctor.observe(this, Observer { adapter.swapData(it,intent.getIntExtra("service_id",-1)) })
 
         back.setOnClickListener { finish() }
         setupRv()
