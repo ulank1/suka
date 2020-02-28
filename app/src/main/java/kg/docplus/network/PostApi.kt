@@ -21,14 +21,14 @@ interface PostApi {
      */
 
     @FormUrlEncoded
-    @POST("doc-plus/sign-in")
+    @POST("doc-plus/sign-in/")
     fun login(
         @Field("phone_number") phone: String,
         @Field("password") password: String
     ): Observable<Response<TokenWithVideo>>
 
     @FormUrlEncoded
-    @POST("doc-plus/sign-up")
+    @POST("doc-plus/sign-up/")
     fun register(
         @Field("phone_number") email: String,
         @Field("password") password: String,
@@ -36,7 +36,7 @@ interface PostApi {
     ): Observable<Response<Token>>
 
     @FormUrlEncoded
-    @POST("doc-plus/device")
+    @POST("doc-plus/device/")
     fun postDeviceId(
         @Field("registration_id") registration_id: String,
         @Field("type") type: String
@@ -44,7 +44,7 @@ interface PostApi {
 
 
     @FormUrlEncoded
-    @POST("doc-plus/change-password")
+    @POST("doc-plus/change-password/")
     fun newPassword(
         @Field("new_password") password: String,
         @Field("phone_number") phone: String
@@ -53,7 +53,7 @@ interface PostApi {
     @GET("doc-plus/user-exists/")
     fun isUserExist(@Query("phone_number") phone:String): Observable<Response<TokenRegister>>
 
-    @GET("doc-plus/doctors")
+    @GET("doc-plus/doctors/")
     fun getDocs(
         @Query("min_price") min_price:Int,
         @Query("max_price") max_price:Int,
@@ -64,14 +64,14 @@ interface PostApi {
         @Query("date") date:String?
     ): Observable<Response<List<DoctorGet>>>
 
-    @GET("doc-plus/doctors")
+    @GET("doc-plus/doctors/")
     fun getDocsTest(): Observable<Response<List<DoctorGet>>>
 
 
-    @GET("doc-plus/dropdown-list")
+    @GET("doc-plus/dropdown-list/")
     fun getDropdown(@Query("page") page: String): Observable<Response<DropDown>>
 
-    @GET("doc-plus/doctor-page/{id}")
+    @GET("doc-plus/doctor-page/{id}/")
     fun getDocFull(@Path("id") id: Int): Observable<Response<DoctorFull>>
 
     @GET("core/city/")
@@ -80,10 +80,10 @@ interface PostApi {
     @GET("doc-plus/favorite-doctor/")
     fun getDocFavourite(): Observable<Response<ArrayList<DoctorGet>>>
 
-    @GET("doc-plus/profile")
+    @GET("doc-plus/profile/")
     fun getProfile(): Observable<Response<ProfileGet>>
 
-    @GET("doc-plus/dropdown-filter")
+    @GET("doc-plus/dropdown-filter/")
     fun getDropDownFilter(
         @Query("page") page: String,
         @Query("q") q:String)
@@ -99,15 +99,15 @@ interface PostApi {
         @Path("id") id: Int
     ): Observable<Response<Any>>
     @Multipart
-    @POST("core/media")
+    @POST("core/media/")
     fun postImage(@Part file: MultipartBody.Part): Observable<Response<UrlImage>>
 
-    @PUT("doc-plus/profile")
+    @PUT("doc-plus/profile/")
     fun putProfile(
         @Body patientDetail: ProfilePost
     ): Observable<Response<Any>>
 
-    @GET("doc-plus/available-times")
+    @GET("doc-plus/available-times/")
     fun getAviableTimes(
         @Query("date") date: String,
         @Query("doctor") doctor: Int,
@@ -115,13 +115,13 @@ interface PostApi {
             : Observable<Response<AvailableTime>>
 
 
-    @GET("doc-plus/my-doctors")
+    @GET("doc-plus/my-doctors/")
     fun getMyDoctors()
             : Observable<Response<ArrayList<MyDoctor>>>
 
 
     @FormUrlEncoded
-    @POST("doc-plus/appointment-request")
+    @POST("doc-plus/appointment-request/")
     fun postAppointment(
         @Field("service") service: Int,
         @Field("doctor") doctor: Int,
@@ -133,7 +133,7 @@ interface PostApi {
         ): Observable<Response<Any?>>
 
     @FormUrlEncoded
-    @POST("doc-plus/appointment-request")
+    @POST("doc-plus/appointment-request/")
     fun postAppointment(
             @Field("service") service: Int,
             @Field("doctor") doctor: Int,
@@ -142,7 +142,7 @@ interface PostApi {
     ): Observable<Response<Any?>>
 
     @FormUrlEncoded
-    @POST("doc-plus/send-push")
+    @POST("doc-plus/send-push/")
     fun sendPush(
         @Field("user_id") user_id:String,
         @Field("data") data:String
@@ -161,13 +161,13 @@ interface PostApi {
             : Observable<Response<Term>>
 
     @FormUrlEncoded
-    @POST("core/report-bug-new-message")
+    @POST("core/report-bug-new-message/")
     fun postReport(
             @Field("message") message: String
     ): Observable<Response<Any?>>
 
     @FormUrlEncoded
-    @POST("core/support-new-message")
+    @POST("core/support-new-message/")
     fun postSupport(
             @Field("message") message: String
     ): Observable<Response<Any?>>

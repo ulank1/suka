@@ -35,6 +35,7 @@ import kg.docplus.ui.main.search.FilterFragment
 import kg.docplus.ui.main.settings.SettingsFragment
 import kg.docplus.ui.my_doctor.DoctorActivity
 import kg.docplus.ui.profile.ProfileFragment
+import kg.docplus.ui.rating.CreateRatingActivity
 import kg.docplus.utils.ImagePickerHelper
 import kg.docplus.utils.extension.isTimeDoctor
 import kotlinx.android.synthetic.main.activity_main2.*
@@ -86,6 +87,9 @@ class MainActivity : ImagePickerHelper() {
         PermissionsActivity.startActivity(this, false, *Consts.PERMISSIONS)
         webRtcSessionManager = WebRtcSessionManager.getInstance(applicationContext)
         replaceFragment(1)
+
+        //startActivity(Intent(this,CreateRatingActivity::class.java))
+
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(MainViewModel::class.java)
         viewModel.getDoctorFavourite()
         viewModel.myDoctor.observe(this,androidx.lifecycle.Observer {

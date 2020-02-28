@@ -17,6 +17,7 @@ import kg.docplus.ui.chat.ChatActivity
 import kg.docplus.ui.chat.ImageActivity
 import kg.docplus.ui.doctor_deatail.DoctorDetailActivity
 import kg.docplus.utils.extension.*
+import kotlinx.android.synthetic.main.item_my_doctor.view.*
 import kotlin.collections.ArrayList
 
 class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : RecyclerView.Adapter<MyDoctorRvAdapter.AdvertViewHolder>() {
@@ -84,45 +85,77 @@ class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : R
             if (item.doctor_detail.avatar != null)
                 setImage(item.doctor_detail.avatar, avatar)
 
-            if (item.service == 1 && item.service == 2){
-                if (item.id==id){
-
-                }
-            }
 
             when {
                 item.service == 1 -> {
-                    action.visible()
-                    action.setImageResource(R.drawable.chat_doc)
-                    action.setOnClickListener {
-                        var intent = Intent(context,ChatActivity::class.java)
-                        intent.putExtra("doc_id",item.doctor_detail.id.toString())
-                        intent.putExtra("patient_id",item.id.toString())
-                        intent.putExtra("avatar",item.doctor_detail.avatar)
-                        intent.putExtra("speciality",specialities.text.toString())
-                        intent.putExtra("time",item.date+" "+item.exact_time)
-                        intent.putExtra("name",name.text.toString())
-                        context.startActivity(intent) }
+                    if (item.id==id){
+                        itemView.btn_action_active.visible()
+                        action.gone()
+                        Glide.with(this).asGif().load(R.raw.chat).into(itemView.btn_action_active)
+                        itemView.btn_action_active.setOnClickListener {
+                            var intent = Intent(context, ChatActivity::class.java)
+                            intent.putExtra("doc_id", item.doctor_detail.id.toString())
+                            intent.putExtra("patient_id", item.id.toString())
+                            intent.putExtra("avatar", item.doctor_detail.avatar)
+                            intent.putExtra("speciality", specialities.text.toString())
+                            intent.putExtra("time", item.date + " " + item.exact_time)
+                            intent.putExtra("name", name.text.toString())
+                            context.startActivity(intent)
+                        }
 
-
-                }
-                item.service==2 -> {
-                    action.setImageResource(R.drawable.video_camera)
-                    action.visible()
-                    action.setOnClickListener {
-                        if (isTime(item.exact_time)) {
-                            listener.sendPush(item.doctor_detail.id.toString())
-                            startCall(name.text.toString(), item.video_chat_credentials.id)
-                        }else{
-                            context.toast("Вы не можете звонить, вне расписания")
+                    }else {
+                        itemView.btn_action_active.gone()
+                        action.visible()
+                        action.setImageResource(R.drawable.chat_doc)
+                        action.setOnClickListener {
+                            var intent = Intent(context, ChatActivity::class.java)
+                            intent.putExtra("doc_id", item.doctor_detail.id.toString())
+                            intent.putExtra("patient_id", item.id.toString())
+                            intent.putExtra("avatar", item.doctor_detail.avatar)
+                            intent.putExtra("speciality", specialities.text.toString())
+                            intent.putExtra("time", item.date + " " + item.exact_time)
+                            intent.putExtra("name", name.text.toString())
+                            context.startActivity(intent)
                         }
                     }
 
                 }
-                else -> action.gone()
+                item.service==2 -> {
+                    if (item.id==id){
+                        itemView.btn_action_active.visible()
+                        action.gone()
+                        Glide.with(this).asGif().load(R.raw.video).into(itemView.btn_action_active)
+                        itemView.btn_action_active.setOnClickListener {
+                            if (isTime(item.exact_time)) {
+                                listener.sendPush(item.doctor_detail.id.toString())
+                                startCall(name.text.toString(), item.video_chat_credentials.id)
+                            } else {
+                                context.toast("Вы не можете звонить, вне расписания")
+                            }
+                        }
+                    }else {
+                        itemView.btn_action_active.gone()
+                        action.setImageResource(R.drawable.video_camera)
+                        action.visible()
+                        action.setOnClickListener {
+                            if (isTime(item.exact_time)) {
+                                listener.sendPush(item.doctor_detail.id.toString())
+                                startCall(name.text.toString(), item.video_chat_credentials.id)
+                            } else {
+                                context.toast("Вы не можете звонить, вне расписания")
+                            }
+                        }
+                    }
+
+                }
+                else -> {
+                    action.gone()
+                    itemView.btn_action_active.gone()
+                }
 
 
             }
+
 
             itemView.setOnClickListener {
                 //                App.activity!!.startActivity(Intent(App.activity, DoctorDetailActivity::class.java).putExtra("id",item.id))
