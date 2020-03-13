@@ -317,8 +317,8 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     }
 
     private fun initDateSpinner() {
-        dateList.add("гггг-MM-дд")
-        for (i in 0..6) {
+        dateList.add("Выберите дату")
+        for (i in 0..13) {
             var calendar = Calendar.getInstance()
             calendar.add(Calendar.DAY_OF_YEAR, i)
             var date = Date(calendar.timeInMillis)
@@ -333,6 +333,8 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         date.adapter = adapter
 
     }
+
+
 
 
 }

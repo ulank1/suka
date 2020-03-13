@@ -74,13 +74,13 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
                             Log.e("PRRRRR",profileGet.toString())
                             profileGet.patient_detail.gender = getGenderForId(profileGet.patient_detail.gender!!)
                             profile.value = profileGet
-                            path = profileGet.patient_detail.avatar.toString()
+                            path = profileGet.patient_detail.avatar?.file.toString()
                             if (!path.isNullOrEmpty()) {
                                 avatar.value = path
                             }
                         } else {
                             var error = result.errorBody()!!.string()
-                            Log.e("Error", error)
+                            Log.e("Error23456789", error)
 
                         }
 
@@ -88,7 +88,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
                     {
                         hideProgress()
 
-                        Log.e("DDddsfD", it.toString())
+                        Log.e("DDddsfD2121", it.toString())
                     }
 
                 )

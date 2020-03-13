@@ -15,10 +15,79 @@
       },
       "oauth_client": [
         {
+          "client_id": "219289214801-cjeqepjfs16potbh54lae1t0pj4i2bab.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kg.docplus",
+            "certificate_hash": "4244dcf03fffdf00922826e93fc947c492466c52"
+          }
+        },
+        {
+          "client_id": "219289214801-9spc3be8cpi7pbcnk7t8b8sk14l2l3m7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kg.docplus",
+            "certificate_hash": "c9aafc50fa2452b8824dd141cfb6bf40f8b03175"
+          }
+        },
+        {
           "client_id": "219289214801-7ebtooguiu3kn260u3fdfv9lk71amjv4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "kg.docplus",
+            "certificate_hash": "1b99bbd329cdcd539cd06dee7d3f5140c00cfaeb"
+          }
+        },
+        {
+          "client_id": "219289214801-9ofj0sebvbp0rbn94kfaortog6c88jjc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhqVkjW_aBkHhlTeDMwXrCvXg4oKkpPQM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219289214801-9ofj0sebvbp0rbn94kfaortog6c88jjc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219289214801:android:11fc9b07fafce0f9",
+        "android_client_info": {
+          "package_name": "org.sunrise.doc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219289214801-9eatos7306ek4k1f19le8ts5ldrc05nh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.sunrise.doc",
+            "certificate_hash": "4244dcf03fffdf00922826e93fc947c492466c52"
+          }
+        },
+        {
+          "client_id": "219289214801-0odijo9q76a4cur1ufkt9khanjhp33de.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.sunrise.doc",
+            "certificate_hash": "c9aafc50fa2452b8824dd141cfb6bf40f8b03175"
+          }
+        },
+        {
+          "client_id": "219289214801-4obsfh0a78pnskdpuq8lfuui7bgd5pjk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.sunrise.doc",
             "certificate_hash": "1b99bbd329cdcd539cd06dee7d3f5140c00cfaeb"
           }
         },

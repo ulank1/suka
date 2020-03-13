@@ -191,7 +191,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
 
                         } else {
                             var error = result.errorBody()!!.string()
-                            Log.e("Error", error)
+                            Log.e("ErroEEEEEEE", error)
 
                             if (error.contains("Невозможно войти с", true)) {
                                 Log.e("TAF", "DDD")
@@ -227,7 +227,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
 
                         } else {
                             var error = result.errorBody()!!.string()
-                            Log.e("Error",error)
+                            Log.e("ErrorEGGDGDUIKJDKJ",error)
 
                             if (error.contains("Невозможно войти с",true)){
                                 Log.e("TAF","DDD")

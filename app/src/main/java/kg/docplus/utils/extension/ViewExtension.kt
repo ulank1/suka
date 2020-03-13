@@ -171,6 +171,19 @@ fun getDayOfWeekName(date: String): String {
     }
 }
 
+fun getDay(day:Int):String{
+    return when (day) {
+        0 -> "Понедельник"
+        1 -> "Вторник"
+        2 -> "Среда"
+        3 -> "Четверг"
+        4 -> "Пятница"
+        5 -> "Суббота"
+        6 -> "Воскресенье"
+        else -> "Понедельник"
+    }
+}
+
 fun setRoundedImage(imageView: ImageView, url: String, context: Context) {
 
     Glide.with(context).load(url)

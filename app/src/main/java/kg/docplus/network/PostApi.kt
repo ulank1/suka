@@ -28,7 +28,7 @@ interface PostApi {
     ): Observable<Response<TokenWithVideo>>
 
     @FormUrlEncoded
-    @POST("doc-plus/sign-up/")
+    @POST("doc-plus/sign-up")
     fun register(
         @Field("phone_number") email: String,
         @Field("password") password: String,
@@ -99,7 +99,7 @@ interface PostApi {
         @Path("id") id: Int
     ): Observable<Response<Any>>
     @Multipart
-    @POST("core/media/")
+    @POST("core/media")
     fun postImage(@Part file: MultipartBody.Part): Observable<Response<UrlImage>>
 
     @PUT("doc-plus/profile/")
