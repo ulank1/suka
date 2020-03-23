@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import kg.docplus.R
+import java.time.DayOfWeek
 
-class CustomDropDownAdapter(val context: Context, var listItemsTxt: Array<String>) : BaseAdapter() {
+class CustomDropDownAdapter(val context: Context, var listItemsTxt: ArrayList<String>, var dayOfWeek: ArrayList<String>) : BaseAdapter() {
 
 
     val mInflater: LayoutInflater = LayoutInflater.from(context)
@@ -17,7 +18,7 @@ class CustomDropDownAdapter(val context: Context, var listItemsTxt: Array<String
         val view: View
         val vh: ItemRowHolder
         if (convertView == null) {
-            view = mInflater.inflate(R.layout.view_drop_down_menu, parent, false)
+            view = mInflater.inflate(R.layout.spinner_date, parent, false)
             vh = ItemRowHolder(view)
             view?.tag = vh
         } else {
@@ -31,7 +32,13 @@ class CustomDropDownAdapter(val context: Context, var listItemsTxt: Array<String
         params.height = 60
         view.layoutParams = params
 
-        vh.label.text = listItemsTxt.get(position)
+        vh.date.text = listItemsTxt[position]
+        if (position>0) {
+            vh.day.text = dayOfWeek[position - 1]
+        }else{
+            vh.day.text = ""
+
+        }
         return view
     }
 
@@ -53,10 +60,8 @@ class CustomDropDownAdapter(val context: Context, var listItemsTxt: Array<String
 
     private class ItemRowHolder(row: View?) {
 
-        val label: TextView
+        var date: TextView = row?.findViewById(R.id.date)!!
+        var day: TextView = row!!.findViewById(R.id.day_of_week)
 
-        init {
-            this.label = row?.findViewById(R.id.txtDropDownLabel) as TextView
-        }
     }
 }

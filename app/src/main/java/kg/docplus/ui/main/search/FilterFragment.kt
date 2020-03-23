@@ -38,7 +38,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kg.docplus.App
+import kg.docplus.model.get.Specialties
 import kg.docplus.ui.dialogs.TimeChooseDialog
+import kg.docplus.utils.extension.getDay
 import kotlin.text.Typography.times
 
 
@@ -89,7 +91,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     private lateinit var viewModel: FilterViewModel
     var lateStatus = 0
 
-    var specialties: ArrayList<String> = ArrayList()
+    var specialties: ArrayList<Specialties> = ArrayList()
 
     var dateList: ArrayList<String> = ArrayList()
 
@@ -318,18 +320,19 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
 
     private fun initDateSpinner() {
         dateList.add("Выберите дату")
+        var dayOfWeek = ArrayList<String>()
         for (i in 0..13) {
             var calendar = Calendar.getInstance()
             calendar.add(Calendar.DAY_OF_YEAR, i)
             var date = Date(calendar.timeInMillis)
             val postFormat = SimpleDateFormat("yyyy-MM-dd")
             dateList.add(postFormat.format(date))
+            dayOfWeek.add(getDay(calendar.get(Calendar.DAY_OF_WEEK)))
         }
 
         Log.e("DATES", dateList.toString())
 
-        var adapter = ArrayAdapter(App.activity!!, R.layout.spinner_country_item, dateList)
-        adapter.setDropDownViewResource(R.layout.spinner_country_dropdown_item)
+        var adapter = CustomDropDownAdapter(context!!,dateList,dayOfWeek)
         date.adapter = adapter
 
     }

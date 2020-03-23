@@ -8,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import kg.docplus.R
+import kg.docplus.model.get.Specialties
 import kotlin.collections.ArrayList
 
 class SpecialityRvAdapter(val context: Context, val listener: FilterListener) : RecyclerView.Adapter<SpecialityRvAdapter.AdvertViewHolder>() {
 
-    private var data: ArrayList<String> = ArrayList()
+    private var data: ArrayList<Specialties> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdvertViewHolder {
         return AdvertViewHolder(
@@ -25,7 +26,7 @@ class SpecialityRvAdapter(val context: Context, val listener: FilterListener) : 
 
     override fun onBindViewHolder(holder: AdvertViewHolder, position: Int) = holder.bind(data[position])
 
-    fun swapData(data: ArrayList<String>) {
+    fun swapData(data: ArrayList<Specialties>) {
         this.data = data
         notifyDataSetChanged()
     }
@@ -33,10 +34,10 @@ class SpecialityRvAdapter(val context: Context, val listener: FilterListener) : 
 
 
     inner class AdvertViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: String) = with(itemView) {
+        fun bind(item: Specialties) = with(itemView) {
 
             val text:TextView = itemView.findViewById(R.id.text)
-            text.text = item
+            text.text = item.title
 
             itemView.setOnClickListener {
                 Log.e("Onclick","Onclick")

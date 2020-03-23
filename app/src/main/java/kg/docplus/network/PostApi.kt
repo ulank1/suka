@@ -83,10 +83,10 @@ interface PostApi {
     @GET("doc-plus/profile/")
     fun getProfile(): Observable<Response<ProfileGet>>
 
-    @GET("doc-plus/dropdown-filter/")
+    @GET("doc-plus/filter/specialities/")
     fun getDropDownFilter(
         @Query("page") page: String,
-        @Query("q") q:String)
+        @Query("search") q:String)
             : Observable<Response<DropDown>>
 
     @DELETE("doc-plus/favorite-doctor/{id}/")

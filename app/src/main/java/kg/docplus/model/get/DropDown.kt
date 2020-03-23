@@ -5,5 +5,5 @@ data class DropDown (
 	@SerializedName("count") val count : Int,
 	@SerializedName("next") val next : String,
 	@SerializedName("previous") val previous : String,
-	@SerializedName("results") val results : ArrayList<String>
+	@SerializedName("results") val results : ArrayList<Specialties>
 )

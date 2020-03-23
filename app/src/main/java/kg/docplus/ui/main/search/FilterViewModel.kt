@@ -8,6 +8,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kg.docplus.base.BaseViewModel
 import kg.docplus.model.get.DoctorGet
+import kg.docplus.model.get.Specialties
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.filter.Filter
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class FilterViewModel : BaseViewModel() {
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
     val status: MutableLiveData<Int> = MutableLiveData()
-    val specialities: MutableLiveData<ArrayList<String>> = MutableLiveData()
+    val specialities: MutableLiveData<ArrayList<Specialties>> = MutableLiveData()
     val doctors: MutableLiveData<ArrayList<DoctorGet>> = MutableLiveData()
     var pageOfAllDropDown = "1"
     var pageOfFilterDropDown = "1"
