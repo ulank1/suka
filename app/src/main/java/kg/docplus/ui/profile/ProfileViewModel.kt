@@ -177,7 +177,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
                             avatar.value = this.path
                         } else {
                             var error = result.errorBody()!!.string()
-                            Log.e("Error", error)
+                            Log.e("ErrorGandon", error)
 
                         }
 

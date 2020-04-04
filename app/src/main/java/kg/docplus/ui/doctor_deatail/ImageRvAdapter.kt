@@ -14,12 +14,13 @@ import kotlin.collections.ArrayList
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
 import kg.docplus.App
+import kg.docplus.model.get.UrlImage
 import kg.docplus.utils.extension.setRoundedImage
 
 
 class ImageRvAdapter(val context: Context) : RecyclerView.Adapter<ImageRvAdapter.AdvertViewHolder>() {
 
-    private var data: ArrayList<String> = ArrayList()
+    private var data: ArrayList<UrlImage> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdvertViewHolder {
         return AdvertViewHolder(
@@ -32,7 +33,7 @@ class ImageRvAdapter(val context: Context) : RecyclerView.Adapter<ImageRvAdapter
 
     override fun onBindViewHolder(holder: AdvertViewHolder, position: Int) = holder.bind(data[position])
 
-    fun swapData(data: ArrayList<String>) {
+    fun swapData(data: ArrayList<UrlImage>) {
         this.data = data
         notifyDataSetChanged()
     }
@@ -40,13 +41,13 @@ class ImageRvAdapter(val context: Context) : RecyclerView.Adapter<ImageRvAdapter
 
 
     inner class AdvertViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: String) = with(itemView) {
+        fun bind(item: UrlImage) = with(itemView) {
 
             val image:ImageView = itemView.findViewById(R.id.image)
 //            Glide.with(App.activity!!).load(item).transform(CenterCrop(),RoundedCorners(16)).into(image)
 
 
-            setRoundedImage(image,item,context)
+            setRoundedImage(image,item.file,context)
 
             itemView.setOnClickListener {
 

@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class DoctorDetail (
 
-	@SerializedName("avatar") val avatar : String,
-	@SerializedName("certificates") val certificates : List<String>,
+	@SerializedName("avatar") val avatar : UrlImage,
+	@SerializedName("certificates") val certificates : List<UrlImage>,
 	@SerializedName("specialties") val specialties : List<Specialties>,
 	@SerializedName("patients") val patients : String,
 	@SerializedName("is_favorite") val is_favorite : Boolean,
@@ -19,5 +19,5 @@ data class DoctorDetail (
 	@SerializedName("qualification") val qualification : String,
 	@SerializedName("workplace") val workplace : String,
 	@SerializedName("extra_info") val extra_info : String,
-	@SerializedName("passport_images") val passport_images : List<String>
+	@SerializedName("passport_images") val passport_images : List<UrlImage>
 )

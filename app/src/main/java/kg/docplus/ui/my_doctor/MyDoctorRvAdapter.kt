@@ -78,12 +78,12 @@ class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : R
                     Intent(
                         context,
                         ImageActivity::class.java
-                    ).putExtra("image", item.doctor_detail.avatar)
+                    ).putExtra("image", item.doctor_detail.avatar.file)
                 )
             }
 
             if (item.doctor_detail.avatar != null)
-                setImage(item.doctor_detail.avatar, avatar)
+                setImage(item.doctor_detail.avatar.file, avatar)
 
 
             when {
@@ -96,7 +96,7 @@ class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : R
                             var intent = Intent(context, ChatActivity::class.java)
                             intent.putExtra("doc_id", item.doctor_detail.id.toString())
                             intent.putExtra("patient_id", item.id.toString())
-                            intent.putExtra("avatar", item.doctor_detail.avatar)
+                            intent.putExtra("avatar", item.doctor_detail.avatar.file)
                             intent.putExtra("speciality", specialities.text.toString())
                             intent.putExtra("time", item.date + " " + item.exact_time)
                             intent.putExtra("name", name.text.toString())
@@ -111,7 +111,7 @@ class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : R
                             var intent = Intent(context, ChatActivity::class.java)
                             intent.putExtra("doc_id", item.doctor_detail.id.toString())
                             intent.putExtra("patient_id", item.id.toString())
-                            intent.putExtra("avatar", item.doctor_detail.avatar)
+                            intent.putExtra("avatar", item.doctor_detail.avatar.file)
                             intent.putExtra("speciality", specialities.text.toString())
                             intent.putExtra("time", item.date + " " + item.exact_time)
                             intent.putExtra("name", name.text.toString())

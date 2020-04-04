@@ -45,7 +45,8 @@
         <activity
             android:name=".ui.main.settings.SendFailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.main.settings.TesrmsActivity" />
+        <activity android:name=".ui.main.settings.TesrmsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.chat.ImageActivity"
             android:theme="@style/AppTheme.NoActionBar" />

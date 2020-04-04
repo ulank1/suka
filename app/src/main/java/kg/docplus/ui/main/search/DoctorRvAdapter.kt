@@ -31,7 +31,7 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
     override fun onBindViewHolder(holder: AdvertViewHolder, position: Int) = holder.bind(data[position])
 
     fun swapData(data: List<DoctorGet>) {
-        this.data.addAll(data)
+        this.data = data as ArrayList<DoctorGet>
         notifyDataSetChanged()
         Log.e("DATARR",data.toString())
     }
@@ -61,9 +61,9 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
                 }
             }
 
-            minPrice.text = "${item.min_price} сом"
+            minPrice.text = "${item.services[0].min_price} сом"
             if (item.doctor_detail.avatar!= null)
-            setImage(item.doctor_detail.avatar,avatar)
+            setImage(item.doctor_detail.avatar.file,avatar)
 
             itemView.setOnClickListener {
                 Log.e("ID_DOCTOR",item.id.toString())

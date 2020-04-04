@@ -7,10 +7,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kg.docplus.base.BaseViewModel
+import kg.docplus.model.Paginate
 import kg.docplus.model.get.DoctorGet
 import kg.docplus.model.get.Specialties
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.filter.Filter
+import kg.docplus.utils.extension.getDayOfWeekName
+import kg.docplus.utils.extension.getDayOfWeekName1
 import javax.inject.Inject
 
 class FilterViewModel : BaseViewModel() {
@@ -23,7 +26,7 @@ class FilterViewModel : BaseViewModel() {
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
     val status: MutableLiveData<Int> = MutableLiveData()
     val specialities: MutableLiveData<ArrayList<Specialties>> = MutableLiveData()
-    val doctors: MutableLiveData<ArrayList<DoctorGet>> = MutableLiveData()
+    val doctors: MutableLiveData<Paginate<DoctorGet>> = MutableLiveData()
     var pageOfAllDropDown = "1"
     var pageOfFilterDropDown = "1"
 
@@ -50,8 +53,7 @@ class FilterViewModel : BaseViewModel() {
                         loadingVisibility.value = View.GONE
                         if (result.isSuccessful) {
                             Log.e("TOK",result.body()!!.toString())
-                            specialities.value = result.body()!!.results
-                            pageOfFilterDropDown = result.body()!!.next
+                            specialities.value = result.body()!!
                         } else {
                             var error = result.errorBody()!!.string()
                             Log.e("Error",error)
@@ -70,18 +72,24 @@ class FilterViewModel : BaseViewModel() {
         if (Filter.date=="гггг-MM-дд"){
             Filter.date=null
         }
+        var day:String? = null
+        if (Filter.date!=null){
+            day = getDayOfWeekName1(Filter.date!!)
+        }
+
         Log.e("DATE", Filter.schedule_time_after + " " + Filter.schedule_time_before)
         Log.e("Filter", "${Filter.min_price} ${Filter.max_price} ${Filter.services} ${Filter.name} ")
         Log.e("FILTER",Filter.ttt())
+        Log.e("GGGTTYYUI",day.toString())
         subscription.add(
             postApi.getDocs(
                 Filter.min_price,
                 Filter.max_price,
-//                Filter.services,
                 Filter.schedule_time_before,
                 Filter.schedule_time_after,
+                Filter.specialty_title,
                 Filter.name,
-                Filter.date
+                day
             )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -91,18 +99,18 @@ class FilterViewModel : BaseViewModel() {
                     { result ->
                         hideProgress()
                         if (result.isSuccessful) {
-                            doctors.value = (result.body() as ArrayList<DoctorGet>?)!!
-                            Log.e("TOK", result.body()!!.toString())
+                            doctors.value = result.body()!!
+                            Log.e("TOKDOC", result.body()!!.toString())
 
                         } else {
                             var error = result.errorBody()!!.string()
-                            Log.e("Error", error)
+                            Log.e("ErrorDOC", error)
 
                         }
 
                     },
                     {
-                        Log.e("DDD", it.toString())
+                        Log.e("DDDDOC", it.toString())
                     }
 
                 )

@@ -16,6 +16,7 @@ import kg.docplus.R
 import kg.docplus.base.BaseViewModel
 import kg.docplus.model.get.Cities
 import kg.docplus.model.get.DoctorFull
+import kg.docplus.model.get.UrlImage
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.filter.Filter
 import kg.docplus.utils.extension.getServiceName
@@ -36,7 +37,8 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         date = dateList[position]
-        getAvailableTimes(service)
+
+        getAvailableTimes(service,dayList[position])
     }
 
     override fun postAppointment(time: String) {
@@ -101,7 +103,7 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
                             Log.e("DOC_FULL", result.body()!!.toString())
                             doctor.value = result.body()
                             idDoctor = result.body()!!.id
-                            adapter.swapData(result.body()!!.doctor_detail.certificates as ArrayList<String>)
+                            adapter.swapData(result.body()!!.doctor_detail.certificates as ArrayList<UrlImage>)
                             isActive = result.body()!!.doctor_detail.is_favorite
                             active.value = isActive
                         } else {
@@ -237,6 +239,7 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
     var date = ""
 
     var dateList:ArrayList<String> = ArrayList()
+    var dayList:ArrayList<String> = ArrayList()
     lateinit var city:Spinner
     lateinit var address:EditText
     private fun showAlert(service: Int) {
@@ -253,7 +256,8 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
         address = dialog.findViewById(R.id.edit_address) as EditText
         city = dialog.findViewById(R.id.cities) as Spinner
         val date:Spinner = dialog.findViewById(R.id.date)
-
+        dateList.clear()
+        dayList.clear()
         if (service!=3){
             address.gone()
             city.gone()
@@ -271,15 +275,21 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
         }
 
 
-        for (i in 0..6){
+        for (i in 0..13){
             var calendar = Calendar.getInstance()
             calendar.add(Calendar.DAY_OF_YEAR,i)
             var date1 = Date(calendar.timeInMillis)
             val postFormat = SimpleDateFormat("yyyy-MM-dd")
             dateList.add(postFormat.format(date1))
+            Log.e("Datesss",postFormat.format(date1)+" "+(calendar.get(Calendar.DAY_OF_WEEK)).toString())
+            var day = (calendar.get(Calendar.DAY_OF_WEEK)-2)
+            if (day==-1){
+                day = 6
+            }
+            dayList.add(day.toString())
         }
 
-        Log.e("DATES",dateList.toString())
+        Log.e("DATES",dayList.toString())
 
         var adapter = ArrayAdapter(App.activity!!, R.layout.spinner_country_item, dateList)
         adapter.setDropDownViewResource(R.layout.spinner_country_dropdown_item)
@@ -301,12 +311,12 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
     }
 
 
-    private fun getAvailableTimes(service: Int) {
+    private fun getAvailableTimes(service: Int,day:String) {
         Log.e("DDD", Filter.date + " " + idDoctor + " " + service)
 
         subscription.add(
             postApi.getAviableTimes(
-                date,
+                day,
                 idDoctor,
                 service
             )
@@ -417,7 +427,6 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
 
     private fun showAlertResult(service: Int) {
         this.service = service
-        getAvailableTimes(service)
 
         dialogResult = Dialog(App.activity!!)
         dialogResult.requestWindowFeature(Window.FEATURE_NO_TITLE)

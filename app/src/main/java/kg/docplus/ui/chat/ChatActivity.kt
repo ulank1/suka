@@ -27,7 +27,7 @@ import kotlin.collections.HashMap
 
 
 class ChatActivity : ImagePickerHelper() {
-    private var isVideoActive = false
+    private var isVideoActive = true
     override fun setImagePath(imgpath: Uri) {
         Log.e("sdfsdf",imgpath.path)
         viewModel.postImage(imgpath.path!!)

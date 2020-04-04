@@ -6,5 +6,5 @@ data class DoctorGet (
 
 	@SerializedName("id") val id : Int,
 	@SerializedName("doctor_detail") val doctor_detail : Doctor_detail,
-	@SerializedName("min_price") val min_price : Int
+	@SerializedName("services") val services : ArrayList<Services>
 )

@@ -41,7 +41,7 @@ class SpecialityRvAdapter(val context: Context, val listener: FilterListener) : 
 
             itemView.setOnClickListener {
                 Log.e("Onclick","Onclick")
-                listener.choose(text.text.toString())
+                listener.choose(text.text.toString(),item.id)
             }
 
         }

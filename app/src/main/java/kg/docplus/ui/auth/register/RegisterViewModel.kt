@@ -81,6 +81,9 @@ class RegisterViewModel : BaseViewModel() {
                                 if (error.contains("Невозможно войти с", true)) {
                                     Log.e("TAF", "DDD")
                                     App.activity!!.toast("Невозможно войти с предоставленными учетными данными")
+                                }else  if (error.contains("Невозможно использовать", true)) {
+                                    Log.e("TAF", "DDD")
+                                    App.activity!!.toast("Невозможно использовать один номер в 2 приложениях")
                                 }
                             }
                         },

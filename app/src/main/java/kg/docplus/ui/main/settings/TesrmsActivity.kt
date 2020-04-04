@@ -21,5 +21,7 @@ class TesrmsActivity : AppCompatActivity() {
             text.text = it.toString()
 
         })
+
+        back.setOnClickListener { finish() }
     }
 }

@@ -5,6 +5,6 @@ data class Doctor_detail (
 
 	@SerializedName("first_name") val first_name : String,
 	@SerializedName("mid_name") val mid_name : String,
-	@SerializedName("avatar") val avatar : String,
+	@SerializedName("avatar") val avatar : UrlImage,
 	@SerializedName("specialties") val specialties : ArrayList<Specialties>
 )

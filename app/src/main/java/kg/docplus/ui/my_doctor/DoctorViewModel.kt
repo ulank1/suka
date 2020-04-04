@@ -39,7 +39,7 @@ class DoctorViewModel : BaseViewModel() {
                             myDoctor.value = result.body()!!
                         } else {
                             var error = result.errorBody()!!.string()
-                            Log.e("Error",error)
+                            Log.e("Errormy",error)
 
                         }
 
@@ -47,7 +47,7 @@ class DoctorViewModel : BaseViewModel() {
                     {
                         hideProgress()
 
-                        Log.e("DDD",it.toString())}
+                        Log.e("DDDMY",it.toString())}
 
                 )
         )

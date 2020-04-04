@@ -5,6 +5,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import kg.docplus.model.Token
 import kg.docplus.model.ApiResponse
+import kg.docplus.model.Paginate
 import kg.docplus.model.get.*
 import kg.docplus.model.get.my_doctor.MyDoctor
 import kg.docplus.model.post.ProfilePost
@@ -28,7 +29,7 @@ interface PostApi {
     ): Observable<Response<TokenWithVideo>>
 
     @FormUrlEncoded
-    @POST("doc-plus/sign-up")
+    @POST("doc-plus/sign-up/")
     fun register(
         @Field("phone_number") email: String,
         @Field("password") password: String,
@@ -53,16 +54,16 @@ interface PostApi {
     @GET("doc-plus/user-exists/")
     fun isUserExist(@Query("phone_number") phone:String): Observable<Response<TokenRegister>>
 
-    @GET("doc-plus/doctors/")
+    @GET("doc-plus/filter/doctors/")
     fun getDocs(
         @Query("min_price") min_price:Int,
         @Query("max_price") max_price:Int,
         @Query("schedule_time_after") secondTime:String,
         @Query("schedule_time_before") firstTime:String,
-//        @Query("specialty_title") specialty_title:String,
-        @Query("name") name:String,
-        @Query("date") date:String?
-    ): Observable<Response<List<DoctorGet>>>
+        @Query("specialty") specialty_title:String?,
+        @Query("name") name:String?,
+        @Query("schedule_day") date:String?
+    ): Observable<Response<Paginate<DoctorGet>>>
 
     @GET("doc-plus/doctors/")
     fun getDocsTest(): Observable<Response<List<DoctorGet>>>
@@ -87,7 +88,7 @@ interface PostApi {
     fun getDropDownFilter(
         @Query("page") page: String,
         @Query("search") q:String)
-            : Observable<Response<DropDown>>
+            : Observable<Response<ArrayList<Specialties>>>
 
     @DELETE("doc-plus/favorite-doctor/{id}/")
     fun deleteFavorite(
@@ -98,8 +99,9 @@ interface PostApi {
     fun createFavorite(
         @Path("id") id: Int
     ): Observable<Response<Any>>
+
     @Multipart
-    @POST("core/media")
+    @POST("core/media/")
     fun postImage(@Part file: MultipartBody.Part): Observable<Response<UrlImage>>
 
     @PUT("doc-plus/profile/")
@@ -109,7 +111,7 @@ interface PostApi {
 
     @GET("doc-plus/available-times/")
     fun getAviableTimes(
-        @Query("date") date: String,
+        @Query("day") date: String,
         @Query("doctor") doctor: Int,
         @Query("service") q:Int)
             : Observable<Response<AvailableTime>>
@@ -118,6 +120,11 @@ interface PostApi {
     @GET("doc-plus/my-doctors/")
     fun getMyDoctors()
             : Observable<Response<ArrayList<MyDoctor>>>
+
+    @GET("doc-plus/rate/{id}")
+    fun getPreview(
+            @Path("id") id: Int
+    ): Observable<Response<ArrayList<Preview>>>
 
 
     @FormUrlEncoded
@@ -129,6 +136,15 @@ interface PostApi {
         @Field("date") date: String,
         @Field("city") city: String?,
         @Field("address") address: String?
+
+        ): Observable<Response<Any?>>
+
+    @FormUrlEncoded
+    @POST("doc-plus/rate/")
+    fun postPreview(
+        @Field("rate") rate: Int,
+        @Field("doctor") doctor: Int,
+        @Field("comment") comment: String?
 
         ): Observable<Response<Any?>>
 

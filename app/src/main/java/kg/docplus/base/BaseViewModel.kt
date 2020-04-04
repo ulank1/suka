@@ -22,6 +22,7 @@ import kg.docplus.ui.main.MainViewModel
 import kg.docplus.ui.main.settings.SettingsViewModel
 import kg.docplus.ui.my_doctor.DoctorViewModel
 import kg.docplus.ui.notification.NotificationViewModel
+import kg.docplus.ui.rating.PreviewModelView
 
 abstract class BaseViewModel(): ViewModel(){
 
@@ -75,6 +76,7 @@ abstract class BaseViewModel(): ViewModel(){
             is NotificationViewModel -> injector.inject(this)
             is SettingsViewModel -> injector.inject(this)
             is MainViewModel -> injector.inject(this)
+            is PreviewModelView -> injector.inject(this)
 
         }
     }

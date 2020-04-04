@@ -17,6 +17,7 @@ import kg.docplus.ui.main.MainViewModel
 import kg.docplus.ui.main.settings.SettingsViewModel
 import kg.docplus.ui.my_doctor.DoctorViewModel
 import kg.docplus.ui.notification.NotificationViewModel
+import kg.docplus.ui.rating.PreviewModelView
 
 class ViewModelFactory(): ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -83,6 +84,10 @@ class ViewModelFactory(): ViewModelProvider.Factory{
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return MainViewModel() as T
+        }
+        if (modelClass.isAssignableFrom(PreviewModelView::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return PreviewModelView() as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")

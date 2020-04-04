@@ -35,7 +35,7 @@ class DoctorDetailActivity : AppCompatActivity() {
         viewModel.getDoctorFull(intent.getIntExtra("id", 7))
         viewModel.doctor.observe(this, Observer {
             binding.doctor = it
-            setRoundedImage(binding.avatar,it.doctor_detail.avatar,this@DoctorDetailActivity)
+            setRoundedImage(binding.avatar,it.doctor_detail.avatar.file,this@DoctorDetailActivity)
 
         })
         Log.e("TOKEN", UserToken.getToken(this))

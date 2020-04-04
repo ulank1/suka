@@ -1,5 +1,6 @@
 package kg.docplus.model.get.my_doctor
 import com.google.gson.annotations.SerializedName
+import kg.docplus.model.get.UrlImage
 
 data class Doctor_detail (
 
@@ -9,5 +10,5 @@ data class Doctor_detail (
 	@SerializedName("mid_name") val mid_name : String,
 	@SerializedName("rate") val rate : String,
 	@SerializedName("specialties") val specialties : List<Specialties>,
-	@SerializedName("avatar") val avatar : String
+	@SerializedName("avatar") val avatar : UrlImage
 )

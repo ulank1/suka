@@ -62,12 +62,14 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         viewModel.filterDocs()
     }
 
-    override fun choose(speciality: String?) {
-        Filter.name = speciality
-        Filter.specialty_title = speciality
+    override fun choose(speciality: String?,id:Int) {
+        Filter.specialty_title = id.toString()
+        Filter.name = null
         edit_search.setText(speciality)
         changeStatus(2)
         activity!!.hideKeyboard()
+        viewModel.filterDocs()
+
     }
 
     override fun afterTextChanged(s: Editable?) {
@@ -106,7 +108,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         viewModel.status.observe(this, Observer { setupStatus(it!!) })
         viewModel.loadingVisibility.observe(this, Observer { progress.visibility = it!! })
         viewModel.doctors.observe(this, Observer {
-            adapterResult.swapData(it!!)
+            adapterResult.swapData(it.results!!)
         })
 
 
@@ -154,11 +156,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
             }
 
             override fun onRefreshLoadMore(materialRefreshLayout: MaterialRefreshLayout) {
-                if (edit_search.text.toString().isNotEmpty()) {
-                    viewModel.filterSpeciality(edit_search.text.toString())
-                } else {
-                    viewModel.getAllDropdown()
-                }
+
             }
         })
         rv.layoutManager = LinearLayoutManager(activity) as RecyclerView.LayoutManager?
@@ -204,7 +202,6 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
                     refresh.gone()
                     scroll.gone()
                     line_result.visible()
-                    viewModel.filterDocs()
                     search_line.visible()
                     btn_filter.visible()
                 }
@@ -269,6 +266,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
                     Filter.date = dateList[date.selectedItemPosition]
 
                     viewModel.filterDocs()
+                    changeStatus(2)
 
                 }
                 R.id.time -> {
@@ -284,9 +282,11 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
                 }
                 R.id.btn_search -> {
                     Filter.name = edit_search.text.toString()
-                    Filter.specialty_title = edit_search.text.toString()
+                    Filter.specialty_title = null
                     changeStatus(2)
                     activity!!.hideKeyboard()
+                    viewModel.filterDocs()
+
                 }
                 R.id.btn_filter -> {
 

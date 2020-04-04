@@ -17,6 +17,7 @@ import kg.docplus.ui.main.MainViewModel
 import kg.docplus.ui.main.settings.SettingsViewModel
 import kg.docplus.ui.my_doctor.DoctorViewModel
 import kg.docplus.ui.notification.NotificationViewModel
+import kg.docplus.ui.rating.PreviewModelView
 import javax.inject.Singleton
 
 /**
@@ -41,6 +42,7 @@ interface ViewModelInjector {
     fun inject(notificationViewModel: NotificationViewModel)
     fun inject(SettingsViewModel: SettingsViewModel)
     fun inject(MainViewModel: MainViewModel)
+    fun inject(PreviewModelView: PreviewModelView)
 
     @Component.Builder
     interface Builder {

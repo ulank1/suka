@@ -171,6 +171,23 @@ fun getDayOfWeekName(date: String): String {
     }
 }
 
+fun getDayOfWeekName1(date: String): String {
+    val format = SimpleDateFormat("yyyy-MM-dd")
+    var day = 0
+    try {
+        val data = format.parse(date)
+        System.out.println(date)
+        var calendar = Calendar.getInstance()
+        calendar.time = data
+        day = calendar.get(Calendar.DAY_OF_WEEK)
+
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    return day.toString()
+}
+
 fun getDay(day:Int):String{
     return when (day) {
         0 -> "Понедельник"
@@ -223,7 +240,8 @@ fun isTime(time: String): Boolean {
 
 fun isTime(time: Long): Boolean {
     var diff = (Date().time - time)
-    return diff < 25 * 60000
+    //return diff < 25 * 60000
+    return true
 }
 
 @SuppressLint("SimpleDateFormat")

@@ -10,14 +10,18 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
+import androidx.lifecycle.ViewModelProviders
+import kg.docplus.injection.ViewModelFactory
+import kg.docplus.ui.main.search.FilterViewModel
 
 
 class CreateRatingActivity : AppCompatActivity() {
+    private lateinit var viewModel: PreviewModelView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_rating)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(PreviewModelView::class.java)
 
 
         val stars = rating.progressDrawable as LayerDrawable
