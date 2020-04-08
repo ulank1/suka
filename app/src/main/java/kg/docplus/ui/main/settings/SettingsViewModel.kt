@@ -1,6 +1,7 @@
 package kg.docplus.ui.main.settings
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,6 +23,7 @@ class SettingsViewModel : BaseViewModel() {
     lateinit var postApi: PostApi
 
     val term: MutableLiveData<String> = MutableLiveData()
+    val sendFail: MutableLiveData<Boolean> = MutableLiveData()
 
     private var subscription: CompositeDisposable = CompositeDisposable()
 
@@ -41,16 +43,22 @@ class SettingsViewModel : BaseViewModel() {
                                 { result ->
                                     hideProgress()
                                     if (result.isSuccessful) {
-                                        App.activity.finish()
+
+                                       sendFail.value = true
+
+
                                     } else {
                                         var error = result.errorBody()!!.string()
                                         Log.e("Error", error)
+                                        sendFail.value = false
+
 
                                     }
 
                                 },
                                 {
                                     hideProgress()
+                                    sendFail.value = false
 
                                     Log.e("DDD", it.toString())
                                 }
@@ -71,16 +79,19 @@ class SettingsViewModel : BaseViewModel() {
                                 { result ->
                                     hideProgress()
                                     if (result.isSuccessful) {
-                                        App.activity.finish()
+                                        sendFail.value = true
+
                                     } else {
                                         var error = result.errorBody()!!.string()
                                         Log.e("Error", error)
+                                        sendFail.value = false
 
                                     }
 
                                 },
                                 {
                                     hideProgress()
+                                    sendFail.value = false
 
                                     Log.e("DDD", it.toString())
                                 }

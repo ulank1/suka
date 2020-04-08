@@ -53,13 +53,18 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (position == 0) {
-            Filter.ordering = "schedule__starts_at_time"
-        } else {
-            Filter.ordering = "schedule__services__price"
+        if (view != null) {
+        Log.e("IDDFF",view.id.toString()+"  "+R.id.spinner)
+            if (view.id==R.id.spinner) {
+                if (position == 0) {
+                    Filter.ordering = "schedule__starts_at_time"
+                } else {
+                    Filter.ordering = "schedule__services__price"
+                }
+                adapterResult.clearData()
+                viewModel.filterDocs()
+            }
         }
-        adapterResult.clearData()
-        viewModel.filterDocs()
     }
 
     override fun choose(speciality: String?,id:Int) {
@@ -94,6 +99,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     var lateStatus = 0
 
     var specialties: ArrayList<Specialties> = ArrayList()
+    var specialties_spinner: ArrayList<Specialties> = ArrayList()
 
     var dateList: ArrayList<String> = ArrayList()
 
@@ -111,6 +117,19 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
             adapterResult.swapData(it.results!!)
         })
 
+        viewModel.specialities_spinner.observe(this, Observer {
+            specialties_spinner = it
+            var ss:ArrayList<String> = ArrayList()
+            ss.add("Специальность")
+            for(s in it){
+                ss.add(s.title)
+            }
+            val adapter = ArrayAdapter(context, R.layout.spinner,ss)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            speciality_spinner.adapter = adapter
+            speciality_spinner.onItemSelectedListener = this
+
+        })
 
         Log.e("Token", UserToken.getToken(activity!!))
         return view
@@ -125,6 +144,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         viewModel.pageOfAllDropDown = "1"
         viewModel.pageOfFilterDropDown = "1"
         viewModel.getAllDropdown()
+        viewModel.getSpeciality()
         setOnClickListeners()
         edit_search.addTextChangedListener(this)
         setupRv()
@@ -327,7 +347,11 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
             var date = Date(calendar.timeInMillis)
             val postFormat = SimpleDateFormat("yyyy-MM-dd")
             dateList.add(postFormat.format(date))
-            dayOfWeek.add(getDay(calendar.get(Calendar.DAY_OF_WEEK)))
+            var day = (calendar.get(Calendar.DAY_OF_WEEK)-2)
+            if (day==-1){
+                day = 6
+            }
+            dayOfWeek.add(getDay(day))
         }
 
         Log.e("DATES", dateList.toString())

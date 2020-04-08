@@ -184,7 +184,11 @@ fun getDayOfWeekName1(date: String): String {
     } catch (e: ParseException) {
         e.printStackTrace()
     }
-
+//    day -= 2
+//
+//    if (day==-1){
+//        day = 6
+//    }
     return day.toString()
 }
 

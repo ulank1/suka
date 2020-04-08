@@ -60,7 +60,7 @@ interface PostApi {
         @Query("max_price") max_price:Int,
         @Query("schedule_time_after") secondTime:String,
         @Query("schedule_time_before") firstTime:String,
-        @Query("specialty") specialty_title:String?,
+//        @Query("specialty") specialty_title:String?,
         @Query("name") name:String?,
         @Query("schedule_day") date:String?
     ): Observable<Response<Paginate<DoctorGet>>>
@@ -177,13 +177,13 @@ interface PostApi {
             : Observable<Response<Term>>
 
     @FormUrlEncoded
-    @POST("core/report-bug-new-message/")
+    @POST("core/report-bug-message/")
     fun postReport(
             @Field("message") message: String
     ): Observable<Response<Any?>>
 
     @FormUrlEncoded
-    @POST("core/support-new-message/")
+    @POST("core/support-message/")
     fun postSupport(
             @Field("message") message: String
     ): Observable<Response<Any?>>

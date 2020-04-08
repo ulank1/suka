@@ -26,6 +26,7 @@ class FilterViewModel : BaseViewModel() {
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
     val status: MutableLiveData<Int> = MutableLiveData()
     val specialities: MutableLiveData<ArrayList<Specialties>> = MutableLiveData()
+    val specialities_spinner: MutableLiveData<ArrayList<Specialties>> = MutableLiveData()
     val doctors: MutableLiveData<Paginate<DoctorGet>> = MutableLiveData()
     var pageOfAllDropDown = "1"
     var pageOfFilterDropDown = "1"
@@ -68,12 +69,42 @@ class FilterViewModel : BaseViewModel() {
         )
     }
 
+    fun getSpeciality(){
+
+        subscription.add(
+                postApi.getDropDownFilter(
+                        pageOfFilterDropDown.toString(),
+                        ""
+                )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe { loadingVisibility.value = View.VISIBLE }
+                        .subscribe(
+                                { result ->
+                                    loadingVisibility.value = View.GONE
+                                    if (result.isSuccessful) {
+                                        Log.e("TOK",result.body()!!.toString())
+                                        specialities_spinner.value = result.body()!!
+                                    } else {
+                                        var error = result.errorBody()!!.string()
+                                        Log.e("Error",error)
+
+                                    }
+
+                                },
+                                {
+                                    Log.e("DDD",it.toString())}
+
+                        )
+        )
+    }
+
     fun filterDocs() {
         if (Filter.date=="гггг-MM-дд"){
             Filter.date=null
         }
-        var day:String? = null
-        if (Filter.date!=null){
+        var day:String? = ""
+        if (!Filter.date.isNullOrEmpty()){
             day = getDayOfWeekName1(Filter.date!!)
         }
 
@@ -85,9 +116,9 @@ class FilterViewModel : BaseViewModel() {
             postApi.getDocs(
                 Filter.min_price,
                 Filter.max_price,
-                Filter.schedule_time_before,
                 Filter.schedule_time_after,
-                Filter.specialty_title,
+                Filter.schedule_time_before,
+//                Filter.specialty_title,
                 Filter.name,
                 day
             )

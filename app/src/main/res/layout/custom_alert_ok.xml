@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="276dp"
+    android:layout_height="258dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="192dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="106dp"
+            android:layout_marginEnd="42dp"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:gravity="center"
+            android:text="Успешно отправлено"
+            android:textColor="@color/colorOne"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/buttonOkS"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="78dp"
+            android:layout_marginTop="78dp"
+            android:layout_marginEnd="78dp"
+            android:layout_marginBottom="26dp"
+            android:background="@drawable/corner_one"
+            android:fontFamily="@font/montserrat_alternates_medium"
+            android:gravity="center"
+            android:text="Хорошо"
+            android:textColor="#FFF"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>
