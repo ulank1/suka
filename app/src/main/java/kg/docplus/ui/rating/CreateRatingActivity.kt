@@ -29,7 +29,7 @@ class CreateRatingActivity : AppCompatActivity() {
         stars.getDrawable(0).setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP)
         stars.getDrawable(1).setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP)
         btn_send.setOnClickListener {
-
+            viewModel.postPreview(intent.getIntExtra("doctor_id",0),rating.numStars,review.text.toString())
             Log.e("RAting",rating.rating.toString())
 
         }

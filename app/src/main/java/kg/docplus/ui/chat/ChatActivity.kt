@@ -41,6 +41,7 @@ class ChatActivity : ImagePickerHelper() {
     var patient_id:String = "15"
     lateinit var adapter: MessageRvAdapter
     private lateinit var viewModel: ChatViewModel
+    var video_price = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +70,7 @@ class ChatActivity : ImagePickerHelper() {
         patient_id = intent.getStringExtra("patient_id").toString()
         specialities.text = intent.getStringExtra("speciality").toString()
 
+        viewModel.confirm.observe(this,androidx.lifecycle.Observer { video_price = it.calculated_price })
         getMessages()
         setOnClickListeners()
     }
@@ -90,7 +92,10 @@ class ChatActivity : ImagePickerHelper() {
         avatar.setOnClickListener { startActivity(Intent(this,ImageActivity::class.java).putExtra("image",Filter.chatAvatar)) }
         send_message.setOnClickListener { sendMessage() }
         attachment_photo.setOnClickListener { showPickImageDialog() }
-        video.setOnClickListener { if (isVideoActive){sendMessage(ChatConstants.request_video,"Пациент хочет переключиться на видеозвонок") }}
+        video.setOnClickListener { if (isVideoActive){
+            sendMessage(ChatConstants.request_video,"Пациент хочет переключиться на видеозвонок")
+            viewModel.confirmVideo(intent.getIntExtra("id",0))
+        }}
     }
 
     private fun setupRv(){
@@ -148,7 +153,7 @@ class ChatActivity : ImagePickerHelper() {
 
     private fun showAlertSuccess() {
         var dialog = VideoSuccessDialog(this)
-        dialog.setUp(intent.getStringExtra("name").toString(),intent.getStringExtra("avatar").toString())
+        dialog.setUp(intent.getStringExtra("name").toString(),intent.getStringExtra("avatar").toString(),video_price)
         var btnPay:Button = dialog.findViewById(R.id.btn_pay)
     }
 

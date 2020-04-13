@@ -8,6 +8,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kg.docplus.App
 import kg.docplus.base.BaseViewModel
+import kg.docplus.model.get.ConfirmVideo
 import kg.docplus.network.PostApi
 import kg.docplus.utils.UserToken
 import okhttp3.MediaType
@@ -22,6 +23,7 @@ class ChatViewModel : BaseViewModel() {
     lateinit var postApi: PostApi
 
     val avatar: MutableLiveData<String> = MutableLiveData()
+    val confirm: MutableLiveData<ConfirmVideo> = MutableLiveData()
 
     private var subscription: CompositeDisposable = CompositeDisposable()
 
@@ -62,6 +64,69 @@ class ChatViewModel : BaseViewModel() {
                     }
 
                 )
+        )
+
+    }
+
+    fun tryVideo(id:Int) {
+
+
+        subscription.add(
+            postApi.tryVideo(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { showProgress() }
+                .subscribe(
+                    { result ->
+                        hideProgress()
+                        if (result.isSuccessful) {
+
+                        } else {
+                            var error = result.errorBody()!!.string()
+                            Log.e("Error", error)
+
+                        }
+
+                    },
+                    {
+                        hideProgress()
+
+                        Log.e("DDD", it.toString())
+                    }
+
+                )
+        )
+
+    }
+
+    fun confirmVideo(id:Int) {
+
+        subscription.add(
+                postApi.confirmVideo(id)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe { showProgress() }
+                        .subscribe(
+                                { result ->
+                                    hideProgress()
+                                    if (result.isSuccessful) {
+                                        Log.e("Confirm", result.body()!!.toString())
+                                        confirm.value = result.body()
+
+                                    } else {
+                                        var error = result.errorBody()!!.string()
+                                        Log.e("Error", error)
+
+                                    }
+
+                                },
+                                {
+                                    hideProgress()
+
+                                    Log.e("DDD", it.toString())
+                                }
+
+                        )
         )
 
     }

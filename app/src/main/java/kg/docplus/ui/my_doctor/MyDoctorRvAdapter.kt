@@ -100,6 +100,7 @@ class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : R
                             intent.putExtra("speciality", specialities.text.toString())
                             intent.putExtra("time", item.date + " " + item.exact_time)
                             intent.putExtra("name", name.text.toString())
+                            intent.putExtra("id", item.id)
                             context.startActivity(intent)
                         }
 
@@ -115,6 +116,7 @@ class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : R
                             intent.putExtra("speciality", specialities.text.toString())
                             intent.putExtra("time", item.date + " " + item.exact_time)
                             intent.putExtra("name", name.text.toString())
+                            intent.putExtra("id", item.id)
                             context.startActivity(intent)
                         }
                     }

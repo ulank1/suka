@@ -123,6 +123,7 @@
         <activity
             android:name=".ui.notification.NotificationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.rating.RatingActivity" />
 
         <meta-data
             android:name="com.quickblox.messages.TYPE"

@@ -16,6 +16,7 @@ import kg.docplus.R
 import kg.docplus.ui.chat.ChatActivity
 import kg.docplus.ui.main.MainActivity
 import kg.docplus.ui.my_doctor.DoctorActivity
+import kg.docplus.ui.rating.CreateRatingActivity
 import org.json.JSONObject
 import java.util.*
 
@@ -36,6 +37,7 @@ class FMService : FirebaseMessagingService() {
                 try {
                     val data = p0.data
                     var type = "0"
+                    var modal = false
 
 
                     if (p0.notification != null) {
@@ -46,15 +48,20 @@ class FMService : FirebaseMessagingService() {
                         var json = JSONObject(data["data"])
 
                         Log.e("Json", json.toString())
-                        if (json.has("type")) {
+                                           if (json.has("type")) {
                             type = json.getString("type")
                         }
+                        if (json.has("modal")) {
+                            modal = json.getBoolean("modal")
+                        }
+
+
 
                         Log.e("Notif", "" + p0.data)
                         Log.e("Notif", "" + intent)
-                        sendNotification(json.getString("body"), json.getString("title"), type, json)
+                        sendNotification(json.getString("body"), json.getString("title"), type, json,modal)
                     } else {
-                        sendNotification(data["body"]!!, data["title"]!!, type, JSONObject())
+                        sendNotification(data["body"]!!, data["title"]!!, type, JSONObject(),modal)
                     }
                 } catch (e: Exception) {
 
@@ -68,13 +75,30 @@ class FMService : FirebaseMessagingService() {
         }
     }
 
-    private fun sendNotification(message: String, title: String, type: String, json: JSONObject) {
+    private fun sendNotification(message: String, title: String, type: String, json: JSONObject,modal:Boolean) {
         var resultIntent: Intent = when (type) {
             "1" -> {
                 Intent(this, ChatActivity::class.java)
             }
             "2" -> Intent(this, MainActivity::class.java)
             else -> Intent(this, DoctorActivity::class.java)
+        }
+/*data = {
+            "modal": True,
+            "body": appointment.body,
+            "title": appointment.title,
+            "doctor_fullname": _doc_name,
+            "service": appointment.service,
+            "doctor_id": appointment.doctor_id,
+            "avatar": get_avatar_profile(
+                instance=appointment.patient.patient_detaiil
+            ),
+        }*/
+        if (modal){
+            resultIntent = Intent(this, CreateRatingActivity::class.java)
+            resultIntent.putExtra("name", json.getString("doctor_fullname"))
+            resultIntent.putExtra("avatar", json.getString("avatar"))
+            resultIntent.putExtra("doctor_id", json.getString("doctor_id"))
         }
 
         if (type == "1") {

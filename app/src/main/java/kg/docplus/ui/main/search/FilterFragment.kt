@@ -112,7 +112,6 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
             adapter.notifyDataSetChanged()
         })
         viewModel.status.observe(this, Observer { setupStatus(it!!) })
-        viewModel.loadingVisibility.observe(this, Observer { progress.visibility = it!! })
         viewModel.doctors.observe(this, Observer {
             adapterResult.swapData(it.results!!)
         })

@@ -95,9 +95,10 @@ interface PostApi {
        @Path("id") id: Int
     ): Observable<Response<String>>
 
-    @PUT("doc-plus/favorite-doctor/{id}/")
+    @FormUrlEncoded
+    @POST("doc-plus/favorite-doctor/")
     fun createFavorite(
-        @Path("id") id: Int
+        @Path("doctor_id") id: Int
     ): Observable<Response<Any>>
 
     @Multipart
@@ -120,6 +121,17 @@ interface PostApi {
     @GET("doc-plus/my-doctors/")
     fun getMyDoctors()
             : Observable<Response<ArrayList<MyDoctor>>>
+
+
+    @GET("doc-plus/appointment-request/{id}/try_video_call/")
+    fun tryVideo(@Path("id") id:Int)
+            : Observable<Response<ArrayList<Any>>>
+
+
+    @GET("doc-plus/appointment-request/{id}/confirm_video_call/")
+    fun confirmVideo(@Path("id") id:Int)
+            : Observable<Response<ConfirmVideo>>
+
 
     @GET("doc-plus/rate/{id}")
     fun getPreview(
