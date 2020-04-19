@@ -1,5 +1,6 @@
 package kg.docplus.ui.main.search
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
@@ -41,6 +42,7 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
     }
 
     inner class AdvertViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        @SuppressLint("SetTextI18n")
         fun bind(item: DoctorGet) = with(itemView) {
 
             val name:TextView = itemView.findViewById(R.id.name)
@@ -60,8 +62,19 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
                     specialities.append("${text.title}, ")
                 }
             }
+            if (!item.services.isEmpty()) {
+                var min_price = 100000
+                for (serv in item.services) {
 
-            minPrice.text = "${item.services[0].min_price} сом"
+                    if (min_price>serv.min_price){
+                        min_price=serv.min_price
+                    }
+
+                }
+                minPrice.text = "$min_price сом"
+            }else{
+                minPrice.visibility = View.INVISIBLE
+            }
             if (item.doctor_detail.avatar!= null)
             setImage(item.doctor_detail.avatar.file,avatar)
 

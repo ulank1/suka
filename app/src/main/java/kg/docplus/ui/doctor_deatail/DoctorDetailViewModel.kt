@@ -1,6 +1,7 @@
 package kg.docplus.ui.doctor_deatail
 
 import android.app.Dialog
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -19,10 +20,8 @@ import kg.docplus.model.get.DoctorFull
 import kg.docplus.model.get.UrlImage
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.filter.Filter
-import kg.docplus.utils.extension.getServiceName
-import kg.docplus.utils.extension.gone
-import kg.docplus.utils.extension.toast
-import kg.docplus.utils.extension.visible
+import kg.docplus.ui.rating.RatingActivity
+import kg.docplus.utils.extension.*
 import kotlinx.android.synthetic.main.fragment_filter.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -161,6 +160,9 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
         } else {
             line.gone()
         }
+    }
+    fun onClickPreview(view: View) {
+        view.getParentActivity()?.startActivity(Intent(view.getParentActivity(),RatingActivity::class.java).putExtra("id",idDoctor))
     }
 
     fun onClickHeart() {

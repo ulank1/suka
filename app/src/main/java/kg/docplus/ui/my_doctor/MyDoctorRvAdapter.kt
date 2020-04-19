@@ -95,7 +95,7 @@ class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : R
                         itemView.btn_action_active.setOnClickListener {
                             var intent = Intent(context, ChatActivity::class.java)
                             intent.putExtra("doc_id", item.doctor_detail.id.toString())
-                            intent.putExtra("patient_id", item.id.toString())
+                            intent.putExtra("patient_id", item.patient_id.toString())
                             intent.putExtra("avatar", item.doctor_detail.avatar.file)
                             intent.putExtra("speciality", specialities.text.toString())
                             intent.putExtra("time", item.date + " " + item.exact_time)
@@ -111,7 +111,7 @@ class MyDoctorRvAdapter(val context: Context,val listener: MydoctorListener) : R
                         action.setOnClickListener {
                             var intent = Intent(context, ChatActivity::class.java)
                             intent.putExtra("doc_id", item.doctor_detail.id.toString())
-                            intent.putExtra("patient_id", item.id.toString())
+                            intent.putExtra("patient_id", item.patient_id.toString())
                             intent.putExtra("avatar", item.doctor_detail.avatar.file)
                             intent.putExtra("speciality", specialities.text.toString())
                             intent.putExtra("time", item.date + " " + item.exact_time)

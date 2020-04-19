@@ -105,6 +105,7 @@ class ChatActivity : ImagePickerHelper() {
     }
 
     private fun getMessages() {
+        Log.e("LLLDD",doc_id+" "+patient_id)
 
         val docRef=db.collection("chat").document(doc_id).collection(patient_id).orderBy("time", Query.Direction.DESCENDING)
         docRef.addSnapshotListener{ snapshot, e ->

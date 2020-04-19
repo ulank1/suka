@@ -33,12 +33,8 @@ class CustomDropDownAdapter(val context: Context, var listItemsTxt: ArrayList<St
         view.layoutParams = params
 
         vh.date.text = listItemsTxt[position]
-        if (position>0) {
-            vh.day.text = dayOfWeek[position - 1]
-        }else{
-            vh.day.text = ""
 
-        }
+        vh.day.text = dayOfWeek[position]
         return view
     }
 

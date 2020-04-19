@@ -41,6 +41,7 @@ import kg.docplus.App
 import kg.docplus.model.get.Specialties
 import kg.docplus.ui.dialogs.TimeChooseDialog
 import kg.docplus.utils.extension.getDay
+import kotlinx.android.synthetic.main.activity_show_image.*
 import kotlin.text.Typography.times
 
 
@@ -70,6 +71,14 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     override fun choose(speciality: String?,id:Int) {
         Filter.specialty_title = id.toString()
         Filter.name = null
+
+        for ((i,spec) in specialties_spinner.withIndex()){
+            if (id==spec.id){
+                speciality_spinner.setSelection(i+1)
+                break
+            }
+        }
+
         edit_search.setText(speciality)
         changeStatus(2)
         activity!!.hideKeyboard()
@@ -102,6 +111,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     var specialties_spinner: ArrayList<Specialties> = ArrayList()
 
     var dateList: ArrayList<String> = ArrayList()
+    var specialityId:Int = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -144,6 +154,8 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         viewModel.pageOfFilterDropDown = "1"
         viewModel.getAllDropdown()
         viewModel.getSpeciality()
+        initDateSpinner()
+
         setOnClickListeners()
         edit_search.addTextChangedListener(this)
         setupRv()
@@ -225,7 +237,6 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
                     btn_filter.visible()
                 }
                 3 -> {
-                    initDateSpinner()
                     refresh.gone()
                     scroll.visible()
                     line_result.gone()
@@ -338,8 +349,9 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     }
 
     private fun initDateSpinner() {
-        dateList.add("Выберите дату")
+        dateList.add("")
         var dayOfWeek = ArrayList<String>()
+        dayOfWeek.add("Выберите дату")
         for (i in 0..13) {
             var calendar = Calendar.getInstance()
             calendar.add(Calendar.DAY_OF_YEAR, i)

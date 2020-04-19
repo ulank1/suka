@@ -65,7 +65,7 @@ class MessageRvAdapter(val context: Context) : RecyclerView.Adapter<MessageRvAda
                     date.time = item.time.toLong()
 
                     time.text = dateToChatFormat(date)
-                    if (item.message.contains("http://doc.sunrisetest.site")) {
+                    if (item.message.contains("doc.sunrisetest.site")) {
                         message.gone()
                         imageOwn.visible()
                         Glide.with(context).load(item.message)

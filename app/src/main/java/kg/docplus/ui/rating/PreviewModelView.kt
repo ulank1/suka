@@ -8,6 +8,7 @@ import io.reactivex.schedulers.Schedulers
 import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.base.BaseViewModel
+import kg.docplus.model.get.Preview
 import kg.docplus.model.get.my_doctor.MyDoctor
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.MainActivity
@@ -20,7 +21,7 @@ class PreviewModelView : BaseViewModel() {
 
     @Inject
     lateinit var postApi: PostApi
-    val myDoctor: MutableLiveData<ArrayList<MyDoctor>> = MutableLiveData()
+    val preview: MutableLiveData<ArrayList<Preview>> = MutableLiveData()
 
 
     private var subscription: CompositeDisposable = CompositeDisposable()
@@ -74,6 +75,7 @@ class PreviewModelView : BaseViewModel() {
                                     hideProgress()
                                     if (result.isSuccessful) {
                                         Log.e("Preview", result.body()!!.toString())
+                                        preview.value = result.body()
                                     } else {
                                         var error = result.errorBody()!!.string()
                                         Log.e("Error", error)
