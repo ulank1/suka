@@ -288,9 +288,9 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
                     }
 
                     if (max_price.text.toString().isNotEmpty()) {
-                        Filter.max_price = max_price.text.toString().toInt()
+                        Filter.max_price = max_price.text.toString()
                     } else {
-                        Filter.max_price = 100000
+                        Filter.max_price = null
                     }
 
                     Filter.date = dateList[date.selectedItemPosition]

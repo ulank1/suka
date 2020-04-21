@@ -8,6 +8,7 @@ data class DoctorDetail (
 	@SerializedName("certificates") val certificates : List<UrlImage>,
 	@SerializedName("specialties") val specialties : List<Specialties>,
 	@SerializedName("patients") val patients : String,
+	@SerializedName("rate") val rate : String,
 	@SerializedName("is_favorite") val is_favorite : Boolean,
 	@SerializedName("first_name") val first_name : String,
 	@SerializedName("mid_name") val mid_name : String,

@@ -57,10 +57,10 @@ interface PostApi {
     @GET("doc-plus/filter/doctors/")
     fun getDocs(
         @Query("min_price") min_price:Int,
-        @Query("max_price") max_price:Int,
+        @Query("max_price") max_price:String?,
         @Query("schedule_time_after") secondTime:String,
         @Query("schedule_time_before") firstTime:String,
-//        @Query("specialty") specialty_title:String?,
+        @Query("specialty") specialty_title:String?,
         @Query("name") name:String?,
         @Query("schedule_day") date:String?
     ): Observable<Response<Paginate<DoctorGet>>>
@@ -98,7 +98,7 @@ interface PostApi {
     @FormUrlEncoded
     @POST("doc-plus/favorite-doctor/")
     fun createFavorite(
-        @Path("doctor_id") id: Int
+        @Field("doctor_detail") id: Int
     ): Observable<Response<Any>>
 
     @Multipart

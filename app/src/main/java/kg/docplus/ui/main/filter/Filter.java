@@ -8,7 +8,7 @@ public class Filter {
 
     public static ArrayList<Integer> services = new ArrayList<>();
     public static int service = 0;
-    public static int max_price = 10000;
+    public static String max_price = null;
     public static int min_price = 0;
     public static String schedule_time_before = "22:00";
     public static String schedule_time_after = "01:00";

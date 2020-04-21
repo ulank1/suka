@@ -86,7 +86,7 @@
                     android:background="@drawable/rating_back"
                     android:drawableStart="@drawable/star_yellow"
                     android:padding="5dp"
-                    android:text="4.5"
+                    android:text='@{""+doctor.doctor_detail.rate}'
                     android:textColor="#FDB600"
                     android:textSize="12sp" />
 

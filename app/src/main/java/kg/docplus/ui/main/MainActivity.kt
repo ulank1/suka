@@ -225,6 +225,7 @@ class MainActivity : ImagePickerHelper() {
 
     }
 
+
     private fun askCameraPermission() {
         Log.e("FFFF","Dexter")
         Dexter.withActivity(this)

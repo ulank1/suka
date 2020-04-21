@@ -105,8 +105,15 @@ class FilterViewModel : BaseViewModel() {
         }
         var day:String? = ""
         if (!Filter.date.isNullOrEmpty()){
-            day = getDayOfWeekName1(Filter.date!!)
+            var d = getDayOfWeekName1(Filter.date!!).toInt()
+            d -= 2
+            if (d==-1){
+                d=6
+            }
+            day = d.toString()
         }
+
+
 
         Log.e("DATE", Filter.schedule_time_after + " " + Filter.schedule_time_before)
         Log.e("Filter", "${Filter.min_price} ${Filter.max_price} ${Filter.services} ${Filter.name} ")
@@ -118,7 +125,7 @@ class FilterViewModel : BaseViewModel() {
                 Filter.max_price,
                 Filter.schedule_time_after,
                 Filter.schedule_time_before,
-//                Filter.specialty_title,
+                Filter.specialty_title,
                 Filter.name,
                 day
             )

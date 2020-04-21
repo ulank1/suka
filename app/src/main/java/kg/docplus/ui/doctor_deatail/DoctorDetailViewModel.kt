@@ -42,20 +42,21 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
 
     override fun postAppointment(time: String) {
         if (service==3){
-            var bool = true
-            if (city.selectedItemPosition==0){
-                App.activity.toast("Выберите город")
-                bool= false
-            }
-
-            if (address.text.toString().isEmpty()){
-                address.error = "Введите адрес"
-                bool = false
-            }
-
-            if (bool){
-                createAppointment(service,time,cities[city.selectedItemPosition].id.toString(),address.text.toString())
-            }
+//            var bool = true
+//            if (city.selectedItemPosition==0){
+//                App.activity.toast("Выберите город")
+//                bool= false
+//            }
+//
+//            if (address.text.toString().isEmpty()){
+//                address.error = "Введите адрес"
+//                bool = false
+//            }
+//
+//            if (bool){
+//                createAppointment(service,time,cities[city.selectedItemPosition].id.toString(),address.text.toString())
+//            }
+            createAppointment(service, time)
 
         }else {
             createAppointment(service, time)
@@ -264,16 +265,17 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
             address.gone()
             city.gone()
         }else{
-
-            var cityList:ArrayList<String> = ArrayList()
-            cityList.add("Выберите город")
-            for (city1 in cities){
-                cityList.add(city1.name)
-            }
-
-            var adapter = ArrayAdapter(App.activity!!, R.layout.spinner_country_item, cityList)
-            adapter.setDropDownViewResource(R.layout.spinner_country_dropdown_item)
-            city.adapter = adapter
+            address.gone()
+            city.gone()
+//            var cityList:ArrayList<String> = ArrayList()
+//            cityList.add("Выберите город")
+//            for (city1 in cities){
+//                cityList.add(city1.name)
+//            }
+//
+//            var adapter = ArrayAdapter(App.activity!!, R.layout.spinner_country_item, cityList)
+//            adapter.setDropDownViewResource(R.layout.spinner_country_dropdown_item)
+//            city.adapter = adapter
         }
 
 
@@ -410,8 +412,10 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
                                         showAlertResult(service)
                                     } else {
                                         var error = result.errorBody()!!.string()
+                                        if (error.contains("Расписание на это время уже")){
+                                            App.activity.toast("Расписание на это время уже установлено! Вы можете изменить")
+                                        }
                                         Log.e("Error", error)
-                                        App.activity.toast(error)
 
                                     }
 

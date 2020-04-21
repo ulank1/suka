@@ -125,11 +125,18 @@ class TimePicker @JvmOverloads constructor(
         var hour = calendar.get(Calendar.HOUR_OF_DAY)
         var minute = calendar.get(Calendar.MINUTE)
         if (minute/30<1){
+            this.minute = "00"
             np1.value = hour
             np2.value = 1
         }else{
+            this.minute = "30"
             np1.value = hour+1
             np2.value = 0
+        }
+        if (hour<10){
+            this.hour = "0$hour"
+        }else{
+            this.hour = hour.toString()
         }
 
         listener.onTimeChange("$hour:$minute",np1.value,np2.value)
