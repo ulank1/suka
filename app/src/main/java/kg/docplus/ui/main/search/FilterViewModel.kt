@@ -116,7 +116,7 @@ class FilterViewModel : BaseViewModel() {
 
 
         Log.e("DATE", Filter.schedule_time_after + " " + Filter.schedule_time_before)
-        Log.e("Filter", "${Filter.min_price} ${Filter.max_price} ${Filter.services} ${Filter.name} ")
+        Log.e("Filter", "${Filter.min_price} ${Filter.max_price} ${Filter.services} ${Filter.name} ${Filter.specialty_title}")
         Log.e("FILTER",Filter.ttt())
         Log.e("GGGTTYYUI",day.toString())
         subscription.add(

@@ -54,16 +54,25 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        activity?.hideKeyboard()
         if (view != null) {
-        Log.e("IDDFF",view.id.toString()+"  "+R.id.spinner)
-            if (view.id==R.id.spinner) {
-                if (position == 0) {
-                    Filter.ordering = "schedule__starts_at_time"
-                } else {
-                    Filter.ordering = "schedule__services__price"
+        Log.e("IDDFF",view.id.toString()+"  "+R.id.speciality_spinner+"  "+parent?.id.toString())
+        Log.e("IDDFF",view.id.toString()+"  "+R.id.spinner+"  "+id.toString())
+            if (parent != null) {
+                if (parent.id==R.id.spinner) {
+                    if (position == 0) {
+                        Filter.ordering = "schedule__starts_at_time"
+                    } else {
+                        Filter.ordering = "schedule__services__price"
+                    }
+                    adapterResult.clearData()
+                    viewModel.filterDocs()
+                }else if (parent.id==R.id.speciality_spinner){
+                    if (position>0) {
+                        Filter.specialty_title = specialties_spinner[position - 1].id.toString()
+                    }
                 }
-                adapterResult.clearData()
-                viewModel.filterDocs()
+
             }
         }
     }
@@ -125,7 +134,6 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         viewModel.doctors.observe(this, Observer {
             adapterResult.swapData(it.results!!)
         })
-
         viewModel.specialities_spinner.observe(this, Observer {
             specialties_spinner = it
             var ss:ArrayList<String> = ArrayList()
@@ -137,6 +145,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             speciality_spinner.adapter = adapter
             speciality_spinner.onItemSelectedListener = this
+
 
         })
 
@@ -158,6 +167,14 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
 
         setOnClickListeners()
         edit_search.addTextChangedListener(this)
+        date.setOnTouchListener { v, event ->
+            activity?.hideKeyboard()
+            return@setOnTouchListener false
+        }
+        speciality_spinner.setOnTouchListener { v, event ->
+            activity?.hideKeyboard()
+            return@setOnTouchListener false
+        }
         setupRv()
         viewModel.filterSpeciality("")
         val adapter = ArrayAdapter.createFromResource(activity, R.array.sort, R.layout.spinner)
@@ -206,6 +223,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         time.setOnClickListener(this)
         btn_filter.setOnClickListener(this)
         btn_search.setOnClickListener(this)
+        scroll.setOnClickListener(this)
         back.setOnClickListener {
             if (lateStatus > 1) {
                 changeStatus(1)
@@ -255,6 +273,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
 
     @SuppressLint("SetTextI18n")
     override fun onClick(v: View?) {
+        activity?.hideKeyboard()
         if (v != null) {
             when (v.id) {
                 R.id.btn_ok -> {
@@ -356,8 +375,10 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
             var calendar = Calendar.getInstance()
             calendar.add(Calendar.DAY_OF_YEAR, i)
             var date = Date(calendar.timeInMillis)
-            val postFormat = SimpleDateFormat("yyyy-MM-dd")
-            dateList.add(postFormat.format(date))
+            val postFormat = SimpleDateFormat("dd-MMMM-yyyy")
+            var dateName = getMonthName(postFormat.format(date))
+
+            dateList.add(dateName)
             var day = (calendar.get(Calendar.DAY_OF_WEEK)-2)
             if (day==-1){
                 day = 6
@@ -372,7 +393,21 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
 
     }
 
-
+    private fun getMonthName(s: String): String {
+        s.replace("January","Января")
+        s.replace("February","Февраля")
+        s.replace("March","Марта")
+        s.replace("April","Апреля")
+        s.replace("May","Мая")
+        s.replace("June","Июня")
+        s.replace("July","Июля")
+        s.replace("August","Августа")
+        s.replace("September","Сентября")
+        s.replace("October","Октября")
+        s.replace("November","Ноября")
+        s.replace("December","Декабря")
+        return s
+    }
 
 
 }

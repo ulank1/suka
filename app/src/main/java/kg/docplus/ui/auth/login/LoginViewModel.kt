@@ -113,7 +113,8 @@ class LoginViewModel : BaseViewModel() {
                         hideProgress()
                         if (result.isSuccessful) {
                             Log.e("TOKENFCM",result.body().toString())
-                            App.activity.startActivity(Intent(App.activity,MainActivity::class.java))
+                            App.activity.startActivity(Intent(App.activity,MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                            App.activity.finish()
 
                         } else {
                             var error = result.errorBody()!!.string()

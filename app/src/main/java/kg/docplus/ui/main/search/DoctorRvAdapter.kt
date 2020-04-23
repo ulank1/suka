@@ -3,6 +3,7 @@ package kg.docplus.ui.main.search
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,9 +12,12 @@ import android.view.ViewGroup
 import android.widget.*
 import kg.docplus.App
 import kg.docplus.R
+import kg.docplus.model.get.Days
 import kg.docplus.model.get.DoctorGet
 import kg.docplus.ui.doctor_deatail.DoctorDetailActivity
+import kg.docplus.utils.extension.day
 import kg.docplus.utils.extension.setRoundedImage
+import kotlinx.android.synthetic.main.item_doctor.view.*
 import kotlin.collections.ArrayList
 
 class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapter.AdvertViewHolder>() {
@@ -62,7 +66,7 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
                     specialities.append("${text.title}, ")
                 }
             }
-            if (!item.services.isEmpty()) {
+            if (!item.services.isNullOrEmpty()) {
                 var min_price = 100000
                 for (serv in item.services) {
 
@@ -78,6 +82,8 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
             if (item.doctor_detail.avatar!= null)
             setImage(item.doctor_detail.avatar.file,avatar)
 
+            setDay(item.working_days,itemView)
+
             itemView.setOnClickListener {
                 Log.e("ID_DOCTOR",item.id.toString())
                 App.activity!!.startActivity(Intent(App.activity, DoctorDetailActivity::class.java).putExtra("id",item.id))
@@ -85,6 +91,17 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
 
 
         }
+    }
+
+    private fun setDay(workingDays: Days,view:View) {
+
+        view.day0.day(workingDays.day0)
+        view.day1.day(workingDays.day1)
+        view.day2.day(workingDays.day2)
+        view.day3.day(workingDays.day3)
+        view.day4.day(workingDays.day4)
+        view.day5.day(workingDays.day5)
+        view.day6.day(workingDays.day6)
     }
 
     fun setImage(image:String,avatar:ImageView){

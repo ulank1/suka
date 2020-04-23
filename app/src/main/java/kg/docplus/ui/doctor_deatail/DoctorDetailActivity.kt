@@ -12,6 +12,7 @@ import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.injection.ViewModelFactory
 import kg.docplus.utils.UserToken
+import kg.docplus.utils.extension.gone
 import kg.docplus.utils.extension.setRoundedImage
 
 class DoctorDetailActivity : AppCompatActivity() {
@@ -35,6 +36,7 @@ class DoctorDetailActivity : AppCompatActivity() {
         viewModel.getDoctorFull(intent.getIntExtra("id", 7))
         viewModel.doctor.observe(this, Observer {
             binding.doctor = it
+            binding.noContent.gone()
             setRoundedImage(binding.avatar,it.doctor_detail.avatar.file,this@DoctorDetailActivity)
 
         })

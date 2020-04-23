@@ -62,6 +62,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="16dp"
+                android:inputType="text"
                 android:layout_marginEnd="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/round_rect_15_white_stroke_grey"

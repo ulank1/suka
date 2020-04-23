@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -19,7 +20,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import jp.wasabeef.glide.transformations.CropTransformation
+import kg.docplus.R
 import kotlinx.android.synthetic.main.activity_test.*
+import kotlinx.android.synthetic.main.item_doctor.view.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -61,6 +64,18 @@ fun EditText.text(
 ) {
     if (!message.isNullOrEmpty()) {
         this.setText(message)
+    }
+}
+
+fun TextView.day(
+        workingDays: Boolean
+) {
+    if (workingDays){
+        setBackgroundResource(R.drawable.stoke_gray)
+        setTextColor(Color.parseColor("#E0E0E0"))
+    }else if (!workingDays){
+       setBackgroundResource(R.drawable.stoke_blue)
+       setTextColor(Color.parseColor("#FDB600"))
     }
 }
 

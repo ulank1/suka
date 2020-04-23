@@ -18,11 +18,13 @@ import kg.docplus.base.BaseViewModel
 import kg.docplus.model.get.Cities
 import kg.docplus.model.get.DoctorFull
 import kg.docplus.model.get.UrlImage
+import kg.docplus.model.post.DoctorId
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.filter.Filter
 import kg.docplus.ui.rating.RatingActivity
 import kg.docplus.utils.extension.*
 import kotlinx.android.synthetic.main.fragment_filter.*
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -200,9 +202,10 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
 
             isActive = false
         } else {
+            var doc = DoctorId(idDoctor)
             subscription.add(
                 postApi.createFavorite(
-                    idDoctor
+                    doc
                 )
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

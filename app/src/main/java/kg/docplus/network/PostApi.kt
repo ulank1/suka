@@ -8,6 +8,7 @@ import kg.docplus.model.ApiResponse
 import kg.docplus.model.Paginate
 import kg.docplus.model.get.*
 import kg.docplus.model.get.my_doctor.MyDoctor
+import kg.docplus.model.post.DoctorId
 import kg.docplus.model.post.ProfilePost
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -58,8 +59,8 @@ interface PostApi {
     fun getDocs(
         @Query("min_price") min_price:Int,
         @Query("max_price") max_price:String?,
-        @Query("schedule_time_after") secondTime:String,
-        @Query("schedule_time_before") firstTime:String,
+        @Query("schedule_time_after") secondTime:String?,
+        @Query("schedule_time_before") firstTime:String?,
         @Query("specialty") specialty_title:String?,
         @Query("name") name:String?,
         @Query("schedule_day") date:String?
@@ -95,10 +96,9 @@ interface PostApi {
        @Path("id") id: Int
     ): Observable<Response<String>>
 
-    @FormUrlEncoded
     @POST("doc-plus/favorite-doctor/")
     fun createFavorite(
-        @Field("doctor_detail") id: Int
+        @Body id: DoctorId
     ): Observable<Response<Any>>
 
     @Multipart

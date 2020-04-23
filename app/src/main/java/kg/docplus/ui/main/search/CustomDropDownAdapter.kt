@@ -1,6 +1,7 @@
 package kg.docplus.ui.main.search
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,12 +29,16 @@ class CustomDropDownAdapter(val context: Context, var listItemsTxt: ArrayList<St
 
     // setting adapter item height programatically.
      
-        val params = view.layoutParams
-        params.height = 60
-        view.layoutParams = params
+//        val params = view.layoutParams
+//        params.height = 60
+//        view.layoutParams = params
 
         vh.date.text = listItemsTxt[position]
-
+        if (position>0){
+            vh.day.setTextColor(Color.parseColor("#1ACDEE"))
+        }else{
+            vh.day.setTextColor(Color.parseColor("#4F4F4F"))
+        }
         vh.day.text = dayOfWeek[position]
         return view
     }

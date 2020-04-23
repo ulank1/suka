@@ -10,8 +10,8 @@ public class Filter {
     public static int service = 0;
     public static String max_price = null;
     public static int min_price = 0;
-    public static String schedule_time_before = "22:00";
-    public static String schedule_time_after = "01:00";
+    public static String schedule_time_before = null;
+    public static String schedule_time_after = null;
     public static String name = "";
     public static String specialty_title = "";
     public static String date = "";
