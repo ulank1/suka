@@ -17,7 +17,9 @@ import kg.docplus.model.get.DoctorGet
 import kg.docplus.ui.chat.ImageActivity
 import kg.docplus.ui.doctor_deatail.DoctorDetailActivity
 import kg.docplus.utils.extension.day
+import kg.docplus.utils.extension.gone
 import kg.docplus.utils.extension.setRoundedImage
+import kg.docplus.utils.extension.visible
 import kotlinx.android.synthetic.main.item_doctor.view.*
 import kotlin.collections.ArrayList
 
@@ -59,7 +61,8 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
 
             name.text = "${item.doctor_detail.first_name} ${item.doctor_detail.mid_name}"
             specialities.text =""
-
+            rating.text = item.doctor_detail.rate
+            patients.text = item.doctor_detail.patients
             for ((i, text) in item.doctor_detail.specialties.withIndex()) {
                 if (i == item.doctor_detail.specialties.size - 1) {
                     specialities.append(text.title)
@@ -93,7 +96,10 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
 
             }
             if (item.working_days!= null) {
+                itemView.line.visible()
                 setDay(item.working_days, itemView)
+            }else{
+                itemView.line.gone()
             }
             itemView.setOnClickListener {
                 Log.e("ID_DOCTOR",item.id.toString())

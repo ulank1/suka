@@ -5,7 +5,8 @@
     android:paddingStart="16dp"
     android:background="@drawable/rounded_rect_10dp_white"
     android:elevation="3dp"
-    android:paddingBottom="8dp">
+    android:layout_marginBottom="8dp"
+    android:paddingBottom="5dp">
 
     <RelativeLayout
         android:id="@+id/line2"
@@ -99,6 +100,7 @@
 
 
     <HorizontalScrollView
+        android:id="@+id/line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/line2"
