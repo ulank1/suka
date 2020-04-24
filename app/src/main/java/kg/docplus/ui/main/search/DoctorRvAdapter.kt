@@ -14,6 +14,7 @@ import kg.docplus.App
 import kg.docplus.R
 import kg.docplus.model.get.Days
 import kg.docplus.model.get.DoctorGet
+import kg.docplus.ui.chat.ImageActivity
 import kg.docplus.ui.doctor_deatail.DoctorDetailActivity
 import kg.docplus.utils.extension.day
 import kg.docplus.utils.extension.setRoundedImage
@@ -81,9 +82,19 @@ class DoctorRvAdapter(val context: Context) : RecyclerView.Adapter<DoctorRvAdapt
             }
             if (item.doctor_detail.avatar!= null)
             setImage(item.doctor_detail.avatar.file,avatar)
+            avatar.setOnClickListener {
 
-            setDay(item.working_days,itemView)
+                context.startActivity(
+                        Intent(
+                                context,
+                                ImageActivity::class.java
+                        ).putExtra("image", item.doctor_detail.avatar.file)
+                )
 
+            }
+            if (item.working_days!= null) {
+                setDay(item.working_days, itemView)
+            }
             itemView.setOnClickListener {
                 Log.e("ID_DOCTOR",item.id.toString())
                 App.activity!!.startActivity(Intent(App.activity, DoctorDetailActivity::class.java).putExtra("id",item.id))

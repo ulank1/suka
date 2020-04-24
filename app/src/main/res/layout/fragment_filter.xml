@@ -102,7 +102,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:isScrollContainer="false"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"
@@ -114,6 +114,7 @@
 
 
     <ScrollView
+        android:visibility="gone"
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -372,6 +373,7 @@
     </ScrollView>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/line_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

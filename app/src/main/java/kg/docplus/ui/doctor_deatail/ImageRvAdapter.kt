@@ -1,6 +1,7 @@
 package kg.docplus.ui.doctor_deatail
 
 import android.content.Context
+import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
 import kg.docplus.App
 import kg.docplus.model.get.UrlImage
+import kg.docplus.ui.chat.ImageActivity
 import kg.docplus.utils.extension.setRoundedImage
 
 
@@ -50,7 +52,12 @@ class ImageRvAdapter(val context: Context) : RecyclerView.Adapter<ImageRvAdapter
             setRoundedImage(image,item.file,context)
 
             itemView.setOnClickListener {
-
+                context.startActivity(
+                        Intent(
+                                context,
+                                ImageActivity::class.java
+                        ).putExtra("image", item.file)
+                )
             }
 
         }
