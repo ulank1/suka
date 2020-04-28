@@ -44,7 +44,7 @@ class TimesRvAdapter(val context: Context,val listener: DetailListener) : Recycl
             var time = item
 
             if (item.length>5){
-                time = item.substring(0,6)
+                time = item.substring(0,5)
             }
 
 

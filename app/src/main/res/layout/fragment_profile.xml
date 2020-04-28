@@ -237,10 +237,10 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="28dp"
-                        android:text="@{profile.phone_number}"
                         android:textColor="@color/orange" />
 
                     <LinearLayout

@@ -54,7 +54,6 @@ class TimePicker @JvmOverloads constructor(
             np2.displayedValues = minutes
         }
         setCurrentTime()
-
         np1.setOnValueChangedListener { picker, oldVal, newVal ->
             hour = if (picker.displayedValues.isNullOrEmpty()){
                 String.format("%02d", picker.value)
@@ -112,8 +111,23 @@ class TimePicker @JvmOverloads constructor(
             np1.minValue = currentHour
             np1.value = currentHour
             np2.value = 1
+            if (currentHour<10){
+                this.hour = "0$currentHour"
+            }else{
+                this.hour = currentHour.toString()
+            }
+            minute = "30"
+
         }else{
-            np1.minValue = currentHour+1
+            var currentHou = currentHour+1
+            if (currentHou<10){
+                this.hour = "0$currentHou"
+            }else{
+                this.hour = currentHou.toString()
+            }
+            minute="00"
+
+            np1.minValue =  +1
             np1.value = currentHour+1
             np2.value = currentMinute+1
         }
@@ -125,11 +139,11 @@ class TimePicker @JvmOverloads constructor(
         var hour = calendar.get(Calendar.HOUR_OF_DAY)
         var minute = calendar.get(Calendar.MINUTE)
         if (minute/30<1){
-            this.minute = "00"
+            this.minute = "30"
             np1.value = hour
             np2.value = 1
         }else{
-            this.minute = "30"
+            this.minute = "00"
             np1.value = hour+1
             np2.value = 0
         }

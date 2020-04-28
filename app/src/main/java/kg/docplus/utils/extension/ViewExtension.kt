@@ -187,7 +187,7 @@ fun getDayOfWeekName(date: String): String {
 }
 
 fun getDayOfWeekName1(date: String): String {
-    val format = SimpleDateFormat("yyyy-MM-dd")
+    val format = SimpleDateFormat("dd-MMMM-yyyy")
     var day = 0
     try {
         val data = format.parse(date)

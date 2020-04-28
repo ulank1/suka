@@ -46,7 +46,7 @@ interface PostApi {
 
 
     @FormUrlEncoded
-    @POST("doc-plus/change-password/")
+    @POST("doc-plus/reset-password/")
     fun newPassword(
         @Field("new_password") password: String,
         @Field("phone_number") phone: String

@@ -125,6 +125,11 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_filter, container, false)
+        Filter.date = ""
+        Filter.max_price = null
+        Filter.min_price = 0
+        Filter.schedule_time_after = null
+        Filter.schedule_time_before = null
         viewModel = ViewModelProviders.of(this, ViewModelFactory()).get(FilterViewModel::class.java)
         viewModel.specialities.observe(this, Observer {
             specialties.addAll(it!!)
@@ -240,6 +245,8 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
 
             when (status) {
                 1 -> {
+                    Filter.name = ""
+                    Filter.specialty_title=""
                     adapterResult.clearData()
                     refresh.visible()
                     scroll.gone()
@@ -394,18 +401,18 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
     }
 
     private fun getMonthName(s: String): String {
-        s.replace("January","Января")
-        s.replace("February","Февраля")
-        s.replace("March","Марта")
-        s.replace("April","Апреля")
-        s.replace("May","Мая")
-        s.replace("June","Июня")
-        s.replace("July","Июля")
-        s.replace("August","Августа")
-        s.replace("September","Сентября")
-        s.replace("October","Октября")
-        s.replace("November","Ноября")
-        s.replace("December","Декабря")
+//        s.replace("January","Января")
+//        s.replace("February","Февраля")
+//        s.replace("March","Марта")
+//        s.replace("April","Апреля")
+//        s.replace("May","Мая")
+//        s.replace("June","Июня")
+//        s.replace("July","Июля")
+//        s.replace("August","Августа")
+//        s.replace("September","Сентября")
+//        s.replace("October","Октября")
+//        s.replace("November","Ноября")
+//        s.replace("December","Декабря")
         return s
     }
 

@@ -50,6 +50,7 @@ class ProfileFragment : Fragment() {
         viewModel.getProfile()
         viewModel.profile.observe(this, Observer {
             Log.e("PROFILE_GET", it.toString())
+            binding.phone.text = it.phone_number
             binding.profile = it
         })
 

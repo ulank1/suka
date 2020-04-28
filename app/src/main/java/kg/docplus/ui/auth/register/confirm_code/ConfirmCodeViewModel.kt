@@ -86,7 +86,7 @@ class ConfirmCodeViewModel : BaseViewModel() {
                 } else {
                         Log.e("ERROR",task.exception.toString())
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        Log.e("LOH","LOH")
+                        activity.toast("Введен не правильный код")
                     }
                 }
             }

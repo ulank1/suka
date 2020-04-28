@@ -71,12 +71,16 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
                         hideProgress()
                         if (result.isSuccessful) {
                             profileGet = result.body()!!
-                            Log.e("PRRRRR",profileGet.toString())
-                            profileGet.patient_detail.gender = getGenderForId(profileGet.patient_detail.gender!!)
                             profile.value = profileGet
-                            path = profileGet.patient_detail.avatar?.file.toString()
-                            if (!path.isNullOrEmpty()) {
-                                avatar.value = path
+                            try {
+                                Log.e("PRRRRR", profileGet.toString())
+                                profileGet.patient_detail.gender = getGenderForId(profileGet.patient_detail.gender!!)
+                                path = profileGet.patient_detail.avatar?.file.toString()
+                                if (!path.isNullOrEmpty()) {
+                                    avatar.value = path
+                                }
+                            }catch (e:Exception){
+
                             }
                         } else {
                             var error = result.errorBody()!!.string()
@@ -134,7 +138,7 @@ class ProfileViewModel : BaseViewModel(), DatePickerDialog.OnDateSetListener {
             var bool = true
             if (!name.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
             if (!surname.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
-            if (!forename.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
+//            if (!forename.validate({ s -> s.isNotEmpty() }, "Поле не может быть пустым")) bool = false
 
             if (bool) {
                 val s = surname.text.toString() + "\n" + name.text.toString() + " " + forename.text.toString()
