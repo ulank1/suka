@@ -70,6 +70,10 @@ interface PostApi {
     fun getDocsTest(): Observable<Response<List<DoctorGet>>>
 
 
+    @GET("doc-plus/notification/{id}/tap/")
+    fun tapNot(@Path("id") id:Int): Observable<Response<Any>>
+
+
     @GET("doc-plus/dropdown-list/")
     fun getDropdown(@Query("page") page: String): Observable<Response<DropDown>>
 

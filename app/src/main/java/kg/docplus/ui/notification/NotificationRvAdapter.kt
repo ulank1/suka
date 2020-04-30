@@ -26,6 +26,16 @@ class NotificationRvAdapter(val context: Context) : RecyclerView.Adapter<Notific
         )
     }
 
+    interface OnItemListener {
+        fun onStarClick(id:Int)
+    }
+
+    private var listener: OnItemListener? = null
+
+    fun setOnItemClickListener(listener: OnItemListener) {
+        this.listener = listener
+    }
+
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: AdvertViewHolder, position: Int) = holder.bind(data[position])
@@ -54,7 +64,10 @@ class NotificationRvAdapter(val context: Context) : RecyclerView.Adapter<Notific
                 online.visible()
             }
 
-            itemView.setOnClickListener { context.startActivity(Intent(context,DoctorActivity::class.java)) }
+            itemView.setOnClickListener {
+                listener?.onStarClick(item.id)
+                context.startActivity(Intent(context,DoctorActivity::class.java))
+            }
 
         }
     }

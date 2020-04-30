@@ -55,6 +55,35 @@ class NotificationViewModel : BaseViewModel() {
 
     }
 
+    fun tapNot(id:Int) {
+
+        subscription.add(
+            postApi.tapNot(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { showProgress() }
+                .subscribe(
+                    { result ->
+                        hideProgress()
+                        if (result.isSuccessful) {
+                            Log.e("NOtif11",result.body()!!.toString())
+                        } else {
+                            var error = result.errorBody()!!.string()
+                            Log.e("Error11",error)
+
+                        }
+
+                    },
+                    {
+                        hideProgress()
+
+                        Log.e("DDD",it.toString())}
+
+                )
+        )
+
+    }
+
     fun onClickBack(){
         App.activity!!.finish()
     }

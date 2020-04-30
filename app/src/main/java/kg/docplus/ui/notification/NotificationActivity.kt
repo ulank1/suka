@@ -12,7 +12,10 @@ import kg.docplus.R
 import kg.docplus.injection.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_doctor.*
 
-class NotificationActivity : AppCompatActivity() {
+class NotificationActivity : AppCompatActivity(),NotificationRvAdapter.OnItemListener {
+    override fun onStarClick(id: Int) {
+        viewModel.tapNot(id)
+    }
 
     private lateinit var viewModel: NotificationViewModel
     lateinit var adapter: NotificationRvAdapter
@@ -27,7 +30,6 @@ class NotificationActivity : AppCompatActivity() {
 
         back.setOnClickListener { finish() }
         setupRv()
-        viewModel.getNotifications()
 
 
     }
@@ -35,6 +37,7 @@ class NotificationActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         App.activity = this
+        viewModel.getNotifications()
     }
 
     fun setupRv(){
@@ -43,6 +46,7 @@ class NotificationActivity : AppCompatActivity() {
         rv.setHasFixedSize(false)
         adapter = NotificationRvAdapter(this)
         rv.adapter = adapter
+        adapter.setOnItemClickListener(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
