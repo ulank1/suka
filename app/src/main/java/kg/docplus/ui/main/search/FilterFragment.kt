@@ -230,13 +230,18 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         btn_search.setOnClickListener(this)
         scroll.setOnClickListener(this)
         back.setOnClickListener {
-            if (lateStatus > 1) {
-                changeStatus(1)
-            } else {
-                (activity as MainActivity).onBackFromFragment()
-            }
+            (activity as MainActivity).onBackFromFragment()
         }
     }
+
+    fun onBack(){
+        if (lateStatus > 1) {
+            changeStatus(1)
+        } else {
+            (activity as MainActivity).onBackFromFragment()
+        }
+    }
+
 
     private fun setupStatus(status: Int) {
 

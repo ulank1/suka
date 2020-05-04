@@ -204,25 +204,43 @@ class MainActivity : ImagePickerHelper() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
+        val currentFragment1 = fragmentManager.findFragmentById(R.id.frame)
+        if (currentFragment1 is FilterFragment) {
+            val lateStatus = (currentFragment1 as FilterFragment).lateStatus
 
-        Log.e("FRAGMENT_SIZE",fragmentManager.backStackEntryCount.toString())
-        if (fragmentManager.backStackEntryCount==0) finish()
+            if (lateStatus==1){
+                super.onBackPressed()
+
+                replaceBottomNavigation()
+            }else{
+                (currentFragment1 as FilterFragment).onBack()
+            }
+
+        }else {
+            super.onBackPressed()
+
+            replaceBottomNavigation()
+        }
+
+    }
+
+    fun replaceBottomNavigation(){
+        Log.e("FRAGMENT_SIZE", fragmentManager.backStackEntryCount.toString())
+        if (fragmentManager.backStackEntryCount == 0) finish()
 
         isBack = true
         val currentFragment = fragmentManager.findFragmentById(R.id.frame)
 
-        if (currentFragment is ProfileFragment){
+
+        if (currentFragment is ProfileFragment) {
             navigation.selectedItemId = R.id.navigation_dashboard
         }
-        if (currentFragment is FilterFragment){
+        if (currentFragment is FilterFragment) {
             navigation.selectedItemId = R.id.navigation_search
         }
-        if (currentFragment is HomeFragment){
+        if (currentFragment is HomeFragment) {
             navigation.selectedItemId = R.id.navigation_home
         }
-
-
     }
 
 
