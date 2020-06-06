@@ -262,6 +262,7 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
         address = dialog.findViewById(R.id.edit_address) as EditText
         city = dialog.findViewById(R.id.cities) as Spinner
         val date:Spinner = dialog.findViewById(R.id.date)
+        var dateListA = ArrayList<String>()
         dateList.clear()
         dayList.clear()
         if (service!=3){
@@ -287,18 +288,19 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
             calendar.add(Calendar.DAY_OF_YEAR,i)
             var date1 = Date(calendar.timeInMillis)
             val postFormat = SimpleDateFormat("yyyy-MM-dd")
-            dateList.add(postFormat.format(date1))
             Log.e("Datesss",postFormat.format(date1)+" "+(calendar.get(Calendar.DAY_OF_WEEK)).toString())
             var day = (calendar.get(Calendar.DAY_OF_WEEK)-2)
             if (day==-1){
                 day = 6
             }
+            dateList.add(postFormat.format(date1))
+            dateListA.add(postFormat.format(date1)+" ("+ getDayShort(day)+")")
             dayList.add(day.toString())
         }
 
         Log.e("DATES",dayList.toString())
 
-        var adapter = ArrayAdapter(App.activity!!, R.layout.spinner_country_item, dateList)
+        var adapter = ArrayAdapter(App.activity!!, R.layout.spinner_country_item, dateListA)
         adapter.setDropDownViewResource(R.layout.spinner_country_dropdown_item)
         date.adapter = adapter
 

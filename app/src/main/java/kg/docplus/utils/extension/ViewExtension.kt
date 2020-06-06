@@ -219,6 +219,18 @@ fun getDay(day:Int):String{
         else -> "Понедельник"
     }
 }
+fun getDayShort(day:Int):String{
+    return when (day) {
+        0 -> "Пн"
+        1 -> "Вт"
+        2 -> "Ср"
+        3 -> "Чт"
+        4 -> "Пт"
+        5 -> "Сб"
+        6 -> "Вс"
+        else -> "Пн"
+    }
+}
 
 fun setRoundedImage(imageView: ImageView, url: String, context: Context) {
 
