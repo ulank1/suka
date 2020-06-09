@@ -92,14 +92,14 @@
                 android:layout_height="30dp"/>
 
             <Button
-                android:layout_marginStart="5dp"
-                android:background="@drawable/rounded_rect_10dp_blue"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:text="Оплатить"
                 android:id="@+id/btn_pay"
                 android:layout_width="120dp"
-                android:layout_height="30dp"/>
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/rounded_rect_10dp_blue"
+                android:text="Оплатить"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

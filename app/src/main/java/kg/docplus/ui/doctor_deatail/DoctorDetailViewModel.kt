@@ -21,6 +21,7 @@ import kg.docplus.model.get.UrlImage
 import kg.docplus.model.post.DoctorId
 import kg.docplus.network.PostApi
 import kg.docplus.ui.main.filter.Filter
+import kg.docplus.ui.notification.PayboxActivity
 import kg.docplus.ui.rating.RatingActivity
 import kg.docplus.utils.extension.*
 import kotlinx.android.synthetic.main.fragment_filter.*
@@ -31,7 +32,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
-class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItemSelectedListener {
+class DoctorDetailViewModel : BaseViewModel(), DetailListener, AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
@@ -39,11 +40,11 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         date = dateList[position]
 
-        getAvailableTimes(service,dayList[position])
+        getAvailableTimes(service, dayList[position])
     }
 
     override fun postAppointment(time: String) {
-        if (service==3){
+//        if (service==3){
 //            var bool = true
 //            if (city.selectedItemPosition==0){
 //                App.activity.toast("Выберите город")
@@ -58,11 +59,16 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
 //            if (bool){
 //                createAppointment(service,time,cities[city.selectedItemPosition].id.toString(),address.text.toString())
 //            }
-            createAppointment(service, time)
+//            createAppointment(service, time)
+//
+//        }else {
+//            createAppointment(service, time)
+//        }
 
-        }else {
-            createAppointment(service, time)
-        }
+        this.time = time
+
+        App.activity.startActivityForResult(Intent(App.activity, PayboxActivity::class.java).putExtra("price", price),1020)
+
     }
 
     @Inject
@@ -73,12 +79,14 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
     var adapter = ImageRvAdapter(App.activity!!)
     var adapterTimes = TimesRvAdapter(App.activity!!, this)
     var isActive = false
+    lateinit var doctorFull: DoctorFull
     var idDoctor: Int = -1
     var service = 0
-    lateinit var dialog:Dialog
-    lateinit var dialogResult:Dialog
-    lateinit var cities:ArrayList<Cities>
-
+    var price = 0
+    var time = "00:00"
+    lateinit var dialog: Dialog
+    lateinit var dialogResult: Dialog
+    lateinit var cities: ArrayList<Cities>
 
 
     private var subscription: CompositeDisposable = CompositeDisposable()
@@ -89,74 +97,76 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
     }
 
     fun getDoctorFull(id: Int) {
-        Log.e("ID",id.toString())
+        Log.e("ID", id.toString())
         idDoctor = id
         subscription.add(
-            postApi.getDocFull(
-                id
-            )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { showProgress() }
-                .subscribe(
-                    { result ->
-                        hideProgress()
-                        if (result.isSuccessful) {
-                            Log.e("DOC_FULL", result.body()!!.toString())
-                            doctor.value = result.body()
-                            idDoctor = result.body()!!.id
-                            adapter.swapData(result.body()!!.doctor_detail.certificates as ArrayList<UrlImage>)
-                            isActive = result.body()!!.doctor_detail.is_favorite
-                            active.value = isActive
-                        } else {
-                            var error = result.errorBody()!!.string()
-                            Log.e("Error", error)
-
-                        }
-
-                    },
-                    {
-                        hideProgress()
-
-                        Log.e("DDD", it.toString())
-                    }
-
+                postApi.getDocFull(
+                        id
                 )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe { showProgress() }
+                        .subscribe(
+                                { result ->
+                                    hideProgress()
+                                    if (result.isSuccessful) {
+                                        Log.e("DOC_FULL", result.body()!!.toString())
+                                        doctorFull = result.body()!!
+                                        doctor.value = result.body()
+                                        idDoctor = result.body()!!.id
+                                        adapter.swapData(result.body()!!.doctor_detail.certificates as ArrayList<UrlImage>)
+                                        isActive = result.body()!!.doctor_detail.is_favorite
+                                        active.value = isActive
+                                    } else {
+                                        var error = result.errorBody()!!.string()
+                                        Log.e("Error", error)
+
+                                    }
+
+                                },
+                                {
+                                    hideProgress()
+
+                                    Log.e("DDD", it.toString())
+                                }
+
+                        )
         )
 
     }
-   fun getCities() {
+
+    fun getCities() {
         subscription.add(
-            postApi.getCities()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { showProgress() }
-                .subscribe(
-                    { result ->
-                        hideProgress()
-                        if (result.isSuccessful) {
-                            Log.e("DOC_FULL", result.body()!!.toString())
-                            cities = (result.body() as ArrayList<Cities>?)!!
+                postApi.getCities()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe { showProgress() }
+                        .subscribe(
+                                { result ->
+                                    hideProgress()
+                                    if (result.isSuccessful) {
+                                        Log.e("DOC_FULL", result.body()!!.toString())
+                                        cities = (result.body() as ArrayList<Cities>?)!!
 
-                        } else {
-                            var error = result.errorBody()!!.string()
-                            Log.e("Error", error)
+                                    } else {
+                                        var error = result.errorBody()!!.string()
+                                        Log.e("Error", error)
 
-                        }
+                                    }
 
-                    },
-                    {
-                        hideProgress()
+                                },
+                                {
+                                    hideProgress()
 
-                        Log.e("DDD", it.toString())
-                    }
+                                    Log.e("DDD", it.toString())
+                                }
 
-                )
+                        )
         )
 
     }
 
-    fun onClickMore(line: LinearLayout,scrollView: ScrollView,button: Button) {
+    fun onClickMore(line: LinearLayout, scrollView: ScrollView, button: Button) {
         if (line.visibility == View.GONE) {
             line.visible()
             scrollView.fullScroll(View.FOCUS_DOWN)
@@ -164,72 +174,73 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
             line.gone()
         }
     }
+
     fun onClickPreview(view: View) {
-        view.getParentActivity()?.startActivity(Intent(view.getParentActivity(),RatingActivity::class.java).putExtra("id",idDoctor))
+        view.getParentActivity()?.startActivity(Intent(view.getParentActivity(), RatingActivity::class.java).putExtra("id", idDoctor))
     }
 
     fun onClickHeart() {
         Log.e("IS_SUCCESS", "$isActive $idDoctor")
         if (isActive) {
             subscription.add(
-                postApi.deleteFavorite(
-                    idDoctor
-                )
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe { showProgress() }
-                    .subscribe(
-                        { result ->
-                            hideProgress()
-                            if (result.isSuccessful) {
-                                active.value = false
-                            } else {
-                                var error = result.errorBody()!!.string()
-                                Log.e("Error", error)
-
-                            }
-
-                        },
-                        {
-                            hideProgress()
-                            active.value = false
-
-                            Log.e("DDD", it.toString())
-                        }
-
+                    postApi.deleteFavorite(
+                            idDoctor
                     )
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnSubscribe { showProgress() }
+                            .subscribe(
+                                    { result ->
+                                        hideProgress()
+                                        if (result.isSuccessful) {
+                                            active.value = false
+                                        } else {
+                                            var error = result.errorBody()!!.string()
+                                            Log.e("Error", error)
+
+                                        }
+
+                                    },
+                                    {
+                                        hideProgress()
+                                        active.value = false
+
+                                        Log.e("DDD", it.toString())
+                                    }
+
+                            )
             )
 
             isActive = false
         } else {
             var doc = DoctorId(idDoctor)
             subscription.add(
-                postApi.createFavorite(
-                    doc
-                )
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe { showProgress() }
-                    .subscribe(
-                        { result ->
-                            hideProgress()
-                            if (result.isSuccessful) {
-                                active.value = true
-                                Log.e("FFDS", result.body()!!.toString())
-                            } else {
-                                var error = result.errorBody()!!.string()
-                                Log.e("Error", error)
-
-                            }
-
-                        },
-                        {
-                            hideProgress()
-
-                            Log.e("DDD", it.toString())
-                        }
-
+                    postApi.createFavorite(
+                            doc
                     )
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnSubscribe { showProgress() }
+                            .subscribe(
+                                    { result ->
+                                        hideProgress()
+                                        if (result.isSuccessful) {
+                                            active.value = true
+                                            Log.e("FFDS", result.body()!!.toString())
+                                        } else {
+                                            var error = result.errorBody()!!.string()
+                                            Log.e("Error", error)
+
+                                        }
+
+                                    },
+                                    {
+                                        hideProgress()
+
+                                        Log.e("DDD", it.toString())
+                                    }
+
+                            )
             )
             isActive = true
         }
@@ -238,16 +249,23 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
     fun onClickService(service: Int) {
         Log.e("SERVICE", service.toString())
 
+        for (serviceFul in doctorFull.services) {
+            if (serviceFul.service==service){
+                price = serviceFul.min_price
+            }
+        }
+
         showAlert(service)
 
     }
 
     var date = ""
 
-    var dateList:ArrayList<String> = ArrayList()
-    var dayList:ArrayList<String> = ArrayList()
-    lateinit var city:Spinner
-    lateinit var address:EditText
+    var dateList: ArrayList<String> = ArrayList()
+    var dayList: ArrayList<String> = ArrayList()
+    lateinit var city: Spinner
+    lateinit var address: EditText
+
     private fun showAlert(service: Int) {
         this.service = service
 
@@ -261,14 +279,14 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
         val title = dialog.findViewById(R.id.service) as TextView
         address = dialog.findViewById(R.id.edit_address) as EditText
         city = dialog.findViewById(R.id.cities) as Spinner
-        val date:Spinner = dialog.findViewById(R.id.date)
+        val date: Spinner = dialog.findViewById(R.id.date)
         var dateListA = ArrayList<String>()
         dateList.clear()
         dayList.clear()
-        if (service!=3){
+        if (service != 3) {
             address.gone()
             city.gone()
-        }else{
+        } else {
             address.gone()
             city.gone()
 //            var cityList:ArrayList<String> = ArrayList()
@@ -283,22 +301,22 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
         }
 
 
-        for (i in 0..13){
+        for (i in 0..13) {
             var calendar = Calendar.getInstance()
-            calendar.add(Calendar.DAY_OF_YEAR,i)
+            calendar.add(Calendar.DAY_OF_YEAR, i)
             var date1 = Date(calendar.timeInMillis)
             val postFormat = SimpleDateFormat("yyyy-MM-dd")
-            Log.e("Datesss",postFormat.format(date1)+" "+(calendar.get(Calendar.DAY_OF_WEEK)).toString())
-            var day = (calendar.get(Calendar.DAY_OF_WEEK)-2)
-            if (day==-1){
+            Log.e("Datesss", postFormat.format(date1) + " " + (calendar.get(Calendar.DAY_OF_WEEK)).toString())
+            var day = (calendar.get(Calendar.DAY_OF_WEEK) - 2)
+            if (day == -1) {
                 day = 6
             }
             dateList.add(postFormat.format(date1))
-            dateListA.add(postFormat.format(date1)+" ("+ getDayShort(day)+")")
+            dateListA.add(postFormat.format(date1) + " (" + getDayShort(day) + ")")
             dayList.add(day.toString())
         }
 
-        Log.e("DATES",dayList.toString())
+        Log.e("DATES", dayList.toString())
 
         var adapter = ArrayAdapter(App.activity!!, R.layout.spinner_country_item, dateListA)
         adapter.setDropDownViewResource(R.layout.spinner_country_dropdown_item)
@@ -320,81 +338,81 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
     }
 
 
-    private fun getAvailableTimes(service: Int,day:String) {
+    private fun getAvailableTimes(service: Int, day: String) {
         Log.e("DDD", Filter.date + " " + idDoctor + " " + service)
 
         subscription.add(
-            postApi.getAviableTimes(
-                day,
-                idDoctor,
-                service
-            )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { }
-                .subscribe(
-                    { result ->
-
-                        if (result.isSuccessful) {
-                            Log.e("TIMES", result.body()!!.toString())
-                            adapterTimes.swapData(result.body()!!.free_time)
-                        } else {
-                            var error = result.errorBody()!!.string()
-                            Log.e("Error", error)
-
-                        }
-
-                    },
-                    {
-
-                        Log.e("DDD", it.toString())
-                    }
-
+                postApi.getAviableTimes(
+                        day,
+                        idDoctor,
+                        service
                 )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe { }
+                        .subscribe(
+                                { result ->
+
+                                    if (result.isSuccessful) {
+                                        Log.e("TIMES", result.body()!!.toString())
+                                        adapterTimes.swapData(result.body()!!.free_time)
+                                    } else {
+                                        var error = result.errorBody()!!.string()
+                                        Log.e("Error", error)
+
+                                    }
+
+                                },
+                                {
+
+                                    Log.e("DDD", it.toString())
+                                }
+
+                        )
         )
 
     }
 
-    private fun createAppointment(service: Int, time: String,cityId:String?,address:String?) {
+    private fun createAppointment(service: Int, time: String, cityId: String?, address: String?) {
         Log.e("DDD", Filter.date + " " + idDoctor + " " + service)
         subscription.add(
-            postApi.postAppointment(
-                service,
-                idDoctor,
-                time,
-                date,
-                    cityId,
-                    address
-            )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { showProgress() }
-                .subscribe(
-                    { result ->
-                        hideProgress()
-                        if (result.isSuccessful) {
-                            Log.e("TIMES", result.body()!!.toString())
-                            dialog.cancel()
-                            showAlertResult(service)
-                        } else {
-                            var error = result.errorBody()!!.string()
-                            Log.e("Error", error)
-                            App.activity.toast(error)
-
-                        }
-
-                    },
-                    {
-                        hideProgress()
-                        Log.e("DDD", it.toString())
-                    }
-
+                postApi.postAppointment(
+                        service,
+                        idDoctor,
+                        time,
+                        date,
+                        cityId,
+                        address
                 )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe { showProgress() }
+                        .subscribe(
+                                { result ->
+                                    hideProgress()
+                                    if (result.isSuccessful) {
+                                        Log.e("TIMES", result.body()!!.toString())
+                                        dialog.cancel()
+                                        showAlertResult(service)
+                                    } else {
+                                        var error = result.errorBody()!!.string()
+                                        Log.e("Error", error)
+                                        App.activity.toast(error)
+
+                                    }
+
+                                },
+                                {
+                                    hideProgress()
+                                    Log.e("DDD", it.toString())
+                                }
+
+                        )
         )
 
     }
 
-    private fun createAppointment(service: Int, time: String) {
+    fun createAppointment() {
         Log.e("DDdfsdghjkhgfdsD", Filter.date + " " + idDoctor + " " + service)
         subscription.add(
                 postApi.postAppointment(
@@ -417,7 +435,7 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
                                         showAlertResult(service)
                                     } else {
                                         var error = result.errorBody()!!.string()
-                                        if (error.contains("Расписание на это время уже")){
+                                        if (error.contains("Расписание на это время уже")) {
                                             App.activity.toast("Расписание на это время уже установлено! Вы можете изменить")
                                         }
                                         Log.e("Error", error)
@@ -457,7 +475,8 @@ class DoctorDetailViewModel : BaseViewModel(), DetailListener,AdapterView.OnItem
         dialogResult.show()
 
     }
-    fun onClickBack(){
+
+    fun onClickBack() {
         App.activity.finish()
     }
 

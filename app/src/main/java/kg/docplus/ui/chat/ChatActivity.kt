@@ -1,5 +1,6 @@
 package kg.docplus.ui.chat
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,6 +19,7 @@ import kg.docplus.App
 import kg.docplus.injection.ViewModelFactory
 import kg.docplus.model.firebase.Message
 import kg.docplus.ui.main.filter.Filter
+import kg.docplus.ui.notification.PayboxActivity
 import kg.docplus.utils.ImagePickerHelper
 import kg.docplus.utils.extension.isTime
 import kg.docplus.utils.extension.toast
@@ -156,6 +158,11 @@ class ChatActivity : ImagePickerHelper() {
         var dialog = VideoSuccessDialog(this)
         dialog.setUp(intent.getStringExtra("name").toString(),intent.getStringExtra("avatar").toString(),video_price)
         var btnPay:Button = dialog.findViewById(R.id.btn_pay)
+        btnPay.setOnClickListener {
+
+           startActivityForResult(Intent(this, PayboxActivity::class.java).putExtra("price", video_price),1020)
+
+        }
     }
 
     private fun showAlertCancel() {
@@ -224,4 +231,19 @@ class ChatActivity : ImagePickerHelper() {
             toast("Вы не можете отправлять сообщение")
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode==1020){
+            if (resultCode== Activity.RESULT_OK){
+//                viewModel.createAppointment()
+            }else{
+                if (data!=null) {
+                    toast(data.getStringExtra("error"))
+                }
+            }
+        }
+    }
+
+
 }

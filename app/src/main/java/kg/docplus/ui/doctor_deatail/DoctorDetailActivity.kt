@@ -1,5 +1,6 @@
 package kg.docplus.ui.doctor_deatail
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import kg.docplus.injection.ViewModelFactory
 import kg.docplus.utils.UserToken
 import kg.docplus.utils.extension.gone
 import kg.docplus.utils.extension.setRoundedImage
+import kg.docplus.utils.extension.toast
 
 class DoctorDetailActivity : AppCompatActivity() {
 
@@ -54,6 +56,17 @@ class DoctorDetailActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         Log.e("ResultCode", requestCode.toString())
+
+        if (requestCode==1020){
+            if (resultCode== Activity.RESULT_OK){
+                viewModel.createAppointment()
+            }else{
+                if (data!=null) {
+                    toast(data.getStringExtra("error"))
+                }
+            }
+        }
+
     }
 
     override fun onResume() {

@@ -40,13 +40,16 @@
         android:theme="@style/AppTheme1"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.rating.CreateRatingActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.notification.PayboxActivity"></activity>
+        <activity
+            android:name=".ui.rating.CreateRatingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.main.settings.SendFailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.main.settings.TesrmsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.main.settings.TesrmsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.chat.ImageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -123,8 +126,9 @@
         <activity
             android:name=".ui.notification.NotificationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.rating.RatingActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.rating.RatingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.quickblox.messages.TYPE"

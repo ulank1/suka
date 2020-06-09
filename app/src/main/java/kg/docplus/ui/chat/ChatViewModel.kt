@@ -40,7 +40,7 @@ class ChatViewModel : BaseViewModel() {
             .createFormData("file", file.name, requestBody)
 
         subscription.add(
-            postApi.postImage(multiPartBody)
+            postApi. postImage(multiPartBody)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { showProgress() }
