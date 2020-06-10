@@ -18,7 +18,9 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kg.docplus.App
 import kg.docplus.injection.ViewModelFactory
 import kg.docplus.model.firebase.Message
+import kg.docplus.model.get.my_doctor.VideoChatCredentials
 import kg.docplus.ui.main.filter.Filter
+import kg.docplus.ui.my_doctor.Suka
 import kg.docplus.ui.notification.PayboxActivity
 import kg.docplus.utils.ImagePickerHelper
 import kg.docplus.utils.extension.isTime
@@ -44,6 +46,7 @@ class ChatActivity : ImagePickerHelper() {
     lateinit var adapter: MessageRvAdapter
     private lateinit var viewModel: ChatViewModel
     var video_price = 0
+    var video_chat_credentials:VideoChatCredentials? =null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +75,11 @@ class ChatActivity : ImagePickerHelper() {
         patient_id = intent.getStringExtra("patient_id").toString()
         specialities.text = intent.getStringExtra("speciality").toString()
 
-        viewModel.confirm.observe(this,androidx.lifecycle.Observer { video_price = it.calculated_price })
+        viewModel.confirm.observe(this,androidx.lifecycle.Observer { video_price = it.calculated_price
+
+            video_chat_credentials = it.video_chat_credentials
+            showAlertSuccess()
+        })
         getMessages()
         setOnClickListeners()
     }
@@ -96,7 +103,7 @@ class ChatActivity : ImagePickerHelper() {
         attachment_photo.setOnClickListener { showPickImageDialog() }
         video.setOnClickListener { if (isVideoActive){
             sendMessage(ChatConstants.request_video,"Пациент хочет переключиться на видеозвонок")
-            viewModel.confirmVideo(intent.getIntExtra("id",0))
+
         }}
     }
 
@@ -132,7 +139,7 @@ class ChatActivity : ImagePickerHelper() {
                     Log.e("VIEWED", viewed.toString())
                     if (viewed.toString()=="false"){
                         if (status==ChatConstants.video_success){
-                            showAlertSuccess()
+                            viewModel.confirmVideo(intent.getIntExtra("id",0))
                             resendMessage(ChatConstants.video_success,document.id)
                         }else if(status==ChatConstants.video_cancel){
                             resendMessage(ChatConstants.video_cancel,document.id)
@@ -161,7 +168,7 @@ class ChatActivity : ImagePickerHelper() {
         btnPay.setOnClickListener {
 
            startActivityForResult(Intent(this, PayboxActivity::class.java).putExtra("price", video_price),1020)
-
+            dialog.hide()
         }
     }
 
@@ -236,7 +243,11 @@ class ChatActivity : ImagePickerHelper() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode==1020){
             if (resultCode== Activity.RESULT_OK){
-//                viewModel.createAppointment()
+                if (video_chat_credentials!=null) {
+                    Log.e("VIdeoCredentials",video_chat_credentials.toString())
+                    Suka.suka(this, video_chat_credentials!!.full_name, video_chat_credentials!!.id)
+                }
+
             }else{
                 if (data!=null) {
                     toast(data.getStringExtra("error"))

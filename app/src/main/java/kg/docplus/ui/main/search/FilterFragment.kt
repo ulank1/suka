@@ -41,6 +41,7 @@ import kg.docplus.App
 import kg.docplus.model.get.Specialties
 import kg.docplus.ui.dialogs.TimeChooseDialog
 import kg.docplus.utils.extension.getDay
+import kg.mvvmdordoi.ui.game.PaginationScrollListener
 import kotlinx.android.synthetic.main.activity_show_image.*
 import kotlin.text.Typography.times
 
@@ -201,6 +202,9 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
 
     }
 
+    var isLastPage: Boolean = false
+    var isLoading: Boolean = false
+
     private fun setupRv() {
         refresh.setMaterialRefreshListener(object : MaterialRefreshListener() {
             override fun onRefresh(materialRefreshLayout: MaterialRefreshLayout) {
@@ -220,6 +224,21 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
         rv_result.layoutManager = LinearLayoutManager(activity) as RecyclerView.LayoutManager?
         adapterResult = DoctorRvAdapter(activity!!)
         rv_result.adapter = adapterResult
+//        rv_result.addOnScrollListener(object : PaginationScrollListener(layoutManager) {
+//            override fun isLastPage(): Boolean {
+//                return isLastPage
+//            }
+//
+//            override fun isLoading(): Boolean {
+//                return isLoading
+//            }
+//
+//            override fun loadMoreItems() {
+//                isLoading = true
+//                //you have to call loadmore items to get more data
+//                viewModel.search(page)
+//            }
+//        })
 
     }
 
