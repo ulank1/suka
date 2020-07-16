@@ -18,12 +18,9 @@ class PayboxActivity : AppCompatActivity() {
         var sdk = PayboxSdk.initialize(525789, "DQPCXraB5KhM5o0Q")
         sdk.setPaymentView(paymentView)
         var params = HashMap<String,String>()
-        params.put("currency","USD")
         sdk.config().testMode(true)
 //        sdk.config().setPaymentLifetime(1000)
         sdk.config().setCurrencyCode("KGS")
-        sdk.config().setUserPhone("+996706018968")
-        sdk.config().setUserEmail("lopsterlkjhgf@gmail.com")
         var price = intent.getIntExtra("price",1).toFloat()
         sdk.createPayment(price, "description", "orderId", 1234, params) {
             payment, error ->

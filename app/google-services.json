@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "219289214801-skjs8f29343vr1h06jdev21jhoal0m0u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kg.docplus",
+            "certificate_hash": "d52c768fdc10c09c4dd01b430b629d47a14097b4"
+          }
+        },
+        {
           "client_id": "219289214801-cjeqepjfs16potbh54lae1t0pj4i2bab.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -67,6 +75,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "219289214801-39imd0tsjoi2afbdfg61dacajltfqgma.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.sunrise.doc",
+            "certificate_hash": "32f55102cd329ee820d0a3cd5a71179ad910c199"
+          }
+        },
         {
           "client_id": "219289214801-9eatos7306ek4k1f19le8ts5ldrc05nh.apps.googleusercontent.com",
           "client_type": 1,
