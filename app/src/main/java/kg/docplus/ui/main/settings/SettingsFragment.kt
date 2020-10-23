@@ -57,7 +57,7 @@ class SettingsFragment : Fragment() {
 
             val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
             sharingIntent.type = "text/plain"
-            val shareBody = "Here is the share content body"
+            val shareBody = "https://play.google.com/store/apps/details?id=kg.docplus"
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here")
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody)
             startActivity(Intent.createChooser(sharingIntent, "Share via"))

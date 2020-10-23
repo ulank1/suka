@@ -204,6 +204,7 @@ class FilterFragment : Fragment(), View.OnClickListener, TextWatcher, FilterList
 
     var isLastPage: Boolean = false
     var isLoading: Boolean = false
+    var page = 1
 
     private fun setupRv() {
         refresh.setMaterialRefreshListener(object : MaterialRefreshListener() {
